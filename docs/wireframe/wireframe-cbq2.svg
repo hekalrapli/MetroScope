@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="980" viewBox="0 0 1200 980" role="img" aria-label="Wireframe low-fidelity CBQ 2: scorecard, grouped bar, tabel peringkat">
+  <rect width="1200" height="980" fill="#ffffff"/>
+  <style>
+    text { font-family: system-ui, sans-serif; fill: #4a4a4a; }
+    .t { font-size: 15px; font-weight: 600; }
+    .s { font-size: 13px; }
+    .xs { font-size: 12px; fill: #666; }
+    .box { fill: #f4f4f4; stroke: #9a9a9a; stroke-width: 1; }
+    .zone { fill: none; stroke: #777; stroke-width: 1.5; stroke-dasharray: 6 4; }
+    .tab { fill: #ececec; stroke: #aaa; }
+  </style>
+
+  <rect x="0" y="0" width="1200" height="64" fill="#fafafa" stroke="#bbb"/>
+  <text x="40" y="28" class="t">Peningkatan Kawasan dan Fasilitas Permukiman DKI Jakarta 2023–2025</text>
+  <text x="40" y="48" class="xs">wireframe low-fidelity · CBQ 2 tanpa peta · bukan data sebenarnya · tanpa warna data</text>
+  <g class="tab">
+    <rect x="760" y="20" width="72" height="28"/><rect x="840" y="20" width="72" height="28"/><rect x="920" y="20" width="72" height="28"/><rect x="1000" y="20" width="72" height="28"/><rect x="1080" y="20" width="72" height="28"/>
+  </g>
+  <text x="780" y="39" class="s">CBQ 1</text><text x="860" y="39" class="s">CBQ 2</text><text x="940" y="39" class="s">CBQ 3</text><text x="1020" y="39" class="s">CBQ 4</text><text x="1100" y="39" class="s">CBQ 5</text>
+  <text x="40" y="92" class="s">Pertanyaan: Bagaimana perbandingan jumlah catatan RW antarwilayah administrasi?</text>
+  <text x="40" y="114" class="t">JUDUL JAWABAN (dihitung otomatis dari data + filter)</text>
+  <text x="848" y="92" class="s">Filter: [ Semua tahun | 2023 | 2024 | 2025 ]</text>
+  <text x="848" y="112" class="xs">segmented control · default Semua tahun · state di hash</text>
+
+  <text x="40" y="140" class="xs">ATAS: SCORECARD</text>
+  <rect x="40" y="150" width="362" height="86" class="box"/>
+  <text x="54" y="186" class="t">ANGKA 24px</text>
+  <text x="54" y="208" class="s">wilayah tertinggi · breakdown tahun</text>
+  <rect x="418" y="150" width="362" height="86" class="box"/>
+  <text x="432" y="186" class="t">ANGKA 24px</text>
+  <text x="432" y="208" class="s">wilayah terendah · breakdown tahun</text>
+  <rect x="796" y="150" width="364" height="86" class="box"/>
+  <text x="810" y="186" class="t">ANGKA 24px</text>
+  <text x="810" y="208" class="s">total catatan pada filter aktif</text>
+
+  <rect x="40" y="258" width="1120" height="360" class="zone"/>
+  <text x="52" y="278" class="xs">TENGAH: VISUAL UTAMA</text>
+  <text x="52" y="302" class="t">GROUPED BAR vertikal — wilayah × tahun (12 kolom, lebar penuh)</text>
+  <text x="52" y="324" class="s">hue tahun: 2023 / 2024 / 2025 · baseline 0 · label nilai di atas batang · urut menurun</text>
+  <text x="80" y="590" class="xs">hover: tooltip nilai eksak · klik batang: sorot wilayah yang sama di tabel</text>
+  <g stroke="#999" fill="#e9e9e9">
+    <rect x="100" y="480" width="24" height="70"/><rect x="128" y="470" width="24" height="80"/><rect x="156" y="450" width="24" height="100"/>
+    <rect x="270" y="500" width="24" height="50"/><rect x="298" y="490" width="24" height="60"/><rect x="326" y="480" width="24" height="70"/>
+    <rect x="440" y="510" width="24" height="40"/><rect x="468" y="500" width="24" height="50"/><rect x="496" y="490" width="24" height="60"/>
+    <rect x="610" y="460" width="24" height="90"/><rect x="638" y="470" width="24" height="80"/><rect x="666" y="500" width="24" height="50"/>
+    <rect x="780" y="520" width="24" height="30"/><rect x="808" y="510" width="24" height="40"/><rect x="836" y="490" width="24" height="60"/>
+    <rect x="950" y="500" width="24" height="50"/><rect x="978" y="505" width="24" height="45"/><rect x="1006" y="490" width="24" height="60"/>
+  </g>
+  <rect x="338" y="548" width="26" height="10" fill="#fbf6ec" stroke="#777" stroke-dasharray="3 2"/>
+  <text x="372" y="558" class="xs">hatch amber = data tidak tersedia, bukan 0</text>
+
+  <rect x="40" y="636" width="1120" height="292" class="zone"/>
+  <text x="52" y="656" class="xs">BAWAH: RINCIAN</text>
+  <text x="52" y="680" class="t">TABEL PERINGKAT WILAYAH — peringkat, wilayah, jumlah, kontribusi, perubahan</text>
+  <text x="52" y="702" class="s">mode Semua tahun menambah kolom 2023 / 2024 / 2025; mode tahun menampilkan selisih vs tahun sebelumnya</text>
+  <text x="52" y="724" class="xs">panah ▲/▼ abu netral · Jakarta Timur 2023: n/a (2023 kosong) · klik baris: sorot wilayah di chart</text>
+  <rect x="60" y="746" width="1080" height="26" class="box"/>
+  <text x="72" y="764" class="xs">Peringkat · Wilayah · Jumlah · Kontribusi · 2023 / 2024 / 2025 · Perubahan 2023 → 2025</text>
+  <rect x="60" y="776" width="1080" height="20" class="box"/><rect x="60" y="800" width="1080" height="20" class="box"/><rect x="60" y="824" width="1080" height="20" class="box"/><rect x="60" y="848" width="1080" height="20" class="box"/><rect x="60" y="872" width="1080" height="20" class="box"/><rect x="60" y="896" width="1080" height="20" class="box"/>
+  <rect x="60" y="924" width="1080" height="18" fill="#fbf6ec" stroke="#777" stroke-dasharray="3 2"/>
+  <text x="72" y="938" class="xs">catatan amber: total Jakarta Timur hanya 2024-2025 karena data 2023 kosong</text>
+
+  <text x="40" y="964" class="xs">Sumber: Satu Data Jakarta · Catatan desain: docs/design-notes.md</text>
+</svg>

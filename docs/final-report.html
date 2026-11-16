@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>Laporan Akhir Visualisasi Data — DKI Jakarta 2023–2025</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html { background:#fff; }
+  body {
+    margin:0;
+    font-family:'Public Sans', system-ui, sans-serif;
+    font-size:10.5pt;
+    line-height:1.55;
+    color:#1F2933;
+    font-variant-numeric:tabular-nums;
+  }
+  h1,h2,h3,p,ul,ol,figure { margin-top:0; }
+  h1 { font-size:24pt; line-height:1.18; font-weight:600; }
+  h2 { font-size:17pt; line-height:1.3; font-weight:600; margin:0 0 4mm; padding-bottom:2mm; border-bottom:1px solid #D9DCDF; }
+  h3 { font-size:12.5pt; line-height:1.4; font-weight:600; margin:6mm 0 2mm; }
+  p { margin:0 0 3mm; }
+  ul, ol { margin:0 0 4mm 5mm; padding:0; }
+  li { margin-bottom:1.2mm; }
+  .tight li { margin-bottom:1.6mm; }
+  .muted { color:#5B6770; }
+  .small { font-size:8.7pt; line-height:1.45; }
+  .kicker { color:#1F4E79; font-size:8.5pt; font-weight:600; letter-spacing:.10em; text-transform:uppercase; }
+  .page-break { break-before:page; }
+  .cover { min-height:247mm; display:flex; flex-direction:column; justify-content:space-between; }
+  .cover-top { padding-top:10mm; }
+  .cover h1 { max-width:170mm; margin:6mm 0 5mm; }
+  .cover .lead { font-size:13pt; line-height:1.45; max-width:160mm; }
+  .cover .lead-sub { color:#5B6770; font-size:10.5pt; }
+  .cover-rule { width:42mm; height:2px; background:#1F4E79; margin:8mm 0; }
+  .cover-image { height:72mm; overflow:hidden; border:1px solid #D9DCDF; border-radius:4px; margin:3mm 0 6mm; }
+  .cover-image img { width:100%; display:block; object-fit:cover; object-position:top; }
+  .cover-meta { display:grid; grid-template-columns:repeat(4,1fr); gap:4mm; border-top:1px solid #D9DCDF; padding-top:4mm; }
+  .cover-meta span { display:block; color:#5B6770; font-size:8.5pt; }
+  .cover-meta strong { display:block; font-size:10pt; font-weight:600; }
+  .toc { columns:2; column-gap:10mm; margin:4mm 0 6mm; }
+  .toc div { break-inside:avoid; margin-bottom:2.2mm; }
+  .toc span { display:inline-block; width:7mm; color:#5B6770; }
+  table { width:100%; border-collapse:collapse; font-size:8.6pt; line-height:1.4; margin:3mm 0 5mm; break-inside:avoid; }
+  th { text-align:left; font-weight:600; color:#1F2933; background:#F3F4F2; border-bottom:1px solid #D9DCDF; padding:2mm 2.2mm; vertical-align:top; }
+  td { border-bottom:1px solid #E8EAEC; padding:2mm 2.2mm; vertical-align:top; }
+  .compact-table { font-size:8.2pt; }
+  .zone-table td:first-child { width:16mm; font-weight:600; }
+  .status { color:#1F4E79; font-weight:600; }
+  .note { border-left:3px solid #B7791F; background:#FBF6EC; padding:3mm 3.5mm; margin:4mm 0; font-size:9.2pt; }
+  .note-blue { border-left:3px solid #1F4E79; background:#F2F6FA; padding:3mm 3.5mm; margin:4mm 0; font-size:9.2pt; }
+  figure { margin:4mm 0 5mm; break-inside:avoid; }
+  figure img { width:100%; display:block; border:1px solid #D9DCDF; border-radius:4px; }
+  figcaption { font-size:8.3pt; color:#5B6770; margin-top:1.5mm; }
+  .page-figure img { width:160mm; max-height:192mm; object-fit:contain; margin:0 auto; }
+  .screenshot-section h2 { margin-top:0; }
+  .screenshot-section ul { font-size:9.5pt; }
+  .wireframe-large img { width:100%; max-height:145mm; object-fit:contain; }
+  .wireframe-grid { display:grid; grid-template-columns:1fr 1fr; gap:4mm; }
+  .wireframe-grid figure { margin:0; }
+  .wireframe-grid img { width:92%; margin:0 auto; }
+  .wireframe-grid figcaption { font-size:7.5pt; }
+  .mobile-grid { display:grid; grid-template-columns:1fr 1fr; gap:8mm; }
+  .mobile-grid figure { margin:0; text-align:center; }
+  .mobile-grid img { width:52mm; margin:0 auto; }
+  .summary-grid { display:grid; grid-template-columns:1fr 1fr; gap:6mm; }
+  .checklist td:first-child { width:78mm; }
+  .checklist { font-size:7.8pt; }
+  .checklist th, .checklist td { padding:1.6mm 2mm; }
+  .footer-note { color:#5B6770; font-size:8.5pt; margin-top:6mm; }
+</style>
+</head>
+<body>
+
+<section class="cover">
+  <div class="cover-top">
+    <div class="kicker">Laporan Akhir · Visualisasi Data</div>
+    <div class="cover-rule"></div>
+    <h1>Peningkatan Kawasan dan Fasilitas Permukiman DKI Jakarta 2023–2025</h1>
+    <p class="lead">Desain Idiom Visual &amp; Encoding (Level 3 Munzner) dan Layout &amp; Grid Dashboard</p>
+    <p class="lead-sub">Dashboard Overview dan lima halaman CBQ: CBQ 1–CBQ 5</p>
+  </div>
+  <div class="cover-image"><img src="../screenshots/overview.png" alt="Pratinjau dashboard Overview"></div>
+  <div class="cover-meta">
+    <div><span>Disusun oleh</span><strong>Haikal Rafli Sembiring</strong></div>
+    <div><span>NIM</span><strong>24060124130079</strong></div>
+    <div><span>Tanggal</span><strong>15 November 2026</strong></div>
+    <div><span>Sumber data</span><strong>Satu Data Jakarta</strong></div>
+  </div>
+</section>
+
+<section class="page-break">
+  <h2>Ringkasan dan Daftar Isi</h2>
+  <p>Dashboard ini menjawab lima pertanyaan analisis tentang peningkatan kawasan dan fasilitas permukiman DKI Jakarta 2023–2025. Halaman <strong>Overview</strong> menjadi dashboard utama dan halaman default; lima halaman CBQ menyediakan analisis yang lebih rinci. Data utama berasal dari <strong>Satu Data Jakarta</strong> (308 catatan RW), sedangkan geometri choropleth berasal dari layanan <strong>Jakarta Satu</strong> (267 polygon kelurahan).</p>
+  <p>Laporan ini memetakan KPI ke idiom visual, menjelaskan marks dan channels, menerapkan rules of thumb, lalu menunjukkan layout tiga zona dan kesesuaiannya pada tiap halaman.</p>
+
+  <h3>Daftar isi</h3>
+  <div class="toc">
+    <div><span>1</span>Ringkasan dashboard</div>
+    <div><span>2</span>Bagian 3 — Desain idiom visual &amp; encoding</div>
+    <div><span>3</span>Bagian 4 — Layout &amp; grid dashboard</div>
+    <div><span>4</span>Penjelasan per halaman</div>
+    <div><span>5</span>Data quality, filter, dan mobile</div>
+    <div><span>6</span>Validasi dan kesimpulan</div>
+  </div>
+
+  <h3>Halaman dan pertanyaan</h3>
+  <table class="compact-table"><thead><tr><th>Halaman</th><th>Pertanyaan</th><th>Idiom utama</th></tr></thead><tbody><tr><td>Overview</td><td>Ringkasan terpadu lima CBQ</td><td>Scorecard, line chart, choropleth, grouped bar, Top 10, multi-line</td></tr><tr><td>CBQ 1</td><td>Bagaimana perkembangan jumlah RW yang tercatat menerima peningkatan pada 2023–2025?</td><td>Line chart + grouped bar</td></tr><tr><td>CBQ 2</td><td>Bagaimana perbandingan jumlah catatan RW antarwilayah administrasi?</td><td>Grouped bar + tabel peringkat</td></tr><tr><td>CBQ 3</td><td>Kecamatan dan kelurahan mana yang memiliki jumlah catatan tertinggi?</td><td>Top 10 horizontal bar + tabel detail</td></tr><tr><td>CBQ 4</td><td>Bagaimana cakupan geografis program berubah dari tahun ke tahun?</td><td>Line chart + stacked bar + tabel</td></tr><tr><td>CBQ 5</td><td>Bagaimana persebaran jumlah peningkatan PSU pada setiap wilayah?</td><td>Choropleth + bar PSU + heatmap</td></tr></tbody></table>
+
+  <div class="note-blue"><strong>Catatan data.</strong> Satu baris adalah satu catatan RW pada satu tahun, bukan satu RW unik. PSU dihitung dengan MAX per kelurahan per tahun lalu dijumlahkan; PSU tidak boleh dijumlahkan per baris RW. Jakarta Timur 2023 tidak tersedia dan tidak digambar sebagai nol.</div>
+</section>
+
+<section class="page-break">
+  <div class="kicker">Bagian 3</div>
+  <h2>Desain Idiom Visual &amp; Encoding (Level 3 Munzner)</h2>
+  <p>Level 3 Munzner menghubungkan data dan tugas analisis dengan idiom visual serta saluran persepsi. Dashboard memilih idiom berdasarkan bentuk data: waktu memakai posisi, perbandingan kategori memakai panjang, dan persebaran lokasi memakai region spasial serta luminance.</p>
+
+  <h3>1. Pemetaan KPI ke idiom visual</h3>
+  <table class="compact-table"><thead><tr><th>KPI / tugas</th><th>Idiom visual</th><th>Alasan pemilihan</th><th>Alternatif yang ditolak</th></tr></thead><tbody><tr><td>KPI eksekutif (308; 237; 88; 61; 516)</td><td>Scorecard</td><td>Ringkasan satu nilai per KPI, cepat dipindai dalam <3 detik.</td><td>Gauge: membutuhkan target yang tidak ada.</td></tr><tr><td>Tren catatan RW per tahun</td><td>Line chart dengan marker dan label</td><td>Position pada sumbu Y menunjukkan perubahan waktu secara berurutan.</td><td>Pie/donut: tidak dapat menunjukkan tren.</td></tr><tr><td>Perbandingan wilayah × tahun</td><td>Grouped bar</td><td>Length pada baseline nol paling akurat untuk enam kategori; hue tahun membedakan periode.</td><td>Line chart: wilayah adalah kategori tak berurutan.</td></tr><tr><td>Konsentrasi kelurahan/kecamatan</td><td>Horizontal bar Top 10</td><td>Length + label langsung memudahkan peringkat; hue wilayah memberi identitas induk.</td><td>Treemap: area lebih sulit dibandingkan untuk peringkat sederhana.</td></tr><tr><td>Cakupan geografis</td><td>Multi-series line + stacked bar</td><td>Dua besaran waktu dibandingkan pada skala yang sama; komposisi baru/berulang memakai batang bertumpuk.</td><td>Dual-axis: dua sumbu Y mudah disalahartikan.</td></tr><tr><td>Persebaran PSU per kelurahan</td><td>Choropleth polygon + heatmap + bar PSU</td><td>Spatial region + luminance menunjukkan pola lokasi; heatmap membandingkan wilayah × tahun.</td><td>Tile-grid: tidak merepresentasikan batas kelurahan aktual.</td></tr></tbody></table>
+
+  <div class="note"><strong>Keputusan CBQ 3.</strong> Data tidak memiliki koordinat kelurahan. Top 10 horizontal bar tetap menjadi visual utama (Locate pada level kelurahan); filter wilayah berada di bagian atas halaman. Tile-grid filter tambahan dihapus agar tidak menduplikasi kontrol dan tidak mengarang geometri.</div>
+
+  <h3>2. Marks dan channels</h3>
+  <table class="compact-table"><thead><tr><th>Visual</th><th>Mark</th><th>Magnitude channel</th><th>Identity channel</th></tr></thead><tbody><tr><td>Scorecard</td><td>Teks dan angka</td><td>Ukuran/posisi angka</td><td>Label KPI</td></tr><tr><td>Line chart</td><td>Garis + titik</td><td>Posisi vertikal</td><td>Posisi horizontal tahun; bentuk marker</td></tr><tr><td>Grouped bar</td><td>Batang vertikal</td><td>Length/tinggi dari baseline 0</td><td>Hue tahun; posisi horizontal wilayah</td></tr><tr><td>Top 10 horizontal bar</td><td>Batang horizontal</td><td>Length</td><td>Posisi peringkat, label kelurahan, hue wilayah induk</td></tr><tr><td>Stacked bar</td><td>Batang vertikal bertumpuk</td><td>Tinggi segmen dan total batang</td><td>Hue RW baru vs berulang per tahun</td></tr><tr><td>Choropleth</td><td>Polygon kelurahan + garis batas kota</td><td>Luminance hue biru</td><td>Spatial region; label kota; tooltip wilayah/kecamatan/kelurahan</td></tr><tr><td>Heatmap</td><td>Sel matriks</td><td>Luminance hue biru</td><td>Posisi baris wilayah dan kolom tahun</td></tr></tbody></table>
+
+  <p><strong>Magnitude channels.</strong> Position dipakai pada line chart (nilai tahun) dan grouped bar (tinggi batang). Length dipakai pada batang horizontal dan stacked bar. Color saturation/luminance dipakai pada choropleth dan heatmap PSU. Semua batang dimulai dari nol.</p>
+  <p><strong>Identity channels.</strong> Spatial region dipakai pada polygon kelurahan. Color hue dipakai untuk tahun (CBQ 2), wilayah induk (CBQ 3), dan RW baru/berulang (CBQ 4). Shape/marker dipakai untuk membedakan seri pada line chart CBQ 4 (lingkaran vs belah ketupat).</p>
+</section>
+
+<section>
+  <h2>Rules of Thumb</h2>
+
+  <h3>No Unjustified 3D</h3>
+  <p>Seluruh visualisasi digambar 2D: line chart, batang, polygon choropleth, dan heatmap. Tidak ada perspektif, bayangan 3D, atau kedalaman semu yang tidak menambah informasi.</p>
+
+  <h3>Eyes Beat Memory</h3>
+  <p>Visual yang perlu dibandingkan diletakkan berdampingan: line chart tren dan choropleth pada zona tengah; bar PSU dan heatmap pada CBQ 5; serta tiga breakdown pada zona bawah Overview. Urutan wilayah konsisten, label nilai langsung diletakkan pada chart, dan tabel alternatif menyediakan angka eksak. Legenda hanya muncul saat diperlukan dan berada dekat data.</p>
+
+  <h3>Shneiderman's Mantra</h3>
+  <ul>
+    <li><strong>Overview First.</strong> Overview adalah halaman default dan memuat KPI serta kelima CBQ.</li>
+    <li><strong>Zoom &amp; Filter.</strong> Filter tahun pada Overview; filter tahun dan wilayah pada halaman detail; pencarian dan toggle Kelurahan/Kecamatan pada CBQ 3; filter tahun pada CBQ 5. Filter memperbarui chart, tabel, dan peta.</li>
+    <li><strong>Details on Demand.</strong> Tooltip pada semua chart dan polygon; tombol Lihat sebagai tabel pada setiap visual; klik batang pada CBQ 3 untuk membuka detail RW; tautan Lihat Detail menuju halaman analisis lengkap.</li>
+  </ul>
+
+  <h3>Kebijakan warna dan bentuk</h3>
+  <p>Warna dipakai untuk identitas, bukan penilaian kinerja: tahun memakai hue yang berbeda; wilayah memakai enam hue kategorikal yang aman buta warna hanya di CBQ 3; new vs repeat memakai biru dan oranye. Amber <strong>#B7791F</strong> hanya dipakai untuk penanda kualitas data. Tidak ada merah/hijau untuk menilai kinerja karena data tidak memuat total RW kumuh; PSU juga bukan ukuran kebutuhan atau keberhasilan. Pie/donut tidak dipakai karena sudut dan area kurang akurat dibandingkan posisi dan panjang.</p>
+
+  <h3>Kesesuaian aturan per halaman</h3>
+  <table class="compact-table"><thead><tr><th>Halaman</th><th>No 3D</th><th>Eyes Beat Memory</th><th>Shneiderman</th></tr></thead><tbody><tr><td>Overview</td><td>Sesuai — line, bar, dan polygon 2D</td><td>Sesuai — KPI di atas; tren + peta berdampingan; angka eksak di tooltip/tabel</td><td>Sesuai — default Overview; filter tahun; tooltip, tabel, tautan detail</td></tr><tr><td>CBQ 1</td><td>Sesuai — line dan batang 2D</td><td>Sesuai — label langsung di titik/ujung batang; hue tahun konsisten</td><td>Sesuai — scorecard + line; filter wilayah; tooltip dan tabel</td></tr><tr><td>CBQ 2</td><td>Sesuai — grouped bar 2D</td><td>Sesuai — batang tahun berdampingan; urutan wilayah sama di tabel</td><td>Sesuai — scorecard + bar; filter tahun; klik batang/baris</td></tr><tr><td>CBQ 3</td><td>Sesuai — batang horizontal 2D</td><td>Sesuai — Top 10 berlabel langsung; legenda wilayah dekat data</td><td>Sesuai — Top 10 full width; filter tahun/wilayah di atas; detail RW saat batang diklik</td></tr><tr><td>CBQ 4</td><td>Sesuai — garis dan stacked bar 2D</td><td>Sesuai — dua seri memakai marker dan hue berbeda; segmen berlabel angka</td><td>Sesuai — scorecard + line; filter wilayah; tabel RW muncul >1 tahun</td></tr><tr><td>CBQ 5</td><td>Sesuai — choropleth, heatmap, dan batang 2D</td><td>Sesuai — bar PSU + heatmap; heatmap memberi angka tiap sel</td><td>Sesuai — scorecard + choropleth; filter tahun; tooltip, tabel, detail</td></tr></tbody></table>
+</section>
+
+<section class="page-break">
+  <div class="kicker">Bagian 4</div>
+  <h2>Layout &amp; Grid Dashboard (Zona Hierarki Visual)</h2>
+  <p>Dashboard memakai grid 12 kolom, lebar maksimum 1280px, dan jarak antar-panel 16px. Di bawah 900px, kolom menumpuk vertikal. Hierarki dibentuk oleh posisi dan ukuran area, bukan oleh hero section atau efek visual berlebihan.</p>
+
+  <table class="compact-table zone-table"><thead><tr><th>Zona</th><th>Isi pada dashboard</th><th>Fungsi</th><th>Alasan hierarki</th></tr></thead><tbody><tr><td>Atas</td><td>Judul, filter tahun, dan 5 executive scorecard: Catatan RW 2023–2025, RW unik, Kelurahan unik, RW muncul >1 tahun, PSU 2023–2025. Nilai scorecard mengikuti filter tahun.</td><td>Gambaran umum <3 detik; mengarahkan perhatian sebelum membaca detail.</td><td>Overview First. Angka ringkas ditempatkan paling atas karena menjadi entry point; tipografi 24px membuatnya terbaca lebih dulu tanpa hero section.</td></tr><tr><td>Tengah</td><td>Line chart CBQ 1 (tren catatan RW per tahun) dan choropleth CBQ 5 (PSU per kelurahan dengan batas administrasi aktual).</td><td>Analisis temporal dan spasial utama; dua visual terbesar di halaman.</td><td>Pertanyaan inti dashboard adalah perubahan waktu dan persebaran lokasi. Area terbesar diberikan ke dua visual ini; keduanya memakai encoding berbeda (position vs luminance) sehingga tidak saling mengganggu.</td></tr><tr><td>Bawah</td><td>Grouped bar CBQ 2 (wilayah × tahun), horizontal bar Top 10 CBQ 3, dan multi-line CBQ 4 (kelurahan unik dan RW baru).</td><td>Breakdown, peringkat, dan komparasi pendukung.</td><td>Setelah overview, pengguna membutuhkan rincian kategori. Tiga panel sejajar memudahkan perbandingan tanpa berpindah halaman; setiap panel memiliki Lihat Detail dan tabel alternatif.</td></tr></tbody></table>
+
+  <div class="note-blue"><strong>Proporsi zona tengah.</strong> Overview memakai 6 kolom untuk line chart CBQ 1 dan 6 kolom untuk choropleth CBQ 5. Zona bawah Overview memakai 4+4+4 untuk CBQ 2, CBQ 3, dan CBQ 4. CBQ 3 memakai Top 10 full width karena tile-grid filter dihapus; CBQ 5 memakai peta 7 kolom + legenda 5 kolom, lalu bar PSU dan heatmap 6+6.</div>
+
+  <figure class="wireframe-large">
+    <img src="../screenshots/wireframe-overview.png" alt="Wireframe Overview tiga zona">
+    <figcaption>Gambar 1. Wireframe Overview: zona atas (executive scorecard), zona tengah (line chart + choropleth), zona bawah (CBQ 2, CBQ 3, CBQ 4).</figcaption>
+  </figure>
+
+  <h3>Cara membaca wireframe</h3>
+  <ul class="tight">
+    <li><strong>Atas:</strong> filter tahun dan lima scorecard; nilai scorecard berubah mengikuti filter.</li>
+    <li><strong>Tengah:</strong> line chart tren di kiri dan choropleth di kanan; keduanya menjadi area visual terbesar.</li>
+    <li><strong>Bawah:</strong> tiga panel breakdown yang sejajar; setiap panel memiliki tautan Lihat Detail dan tabel alternatif.</li>
+    <li><strong>Interaksi:</strong> hover untuk tooltip, klik untuk sorotan/detail, dan filter untuk memperbarui chart dan tabel.</li>
+  </ul>
+</section>
+
+<section class="page-break">
+  <h2>Wireframe seluruh halaman</h2>
+  <p>Wireframe low-fidelity berikut menunjukkan tata letak aktual setiap halaman. Zona atas selalu scorecard; zona tengah memuat visual utama; zona bawah memuat rincian, tabel, atau komparasi.</p>
+  <div class="wireframe-grid">
+    <figure><img src="../screenshots/wireframe-cbq1.png" alt="Wireframe CBQ 1"><figcaption>CBQ 1 — line chart tren + grouped bar wilayah.</figcaption></figure>
+    <figure><img src="../screenshots/wireframe-cbq2.png" alt="Wireframe CBQ 2"><figcaption>CBQ 2 — grouped bar full width + tabel peringkat; tanpa peta.</figcaption></figure>
+    <figure><img src="../screenshots/wireframe-cbq3.png" alt="Wireframe CBQ 3"><figcaption>CBQ 3 — Top 10 horizontal bar full width + detail RW; filter wilayah di atas.</figcaption></figure>
+    <figure><img src="../screenshots/wireframe-cbq4.png" alt="Wireframe CBQ 4"><figcaption>CBQ 4 — line chart kelurahan/RW baru + stacked bar + tabel.</figcaption></figure>
+    <figure><img src="../screenshots/wireframe-cbq5.png" alt="Wireframe CBQ 5"><figcaption>CBQ 5 — choropleth + legenda; bar PSU + heatmap.</figcaption></figure>
+    <figure><img src="../screenshots/wireframe-overview.png" alt="Wireframe Overview"><figcaption>Overview — dashboard utama tiga zona.</figcaption></figure>
+  </div>
+</section>
+
+
+    <section class="screenshot-section page-break">
+      <div class="section-kicker">PENJELASAN HALAMAN</div>
+      <h2>Overview</h2>
+      <ul class="tight"><li>Zona atas: lima scorecard yang nilainya mengikuti filter tahun (mode Semua tahun memakai total 2023–2025).</li><li>Zona tengah: line chart tren dan choropleth PSU dengan legenda, label kota, dan batas kota.</li><li>Zona bawah: grouped bar CBQ 2, Top 10 CBQ 3 berwarna wilayah induk, dan line chart CBQ 4.</li><li>Setiap panel memiliki Lihat Detail dan Lihat sebagai tabel; filter tahun berada di kanan atas.</li></ul>
+      <figure class="page-figure"><img src="../screenshots/overview.png" alt=""><figcaption>Gambar 2. Overview sebagai halaman default: 5 executive scorecard, line chart CBQ 1, choropleth CBQ 5, serta tiga panel breakdown.</figcaption></figure>
+    </section>
+    
+
+
+    <section class="screenshot-section page-break">
+      <div class="section-kicker">PENJELASAN HALAMAN</div>
+      <h2>CBQ 1 — Tren catatan RW</h2>
+      <ul class="tight"><li>KPI: total catatan 308; catatan 2025 119 (+30,8% vs 2023); catatan 2024 98.</li><li>Line chart memakai position pada sumbu Y (mulai 0), marker, dan label nilai; sumbu X tahun.</li><li>Grouped bar memakai hue tahun dan baseline 0; Jakarta Timur 2023 ditandai pola amber, bukan 0.</li><li>Filter wilayah di kanan atas; tabel alternatif tersedia untuk kedua chart.</li></ul>
+      <figure class="page-figure"><img src="../screenshots/cbq1.png" alt=""><figcaption>Gambar 3. CBQ 1: line chart catatan RW per tahun + grouped bar per wilayah/tahun.</figcaption></figure>
+    </section>
+    
+
+
+    <section class="screenshot-section page-break">
+      <div class="section-kicker">PENJELASAN HALAMAN</div>
+      <h2>CBQ 2 — Perbandingan antarwilayah</h2>
+      <ul class="tight"><li>Filter tahun berupa segmented control: Semua tahun, 2023, 2024, 2025. Mode Semua tahun menampilkan tiga hue penuh.</li><li>Grouped bar memakai length dari baseline 0; hue tahun; urutan wilayah mengikuti nilai pada filter aktif.</li><li>Tabel peringkat memuat kontribusi, rincian tahun, dan perubahan; Jakarta Timur 2023 ditandai tidak tersedia.</li><li>Catatan kualitas dan catatan “jumlah rendah bukan kinerja buruk” tetap dipertahankan.</li></ul>
+      <figure class="page-figure"><img src="../screenshots/cbq2.png" alt=""><figcaption>Gambar 4. CBQ 2: grouped bar wilayah × tahun dan tabel peringkat; tanpa peta.</figcaption></figure>
+    </section>
+    
+
+
+    <section class="screenshot-section page-break">
+      <div class="section-kicker">PENJELASAN HALAMAN</div>
+      <h2>CBQ 3 — Konsentrasi lokasi</h2>
+      <ul class="tight"><li>Top 10 diurutkan menurun; panjang batang = jumlah catatan RW; label nilai di ujung batang.</li><li>Hue batang = wilayah induk; legenda wilayah muncul dekat data. Toggle Kelurahan/Kecamatan.</li><li>Filter tahun dan wilayah berada di bagian atas halaman; tile-grid filter tambahan sudah dihapus.</li><li>Klik batang membuka detail RW: tahun tercatat dan PSU kelurahan; PSU tidak dijumlahkan per RW.</li></ul>
+      <figure class="page-figure"><img src="../screenshots/cbq3.png" alt=""><figcaption>Gambar 5. CBQ 3: Top 10 horizontal bar lebar penuh + tabel detail RW; filter wilayah ada di atas.</figcaption></figure>
+    </section>
+    
+
+
+    <section class="screenshot-section page-break">
+      <div class="section-kicker">PENJELASAN HALAMAN</div>
+      <h2>CBQ 4 — Perubahan cakupan</h2>
+      <ul class="tight"><li>Dua seri line: kelurahan unik (marker lingkaran) dan RW baru (belah ketupat); sumbu Y dari 0.</li><li>Stacked bar membedakan RW baru dan RW berulang per tahun; label angka berada di segmen.</li><li>Tabel memungkinkan pencarian RW yang muncul di lebih dari satu tahun; catatan membedakan 61 RW unik dari 30+41 kejadian per tahun.</li></ul>
+      <figure class="page-figure"><img src="../screenshots/cbq4.png" alt=""><figcaption>Gambar 6. CBQ 4: line chart kelurahan unik/RW baru, stacked bar baru vs berulang, dan tabel RW muncul >1 tahun.</figcaption></figure>
+    </section>
+    
+
+
+    <section class="screenshot-section page-break">
+      <div class="section-kicker">PENJELASAN HALAMAN</div>
+      <h2>CBQ 5 — Persebaran PSU</h2>
+      <ul class="tight"><li>Choropleth memakai polygon batas kelurahan aktual; warna biru = luminance PSU; abu putus-putus = tidak ada data.</li><li>Label kota dan garis batas kota memberi identitas wilayah; tooltip memuat wilayah, kecamatan, kelurahan, dan PSU.</li><li>Bar PSU dan heatmap memakai aturan MAX per kelurahan per tahun lalu dijumlahkan; heatmap menampilkan wilayah × tahun.</li><li>Filter tahun memperbarui peta, bar, dan heatmap. Data PSU agregat per kelurahan tidak boleh dibaca sebagai PSU per RW.</li></ul>
+      <figure class="page-figure"><img src="../screenshots/cbq5.png" alt=""><figcaption>Gambar 7. CBQ 5: choropleth PSU per kelurahan + legenda; bar PSU dan heatmap PSU.</figcaption></figure>
+    </section>
+    
+
+<section class="page-break">
+  <h2>Data quality dan filter</h2>
+  <div class="summary-grid">
+    <figure><img src="../screenshots/cbq2-2023.png" alt="CBQ 2 filter 2023"><figcaption>CBQ 2 saat filter 2023: Jakarta Timur tidak tersedia dan tidak digambar sebagai nol.</figcaption></figure>
+    <figure><img src="../screenshots/cbq5-2023.png" alt="CBQ 5 filter 2023"><figcaption>CBQ 5 saat filter 2023: sel/polygon tanpa data ditandai, bukan nilai nol.</figcaption></figure>
+  </div>
+  <p class="small">Filter tahun dan wilayah bekerja pada halaman detail; filter tahun Overview memperbarui scorecard, tren, peta, dan Top 10. Data yang tidak tersedia selalu dibedakan dari nilai nol dengan pola/teks amber atau abu putus-putus.</p>
+  <div class="note-blue"><strong>Catatan interpretasi.</strong> Angka PSU menunjukkan jumlah peningkatan PSU yang tercatat, bukan ukuran kebutuhan atau tingkat keberhasilan pembangunan. PSU dicatat agregat per kelurahan; nilai yang sama tidak boleh dijumlahkan per RW. Jumlah catatan RW juga bukan ukuran kinerja wilayah karena data tidak memuat total RW kumuh.</div>
+  <p class="footer-note">Sumber geometri, lisensi, dan validasi join: <strong>docs/spatial-data-source.md</strong>.</p>
+</section>
+
+<section class="page-break">
+  <h2>Tampilan mobile</h2>
+  <p>Di bawah 900px, grid 12 kolom berubah menjadi satu kolom. Panel-panel menumpuk vertikal, peta tetap responsif, dan label kota disembunyikan otomatis pada layar sempit agar tidak bertumpuk.</p>
+  <div class="mobile-grid">
+    <figure><img src="../docs/assets/overview-mobile-top.png" alt="Overview mobile"><figcaption>Overview pada layar sempit: scorecard, tren, dan peta menumpuk vertikal.</figcaption></figure>
+    <figure><img src="../docs/assets/cbq5-mobile-top.png" alt="CBQ 5 mobile"><figcaption>CBQ 5 pada layar sempit: peta, legenda, dan panel rincian menumpuk.</figcaption></figure>
+  </div>
+  <p class="small">Screenshot penuh tersedia di folder <strong>screenshots/</strong>; gambar di atas dipotong pada bagian atas agar proporsi halaman laporan tetap terbaca.</p>
+</section>
+
+<section class="page-break">
+  <h2>Validasi dan kesimpulan</h2>
+  <p>Dashboard telah diuji pada browser desktop dan mobile. Tidak ada error console; peta menampilkan 267 polygon kelurahan; filter memperbarui chart dan peta; dan seluruh tes KPI lulus.</p>
+  <table class="compact-table"><thead><tr><th>Pemeriksaan</th><th>Hasil</th></tr></thead><tbody><tr><td>Tes KPI</td><td>46/46 checks passed</td></tr><tr><td>Baris data</td><td>308 catatan RW; 91/98/119 per tahun</td></tr><tr><td>Kelurahan unik</td><td>88 total; 28/38/49 per tahun</td></tr><tr><td>RW unik / multi-tahun</td><td>237 RW unik; 61 muncul di lebih dari satu tahun</td></tr><tr><td>GeoJSON</td><td>267 fitur; 256 Polygon, 11 MultiPolygon</td></tr><tr><td>Join spasial</td><td>87 matched; 1 unmatched (Tanjung Duren); 180 polygon tanpa data</td></tr><tr><td>PSU terpetakan</td><td>513 dari 516 (2023: 135; 2024: 225; 2025: 153)</td></tr><tr><td>Console</td><td>Tidak ada error JavaScript</td></tr></tbody></table>
+
+  <h3>Checklist kesesuaian tugas</h3>
+  <table class="compact-table checklist"><thead><tr><th>Kriteria</th><th>Status</th><th>Bukti</th></tr></thead><tbody><tr><td>KPI dipetakan ke idiom visual</td><td>Sesuai</td><td>Scorecard, line chart, grouped bar, top 10 bar, choropleth, heatmap, stacked bar.</td></tr><tr><td>Marks & channels dijelaskan</td><td>Sesuai</td><td>Tabel marks/channels serta label langsung, legend, tooltip, dan tabel alternatif.</td></tr><tr><td>No Unjustified 3D</td><td>Sesuai</td><td>Semua visual 2D; tidak ada perspektif atau bayangan 3D.</td></tr><tr><td>Eyes Beat Memory</td><td>Sesuai</td><td>Visual utama berdampingan; urutan wilayah konsisten; angka eksak dekat data.</td></tr><tr><td>Shneiderman: Overview First</td><td>Sesuai</td><td>Overview adalah halaman default dan memuat KPI + lima CBQ.</td></tr><tr><td>Shneiderman: Zoom & Filter</td><td>Sesuai</td><td>Filter tahun/wilayah, segmented control, dan toggle tingkat wilayah.</td></tr><tr><td>Shneiderman: Details on Demand</td><td>Sesuai</td><td>Tooltip, Lihat sebagai tabel, detail RW saat batang diklik, tautan Lihat Detail.</td></tr><tr><td>Layout tiga zona</td><td>Sesuai</td><td>Atas scorecard; tengah line/choropleth; bawah breakdown/komparasi.</td></tr><tr><td>Responsif</td><td>Sesuai</td><td>Grid 12 kolom di desktop; menumpuk vertikal di bawah 900px.</td></tr><tr><td>Screenshot dan wireframe</td><td>Sesuai</td><td>Seluruh halaman, filter, mobile, dan wireframe disertakan dalam laporan.</td></tr></tbody></table>
+
+  <p class="footer-note">Dokumentasi pendukung: <strong>docs/design-notes.md</strong> (catatan desain per halaman), <strong>docs/overview-design.md</strong> (desain tiga zona), dan <strong>docs/spatial-data-source.md</strong> (sumber geometri, lisensi, dan validasi join).</p>
+</section>
+
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <title>Peningkatan Kawasan dan Fasilitas Permukiman DKI Jakarta 2023–2025</title>
+    <meta
+      name="description"
+      content="Dashboard statis Visualisasi Data: peningkatan kawasan dan fasilitas permukiman DKI Jakarta 2023–2025."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#app">Lewati ke isi</a>
+
+    <header class="site-header">
+      <div class="wrap header-inner">
+        <div class="brand">
+          <span class="brand-title">Peningkatan Kawasan dan Fasilitas Permukiman DKI Jakarta</span>
+          <span class="brand-period">2023–2025</span>
+        </div>
+        <nav class="tabs" aria-label="Navigasi halaman">
+          <a href="#beranda" data-route="beranda">Beranda</a>
+          <a href="#overview" data-route="overview">Overview</a>
+          <a href="#cbq1" data-route="cbq1">CBQ 1</a>
+          <a href="#cbq2" data-route="cbq2">CBQ 2</a>
+          <a href="#cbq3" data-route="cbq3">CBQ 3</a>
+          <a href="#cbq4" data-route="cbq4">CBQ 4</a>
+          <a href="#cbq5" data-route="cbq5">CBQ 5</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="app" class="wrap" tabindex="-1">
+      <p class="loading">Memuat data…</p>
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap">
+        <p class="footer-source">Sumber: Satu Data Jakarta · 308 catatan RW, 2023–2025</p>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script type="module" src="js/router.js?v=20261116am"></script>
+  </body>
+</html>

@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1100" viewBox="0 0 1200 1100" role="img" aria-label="Wireframe low-fidelity Overview: scorecard, line chart, choropleth, dan tiga panel CBQ">
+  <rect width="1200" height="1100" fill="#ffffff"/>
+  <style>
+    text { font-family: system-ui, sans-serif; fill: #4a4a4a; }
+    .t { font-size: 15px; font-weight: 600; }
+    .s { font-size: 13px; }
+    .xs { font-size: 12px; fill: #666; }
+    .box { fill: #f4f4f4; stroke: #9a9a9a; stroke-width: 1; }
+    .zone { fill: none; stroke: #777; stroke-width: 1.5; stroke-dasharray: 6 4; }
+    .tab { fill: #ececec; stroke: #aaa; }
+    .active { fill: #e2e2e2; stroke: #777; stroke-width: 1.5; }
+  </style>
+
+  <rect x="0" y="0" width="1200" height="64" fill="#fafafa" stroke="#bbb"/>
+  <text x="40" y="28" class="t">Peningkatan Kawasan dan Fasilitas Permukiman DKI Jakarta 2023–2025</text>
+  <text x="40" y="48" class="xs">wireframe low-fidelity · Overview tiga zona · tanpa warna data</text>
+  <g class="tab">
+    <rect x="700" y="20" width="82" height="28" class="active"/><rect x="790" y="20" width="62" height="28"/><rect x="860" y="20" width="62" height="28"/><rect x="930" y="20" width="62" height="28"/><rect x="1000" y="20" width="62" height="28"/><rect x="1070" y="20" width="62" height="28"/>
+  </g>
+  <text x="712" y="39" class="s">Overview</text><text x="806" y="39" class="s">CBQ 1</text><text x="876" y="39" class="s">CBQ 2</text><text x="946" y="39" class="s">CBQ 3</text><text x="1016" y="39" class="s">CBQ 4</text><text x="1086" y="39" class="s">CBQ 5</text>
+
+  <text x="40" y="92" class="s">Pertanyaan: Overview dashboard · 2023–2025</text>
+  <text x="40" y="114" class="t">Peningkatan Kawasan dan Fasilitas Permukiman DKI Jakarta</text>
+  <text x="880" y="92" class="s">Filter: [ Semua tahun | 2023 | 2024 | 2025 ]</text>
+  <text x="880" y="112" class="xs">segmented control · default Semua tahun</text>
+
+  <text x="40" y="170" class="xs">ATAS: EXECUTIVE SCORECARDS (nilai mengikuti filter tahun)</text>
+  <g class="box">
+    <rect x="40" y="180" width="216" height="80"/><rect x="266" y="180" width="216" height="80"/><rect x="492" y="180" width="216" height="80"/><rect x="718" y="180" width="216" height="80"/><rect x="944" y="180" width="216" height="80"/>
+  </g>
+  <text x="54" y="210" class="s">Catatan RW 2023–2025</text><text x="54" y="242" class="t">308</text>
+  <text x="280" y="210" class="s">RW unik</text><text x="280" y="242" class="t">237</text>
+  <text x="506" y="210" class="s">Kelurahan unik</text><text x="506" y="242" class="t">88</text>
+  <text x="732" y="210" class="s">RW muncul &gt;1 tahun</text><text x="732" y="242" class="t">61</text>
+  <text x="958" y="210" class="s">PSU 2023–2025</text><text x="958" y="242" class="t">516</text>
+
+  <rect x="40" y="280" width="548" height="300" class="zone"/>
+  <text x="52" y="300" class="xs">TENGAH KIRI: CBQ 1 — LINE CHART</text>
+  <text x="52" y="324" class="t">Catatan RW per tahun · sumbu Y dari 0 · label nilai</text>
+  <path d="M90 530 L250 500 L410 470 L540 440" fill="none" stroke="#888" stroke-width="2"/>
+  <circle cx="90" cy="530" r="5" fill="#fff" stroke="#777" stroke-width="2"/><circle cx="250" cy="500" r="5" fill="#fff" stroke="#777" stroke-width="2"/><circle cx="410" cy="470" r="5" fill="#fff" stroke="#777" stroke-width="2"/><circle cx="540" cy="440" r="5" fill="#fff" stroke="#777" stroke-width="2"/>
+  <text x="80" y="554" class="xs">2023</text><text x="240" y="524" class="xs">2024</text><text x="400" y="494" class="xs">2025</text>
+  <text x="52" y="572" class="xs">hover: tooltip nilai eksak · Lihat Detail ke #cbq1 · Lihat sebagai tabel</text>
+
+  <rect x="612" y="280" width="548" height="300" class="zone"/>
+  <text x="624" y="300" class="xs">TENGAH KANAN: CBQ 5 — CHOROPLETH</text>
+  <text x="624" y="324" class="t">Polygon batas kelurahan DKI · luminance = PSU</text>
+  <text x="624" y="346" class="s">Tooltip wilayah/kecamatan/kelurahan · zoom Leaflet · tombol Jakarta/Semua DKI · label kota + garis batas kota</text>
+  <path d="M760 380 L830 370 L870 400 L900 390 L930 430 L960 460 L940 510 L900 540 L850 530 L820 500 L790 510 L760 480 L740 440 Z" fill="#ebebeb" stroke="#999"/>
+  <path d="M760 380 L790 420 L780 460 L760 480 M830 370 L840 420 L820 500 M870 400 L880 450 L900 540 M900 390 L920 430 L940 510 M930 430 L900 450 L880 450" fill="none" stroke="#bbb"/>
+  <rect x="640" y="530" width="110" height="10" fill="#fbf6ec" stroke="#777" stroke-dasharray="3 2"/>
+  <text x="760" y="540" class="xs">abu putus-putus = tidak ada data · garis tebal = batas kota · label = nama kota</text>
+  <text x="980" y="380" class="xs">legenda:</text>
+  <rect x="980" y="390" width="140" height="10" fill="#e9e9e9" stroke="#aaa"/>
+  <text x="980" y="420" class="xs">0 → tinggi (luminance)</text>
+  <text x="624" y="572" class="xs">Lihat Detail ke #cbq5 · Lihat sebagai tabel (88 baris matched + unmatched)</text>
+
+  <rect x="40" y="600" width="364" height="310" class="zone"/>
+  <text x="52" y="620" class="xs">BAWAH KIRI: CBQ 2</text>
+  <text x="52" y="644" class="t">GROUPED BAR — wilayah × tahun</text>
+  <text x="52" y="666" class="s">Length baseline 0 · hue tahun · label wilayah disingkat</text>
+  <g stroke="#999" fill="#e9e9e9">
+    <rect x="80" y="760" width="18" height="80"/><rect x="102" y="750" width="18" height="90"/><rect x="124" y="730" width="18" height="110"/>
+    <rect x="180" y="780" width="18" height="60"/><rect x="202" y="770" width="18" height="70"/><rect x="224" y="760" width="18" height="80"/>
+    <rect x="280" y="790" width="18" height="50"/><rect x="302" y="780" width="18" height="60"/><rect x="324" y="770" width="18" height="70"/>
+  </g>
+  <text x="52" y="874" class="xs">Jaktim 2023: hatch amber, bukan 0 · Lihat Detail ke #cbq2 · tabel</text>
+
+  <rect x="418" y="600" width="364" height="310" class="zone"/>
+  <text x="430" y="620" class="xs">BAWAH TENGAH: CBQ 3</text>
+  <text x="430" y="644" class="t">HORIZONTAL BAR — Top 10 kelurahan (warna = wilayah induk)</text>
+  <text x="430" y="666" class="s">Length · urut menurun · label nilai di ujung</text>
+  <g stroke="#999" fill="#e9e9e9">
+    <rect x="540" y="710" width="170" height="16"/><rect x="540" y="740" width="140" height="16"/><rect x="540" y="770" width="110" height="16"/><rect x="540" y="800" width="90" height="16"/><rect x="540" y="830" width="70" height="16"/>
+  </g>
+  <text x="430" y="874" class="xs">filter tahun ikut mengubah peringkat · Lihat Detail ke #cbq3 · tabel</text>
+
+  <rect x="796" y="600" width="364" height="310" class="zone"/>
+  <text x="808" y="620" class="xs">BAWAH KANAN: CBQ 4</text>
+  <text x="808" y="644" class="t">LINE CHART — kelurahan unik &amp; RW baru</text>
+  <text x="808" y="666" class="s">Marker berbeda · label langsung · RW baru vs berulang</text>
+  <path d="M830 790 L910 760 L990 730 L1080 700" fill="none" stroke="#888" stroke-width="2"/>
+  <path d="M830 810 L910 790 L990 780 L1080 760" fill="none" stroke="#666" stroke-width="2" stroke-dasharray="6 4"/>
+  <circle cx="830" cy="790" r="4" fill="#fff" stroke="#777"/><circle cx="910" cy="760" r="4" fill="#fff" stroke="#777"/><circle cx="990" cy="730" r="4" fill="#fff" stroke="#777"/><circle cx="1080" cy="700" r="4" fill="#fff" stroke="#777"/>
+  <rect x="826" y="806" width="8" height="8" transform="rotate(45 830 810)" fill="#fff" stroke="#666"/><rect x="906" y="786" width="8" height="8" transform="rotate(45 910 790)" fill="#fff" stroke="#666"/><rect x="986" y="776" width="8" height="8" transform="rotate(45 990 780)" fill="#fff" stroke="#666"/><rect x="1076" y="756" width="8" height="8" transform="rotate(45 1080 760)" fill="#fff" stroke="#666"/>
+  <text x="808" y="874" class="xs">Lihat Detail ke #cbq4 · tabel · penjelasan RW berulang</text>
+
+  <text x="40" y="944" class="xs">Sumber: Satu Data Jakarta · Catatan desain: docs/design-notes.md · sumber peta di docs/spatial-data-source.md</text>
+  <text x="40" y="972" class="xs">Aturan: 2D, tanpa pie/donut, label/tooltip eksak, no-data bukan nol, overview first → filter → detail.</text>
+</svg>

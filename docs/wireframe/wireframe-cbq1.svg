@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="980" viewBox="0 0 1200 980" role="img" aria-label="Wireframe low-fidelity CBQ 1">
+  <rect width="1200" height="980" fill="#ffffff"/>
+  <style>
+    text { font-family: system-ui, sans-serif; fill: #4a4a4a; }
+    .t { font-size: 15px; font-weight: 600; }
+    .s { font-size: 13px; }
+    .xs { font-size: 12px; fill: #666; }
+    .box { fill: #f4f4f4; stroke: #9a9a9a; stroke-width: 1; }
+    .zone { fill: none; stroke: #777; stroke-width: 1.5; stroke-dasharray: 6 4; }
+    .tab { fill: #ececec; stroke: #aaa; }
+  </style>
+
+  <!-- header -->
+  <rect x="0" y="0" width="1200" height="64" fill="#fafafa" stroke="#bbb"/>
+  <text x="40" y="28" class="t">Peningkatan Kawasan dan Fasilitas Permukiman DKI Jakarta 2023–2025</text>
+  <text x="40" y="48" class="xs">wireframe low-fidelity · bukan data sebenarnya · tanpa warna data</text>
+  <g class="tab">
+    <rect x="760" y="20" width="72" height="28"/><rect x="840" y="20" width="72" height="28"/><rect x="920" y="20" width="72" height="28"/><rect x="1000" y="20" width="72" height="28"/><rect x="1080" y="20" width="72" height="28"/>
+  </g>
+  <text x="780" y="39" class="s">CBQ 1</text><text x="860" y="39" class="s">CBQ 2</text><text x="940" y="39" class="s">CBQ 3</text><text x="1020" y="39" class="s">CBQ 4</text><text x="1100" y="39" class="s">CBQ 5</text>
+  <text x="40" y="92" class="s">Pertanyaan: ...</text>
+  <text x="40" y="114" class="t">JUDUL JAWABAN (dihitung otomatis dari data + filter)</text>
+  <text x="40" y="130" class="xs">ATAS: SCORECARD</text>
+  <rect x="40" y="140" width="363" height="86" class="box"/>
+  <text x="54" y="176" class="t">ANGKA 24px</text>
+  <text x="54" y="198" class="s">label KPI · delta</text>
+  <text x="54" y="216" class="xs">total catatan</text>
+  <rect x="419" y="140" width="363" height="86" class="box"/>
+  <text x="433" y="176" class="t">ANGKA 24px</text>
+  <text x="433" y="198" class="s">label KPI · delta</text>
+  <text x="433" y="216" class="xs">2025 + delta</text>
+  <rect x="797" y="140" width="363" height="86" class="box"/>
+  <text x="811" y="176" class="t">ANGKA 24px</text>
+  <text x="811" y="198" class="s">label KPI · delta</text>
+  <text x="811" y="216" class="xs">2024</text>
+  <rect x="40" y="250" width="1120" height="360" class="zone"/>
+  <text x="52" y="270" class="xs">TENGAH: VISUAL UTAMA</text>
+  <text x="52" y="294" class="t">LINE CHART — catatan RW per tahun (titik + label langsung, sumbu Y dari 0)</text>
+  <text x="80" y="560" class="xs">hover: tooltip nilai eksak + definisi · marker titik tahun</text>
+  <text x="900" y="294" class="s">Filter: Wilayah [Semua ▾]</text>
+  <path d="M80 520 L360 480 L640 500 L900 400" fill="none" stroke="#888" stroke-width="2"/>
+  <circle cx="80" cy="520" r="5" fill="#fff" stroke="#777" stroke-width="2"/><circle cx="360" cy="480" r="5" fill="#fff" stroke="#777" stroke-width="2"/><circle cx="640" cy="500" r="5" fill="#fff" stroke="#777" stroke-width="2"/><circle cx="900" cy="400" r="5" fill="#fff" stroke="#777" stroke-width="2"/>
+  <text x="70" y="544" class="xs">2023</text><text x="350" y="504" class="xs">2024</text><text x="630" y="524" class="xs">2025</text>
+
+  <rect x="40" y="626" width="1120" height="290" class="zone"/>
+  <text x="52" y="646" class="xs">BAWAH: RINCIAN</text>
+  <text x="52" y="670" class="t">GROUPED BAR kecil — catatan per wilayah × tahun (hue tahun)</text>
+  <text x="52" y="692" class="s">Jakarta Timur 2023: blok hatch amber “data tidak tersedia”, bukan 0</text>
+  <text x="90" y="880" class="xs">hover tooltip · toggle “Lihat sebagai tabel” · legenda tahun dekat data</text>
+  <g stroke="#999" fill="#e9e9e9">
+    <rect x="90" y="720" width="26" height="120"/><rect x="122" y="750" width="26" height="90"/><rect x="154" y="700" width="26" height="140"/>
+    <rect x="270" y="740" width="26" height="100"/><rect x="302" y="720" width="26" height="120"/><rect x="334" y="760" width="26" height="80"/>
+    <rect x="450" y="760" width="26" height="80"/><rect x="482" y="740" width="26" height="100"/><rect x="514" y="720" width="26" height="120"/>
+    <rect x="630" y="800" width="26" height="40"/><rect x="662" y="780" width="26" height="60"/><rect x="694" y="730" width="26" height="110"/>
+    <rect x="810" y="700" width="26" height="140"/><rect x="842" y="710" width="26" height="130"/><rect x="874" y="770" width="26" height="70"/>
+    <rect x="990" y="780" width="26" height="60"/><rect x="1022" y="790" width="26" height="50"/><rect x="1054" y="760" width="26" height="80"/>
+  </g>
+  <rect x="626" y="842" width="40" height="16" fill="#fbf6ec" stroke="#777" stroke-dasharray="3 2"/>
+  <text x="674" y="855" class="xs">hatch = tidak tersedia</text>
+  <text x="40" y="940" class="xs">Sumber: Satu Data Jakarta · Catatan desain: docs/design-notes.md</text>
+</svg>

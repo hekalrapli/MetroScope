@@ -1,0 +1,8 @@
+{
+  "name": "dashboard-vis5",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node tests/kpi.test.js"
+  }
+}

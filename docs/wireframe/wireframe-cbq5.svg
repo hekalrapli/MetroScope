@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1000" viewBox="0 0 1200 1000" role="img" aria-label="Wireframe low-fidelity CBQ 5: choropleth, legenda, bar PSU, dan heatmap">
+  <rect width="1200" height="1000" fill="#ffffff"/>
+  <style>
+    text { font-family: system-ui, sans-serif; fill: #4a4a4a; }
+    .t { font-size: 15px; font-weight: 600; }
+    .s { font-size: 13px; }
+    .xs { font-size: 12px; fill: #666; }
+    .box { fill: #f4f4f4; stroke: #9a9a9a; stroke-width: 1; }
+    .zone { fill: none; stroke: #777; stroke-width: 1.5; stroke-dasharray: 6 4; }
+    .tab { fill: #ececec; stroke: #aaa; }
+    .active { fill: #e2e2e2; stroke: #777; stroke-width: 1.5; }
+  </style>
+
+  <rect x="0" y="0" width="1200" height="64" fill="#fafafa" stroke="#bbb"/>
+  <text x="40" y="28" class="t">Peningkatan Kawasan dan Fasilitas Permukiman DKI Jakarta 2023–2025</text>
+  <text x="40" y="48" class="xs">wireframe low-fidelity · CBQ 5 · choropleth batas kelurahan</text>
+  <g class="tab">
+    <rect x="740" y="20" width="72" height="28"/><rect x="820" y="20" width="62" height="28"/><rect x="890" y="20" width="62" height="28"/><rect x="960" y="20" width="62" height="28"/><rect x="1030" y="20" width="62" height="28"/><rect x="1100" y="20" width="62" height="28" class="active"/>
+  </g>
+  <text x="750" y="39" class="s">Overview</text><text x="830" y="39" class="s">CBQ 1</text><text x="900" y="39" class="s">CBQ 2</text><text x="970" y="39" class="s">CBQ 3</text><text x="1040" y="39" class="s">CBQ 4</text><text x="1110" y="39" class="s">CBQ 5</text>
+
+  <text x="40" y="92" class="s">Pertanyaan: Bagaimana persebaran jumlah peningkatan PSU pada setiap wilayah?</text>
+  <text x="40" y="114" class="t">JUDUL JAWABAN (dihitung otomatis dari data + filter)</text>
+  <text x="930" y="92" class="s">Filter: Tahun [Semua ▾]</text>
+
+  <text x="40" y="140" class="xs">ATAS: SCORECARD</text>
+  <g class="box">
+    <rect x="40" y="150" width="266" height="80"/><rect x="316" y="150" width="266" height="80"/><rect x="592" y="150" width="266" height="80"/><rect x="868" y="150" width="292" height="80"/>
+  </g>
+  <text x="54" y="184" class="t">516</text><text x="54" y="206" class="s">total PSU 2023–2025</text>
+  <text x="330" y="184" class="t">135</text><text x="330" y="206" class="s">PSU 2023</text>
+  <text x="606" y="184" class="t">228</text><text x="606" y="206" class="s">PSU 2024 + delta</text>
+  <text x="882" y="184" class="t">153</text><text x="882" y="206" class="s">PSU 2025 + delta</text>
+
+  <rect x="40" y="260" width="700" height="350" class="zone"/>
+  <text x="52" y="280" class="xs">TENGAH KIRI: VISUAL UTAMA</text>
+  <text x="52" y="304" class="t">CHOROPLETH POLYGON KELURAHAN · luminance biru = PSU</text>
+  <text x="52" y="326" class="s">hover: tooltip wilayah/kecamatan/kelurahan/PSU · zoom Leaflet · polygon no-data abu putus-putus</text>
+  <path d="M180 390 L260 380 L310 410 L350 400 L390 450 L420 480 L400 540 L350 570 L290 560 L250 530 L210 540 L170 500 L150 460 Z" fill="#ebebeb" stroke="#999"/>
+  <path d="M180 390 L210 440 L200 500 L170 500 M260 380 L270 430 L250 530 M310 410 L320 460 L350 570 M350 400 L370 440 L400 540 M390 450 L350 470 L320 460" fill="none" stroke="#bbb"/>
+  <text x="52" y="590" class="xs">Lihat sebagai tabel (87 matched + 1 unmatched)</text>
+
+  <rect x="760" y="260" width="400" height="350" class="zone"/>
+  <text x="772" y="280" class="xs">TENGAH KANAN: LEGENDA</text>
+  <text x="772" y="304" class="t">Legenda peta</text>
+  <text x="772" y="330" class="s">[ Jakarta ] [ Semua DKI ] [ Label wilayah ]</text>
+  <text x="772" y="360" class="s">PSU 2023–2025</text>
+  <rect x="772" y="376" width="250" height="10" fill="#e9e9e9" stroke="#aaa"/>
+  <text x="772" y="406" class="xs">0 → 23 (luminance biru)</text>
+  <text x="772" y="432" class="xs">■ abu putus-putus = tidak ada data</text>
+  <text x="772" y="462" class="s">Wilayah administrasi</text>
+  <text x="772" y="484" class="xs">Jakarta Barat · Pusat · Selatan · Timur · Utara · Kep. Seribu</text>
+  <text x="772" y="514" class="xs">— tebal: batas kota   — tipis: batas kelurahan</text>
+  <text x="772" y="558" class="xs">Lihat sebagai tabel</text>
+
+  <rect x="40" y="630" width="540" height="310" class="zone"/>
+  <text x="52" y="650" class="xs">BAWAH KIRI: RINCIAN</text>
+  <text x="52" y="674" class="t">HORIZONTAL BAR total PSU per wilayah</text>
+  <text x="52" y="696" class="s">urut menurun · satu warna · label nilai</text>
+  <g stroke="#999" fill="#e9e9e9"><rect x="180" y="740" width="300" height="18"/><rect x="180" y="770" width="250" height="18"/><rect x="180" y="800" width="220" height="18"/><rect x="180" y="830" width="170" height="18"/><rect x="180" y="860" width="120" height="18"/><rect x="180" y="890" width="70" height="18"/></g>
+  <text x="52" y="922" class="xs">Lihat sebagai tabel · nilai eksak</text>
+
+  <rect x="596" y="630" width="564" height="310" class="zone"/>
+  <text x="608" y="650" class="xs">BAWAH KANAN: RINCIAN</text>
+  <text x="608" y="674" class="t">HEATMAP PSU wilayah × tahun</text>
+  <text x="608" y="696" class="s">luminance biru + angka di sel · sel kosong amber</text>
+  <text x="608" y="730" class="xs">Wilayah</text><text x="740" y="730" class="xs">2023</text><text x="868" y="730" class="xs">2024</text><text x="996" y="730" class="xs">2025</text>
+  <g fill="#e9e9e9" stroke="#aaa">
+    <rect x="740" y="738" width="110" height="24"/><rect x="868" y="738" width="110" height="24"/><rect x="996" y="738" width="110" height="24"/>
+    <rect x="740" y="766" width="110" height="24"/><rect x="868" y="766" width="110" height="24"/><rect x="996" y="766" width="110" height="24"/>
+    <rect x="740" y="794" width="110" height="24"/><rect x="868" y="794" width="110" height="24"/><rect x="996" y="794" width="110" height="24"/>
+    <rect x="740" y="822" width="110" height="24"/><rect x="868" y="822" width="110" height="24"/><rect x="996" y="822" width="110" height="24"/>
+    <rect x="740" y="850" width="110" height="24"/><rect x="868" y="850" width="110" height="24"/><rect x="996" y="850" width="110" height="24"/>
+    <rect x="740" y="878" width="110" height="24"/><rect x="868" y="878" width="110" height="24"/><rect x="996" y="878" width="110" height="24"/>
+  </g>
+  <rect x="740" y="850" width="110" height="24" fill="#fbf6ec" stroke="#777" stroke-dasharray="3 2"/>
+  <text x="608" y="922" class="xs">Lihat sebagai tabel</text>
+
+  <text x="40" y="972" class="xs">Sumber: Satu Data Jakarta · Catatan desain: docs/design-notes.md · detail sumber di docs/spatial-data-source.md</text>
+  <text x="40" y="994" class="xs">Aturan: polygon 2D, no pie/donut, no-data abu bukan nol, PSU bukan ukuran kebutuhan/keberhasilan.</text>
+</svg>

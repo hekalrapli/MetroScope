@@ -1,0 +1,59 @@
+{
+  "source": "Jakarta Satu — Batas Administrasi Kelurahan (ArcGIS REST)",
+  "institution": "Pemerintah Provinsi DKI Jakarta",
+  "source_url": "https://jakartasatu.jakarta.go.id/server/rest/services/Batas_Administrasi_Update/Batas_Administrasi_DKI_Jakarta_Update_View/FeatureServer/3/query?where=1%3D1&outFields=*&returnGeometry=true&outSR=4326&f=geojson&maxAllowableOffset=0.00005",
+  "source_url_kota": "https://jakartasatu.jakarta.go.id/server/rest/services/Batas_Administrasi_Update/Batas_Administrasi_DKI_Jakarta_Update_View/FeatureServer/5/query?where=1%3D1&outFields=*&returnGeometry=true&outSR=4326&f=geojson&maxAllowableOffset=0.00005",
+  "accessed_at": "2026-11-15",
+  "license": "Metadata layanan tidak mencantumkan lisensi eksplisit; digunakan untuk tugas akademik non-komersial dengan atribusi. Sumber resmi Pemprov DKI Jakarta.",
+  "geometry_format": "GeoJSON FeatureCollection, WGS84 (EPSG:4326), Polygon/MultiPolygon",
+  "simplification": "maxAllowableOffset=0.00005 derajat (disederhanakan server-side untuk web)",
+  "feature_count": 267,
+  "polygon_count": 256,
+  "multipolygon_count": 11,
+  "kota_feature_count": 6,
+  "kota_polygon_count": 3,
+  "kota_multipolygon_count": 3,
+  "kota_names": [
+    "Jakarta Barat",
+    "Jakarta Pusat",
+    "Jakarta Selatan",
+    "Jakarta Timur",
+    "Jakarta Utara",
+    "Kep. Seribu"
+  ],
+  "city_counts": {
+    "Jakarta Pusat": 44,
+    "Jakarta Utara": 31,
+    "Jakarta Barat": 56,
+    "Jakarta Selatan": 65,
+    "Jakarta Timur": 65,
+    "Kep. Seribu": 6
+  },
+  "csv_unique_kelurahan": 88,
+  "matched_kelurahan": 87,
+  "geo_with_data": 87,
+  "geo_without_data": 180,
+  "unmatched_csv": [
+    {
+      "wilayah": "Jakarta Barat",
+      "kecamatan": "Grogol Petamburan",
+      "kelurahan": "Tanjung Duren",
+      "rows": 3,
+      "rw_unique": 3,
+      "psu_by_year": {
+        "2023": 0,
+        "2024": 3,
+        "2025": 0
+      },
+      "psu_total": 3,
+      "reason": "Nama lama/ambiguitas batas: geometri saat ini memakai Tanjung Duren Utara dan Tanjung Duren Selatan."
+    }
+  ],
+  "psu_all_years": 516,
+  "psu_matched_all_years": 513,
+  "psu_unmatched_all_years": 3,
+  "aliases": [
+    "Kampung Tengah (CSV) -> Tengah (geometri)",
+    "Normalisasi menghapus spasi/tanda baca: Pal Merah -> Palmerah; Kramat Jati -> Kramatjati; Kali Anyar -> Kalianyar"
+  ]
+}

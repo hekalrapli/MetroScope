@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="980" viewBox="0 0 1200 980" role="img" aria-label="Wireframe low-fidelity CBQ 4">
+  <rect width="1200" height="980" fill="#ffffff"/>
+  <style>
+    text { font-family: system-ui, sans-serif; fill: #4a4a4a; }
+    .t { font-size: 15px; font-weight: 600; }
+    .s { font-size: 13px; }
+    .xs { font-size: 12px; fill: #666; }
+    .box { fill: #f4f4f4; stroke: #9a9a9a; stroke-width: 1; }
+    .zone { fill: none; stroke: #777; stroke-width: 1.5; stroke-dasharray: 6 4; }
+    .tab { fill: #ececec; stroke: #aaa; }
+  </style>
+
+  <!-- header -->
+  <rect x="0" y="0" width="1200" height="64" fill="#fafafa" stroke="#bbb"/>
+  <text x="40" y="28" class="t">Peningkatan Kawasan dan Fasilitas Permukiman DKI Jakarta 2023–2025</text>
+  <text x="40" y="48" class="xs">wireframe low-fidelity · bukan data sebenarnya · tanpa warna data</text>
+  <g class="tab">
+    <rect x="760" y="20" width="72" height="28"/><rect x="840" y="20" width="72" height="28"/><rect x="920" y="20" width="72" height="28"/><rect x="1000" y="20" width="72" height="28"/><rect x="1080" y="20" width="72" height="28"/>
+  </g>
+  <text x="780" y="39" class="s">CBQ 1</text><text x="860" y="39" class="s">CBQ 2</text><text x="940" y="39" class="s">CBQ 3</text><text x="1020" y="39" class="s">CBQ 4</text><text x="1100" y="39" class="s">CBQ 5</text>
+  <text x="40" y="92" class="s">Pertanyaan: ...</text>
+  <text x="40" y="114" class="t">JUDUL JAWABAN (dihitung otomatis dari data + filter)</text>
+  <text x="40" y="130" class="xs">ATAS: SCORECARD</text>
+  <rect x="40" y="140" width="268" height="86" class="box"/>
+  <text x="54" y="176" class="t">ANGKA 24px</text>
+  <text x="54" y="198" class="s">label KPI · delta</text>
+  <text x="54" y="216" class="xs">kelurahan 2025 + delta</text>
+  <rect x="324" y="140" width="268" height="86" class="box"/>
+  <text x="338" y="176" class="t">ANGKA 24px</text>
+  <text x="338" y="198" class="s">label KPI · delta</text>
+  <text x="338" y="216" class="xs">kelurahan 2024</text>
+  <rect x="608" y="140" width="268" height="86" class="box"/>
+  <text x="622" y="176" class="t">ANGKA 24px</text>
+  <text x="622" y="198" class="s">label KPI · delta</text>
+  <text x="622" y="216" class="xs">RW unik kumulatif</text>
+  <rect x="892" y="140" width="268" height="86" class="box"/>
+  <text x="906" y="176" class="t">ANGKA 24px</text>
+  <text x="906" y="198" class="s">label KPI · delta</text>
+  <text x="906" y="216" class="xs">RW berulang</text>
+  <rect x="40" y="250" width="1120" height="350" class="zone"/>
+  <text x="52" y="270" class="xs">TENGAH: VISUAL UTAMA</text>
+  <text x="52" y="294" class="t">LINE CHART DUA SERI — kelurahan unik per tahun &amp; RW baru per tahun</text>
+  <text x="52" y="316" class="s">dua hue berbeda · marker berbeda (lingkaran vs belah ketupat) · label langsung</text>
+  <text x="900" y="294" class="s">Filter: Wilayah [Semua ▾]</text>
+  <path d="M100 540 L420 500 L760 440 L1040 390" fill="none" stroke="#888" stroke-width="2"/>
+  <path d="M100 560 L420 520 L760 500 L1040 450" fill="none" stroke="#666" stroke-width="2" stroke-dasharray="6 4"/>
+  <circle cx="100" cy="540" r="5" fill="#fff" stroke="#777" stroke-width="2"/><circle cx="420" cy="500" r="5" fill="#fff" stroke="#777" stroke-width="2"/><circle cx="760" cy="440" r="5" fill="#fff" stroke="#777" stroke-width="2"/><circle cx="1040" cy="390" r="5" fill="#fff" stroke="#777" stroke-width="2"/>
+  <rect x="95" y="555" width="10" height="10" transform="rotate(45 100 560)" fill="#fff" stroke="#666" stroke-width="2"/><rect x="415" y="515" width="10" height="10" transform="rotate(45 420 520)" fill="#fff" stroke="#666" stroke-width="2"/><rect x="755" y="495" width="10" height="10" transform="rotate(45 760 500)" fill="#fff" stroke="#666" stroke-width="2"/><rect x="1035" y="445" width="10" height="10" transform="rotate(45 1040 450)" fill="#fff" stroke="#666" stroke-width="2"/>
+  <text x="80" y="580" class="xs">2023</text><text x="400" y="540" class="xs">2024</text><text x="740" y="480" class="xs">2025</text>
+  <text x="180" y="588" class="xs">hover: tooltip nilai + definisi “baru”</text>
+
+  <rect x="40" y="616" width="700" height="300" class="zone"/>
+  <text x="52" y="636" class="xs">BAWAH: RINCIAN</text>
+  <text x="52" y="660" class="t">STACKED BAR — RW baru vs RW berulang per tahun</text>
+  <text x="52" y="682" class="s">label angka di tiap segmen · bukan line chart</text>
+  <g stroke="#999">
+    <rect x="130" y="760" width="90" height="100" fill="#e9e9e9"/><rect x="130" y="720" width="90" height="40" fill="#f5f5f5"/>
+    <rect x="300" y="780" width="90" height="80" fill="#e9e9e9"/><rect x="300" y="720" width="90" height="60" fill="#f5f5f5"/>
+    <rect x="470" y="790" width="90" height="90" fill="#e9e9e9"/><rect x="470" y="720" width="90" height="70" fill="#f5f5f5"/>
+  </g>
+  <text x="130" y="850" class="xs">2023</text><text x="300" y="850" class="xs">2024</text><text x="470" y="850" class="xs">2025</text>
+  <text x="130" y="710" class="xs">amber-note: Jaktim 2023 kosong → RW Jaktim 2024 tampak semuanya baru</text>
+
+  <rect x="756" y="616" width="404" height="300" class="zone"/>
+  <text x="768" y="636" class="xs">BAWAH: RINCIAN</text>
+  <text x="768" y="660" class="t">TABEL RW BERULANG + pencarian</text>
+  <text x="768" y="682" class="s">wilayah · kecamatan · kelurahan · RW · tahun tercatat</text>
+  <rect x="768" y="700" width="280" height="26" class="box"/><text x="778" y="718" class="xs">cari…</text>
+  <rect x="768" y="738" width="380" height="22" class="box"/><text x="778" y="754" class="xs">header tabel</text>
+  <rect x="768" y="764" width="380" height="20" class="box"/><rect x="768" y="788" width="380" height="20" class="box"/><rect x="768" y="812" width="380" height="20" class="box"/><rect x="768" y="836" width="380" height="20" class="box"/>
+  <text x="40" y="940" class="xs">Sumber: Satu Data Jakarta · Catatan desain: docs/design-notes.md</text>
+</svg>
