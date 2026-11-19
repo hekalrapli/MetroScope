@@ -10,7 +10,7 @@ import {
   pctChange,
   fmtInt,
   fmtSignedPct,
-} from "../data.js?v=20261119aa";
+} from "../data.js?v=20261119ab";
 import {
   initChart,
   disposeAll,
@@ -18,7 +18,7 @@ import {
   axisValue,
   VALUE_LABEL,
   FONT,
-} from "../charts.js?v=20261119aa";
+} from "../charts.js?v=20261119ab";
 import {
   esc,
   pageHead,
@@ -30,7 +30,7 @@ import {
   dataTable,
   amberNote,
   deltaMark,
-} from "../ui.js?v=20261119aa";
+} from "../ui.js?v=20261119ab";
 
 const UNIQUE_KEL_COLOR = COLORS.text;
 

@@ -1,7 +1,7 @@
-import { loadData } from "./data.js?v=20261119aa";
-import { disposeAll } from "./charts.js?v=20261119aa";
-import { disposeAllMaps } from "./choropleth.js?v=20261119aa";
-import { esc } from "./ui.js?v=20261119aa";
+import { loadData } from "./data.js?v=20261119ab";
+import { disposeAll } from "./charts.js?v=20261119ab";
+import { disposeAllMaps } from "./choropleth.js?v=20261119ab";
+import { esc } from "./ui.js?v=20261119ab";
 
 const BERANDA_MEMBERS = [
   { name: "Mohammad Sulthon Ariefin", nim: "24060124130104" },
@@ -69,12 +69,12 @@ const BERANDA_PAGE = {
 
 const PAGES = {
   beranda: () => Promise.resolve(BERANDA_PAGE),
-  overview: () => import("./pages/overview.js?v=20261119aa"),
-  cbq1: () => import("./pages/cbq1.js?v=20261119aa"),
-  cbq2: () => import("./pages/cbq2.js?v=20261119aa"),
-  cbq3: () => import("./pages/cbq3.js?v=20261119aa"),
-  cbq4: () => import("./pages/cbq4.js?v=20261119aa"),
-  cbq5: () => import("./pages/cbq5.js?v=20261119aa"),
+  overview: () => import("./pages/overview.js?v=20261119ab"),
+  cbq1: () => import("./pages/cbq1.js?v=20261119ab"),
+  cbq2: () => import("./pages/cbq2.js?v=20261119ab"),
+  cbq3: () => import("./pages/cbq3.js?v=20261119ab"),
+  cbq4: () => import("./pages/cbq4.js?v=20261119ab"),
+  cbq5: () => import("./pages/cbq5.js?v=20261119ab"),
 };
 
 const app = document.querySelector("#app");

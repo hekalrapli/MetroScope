@@ -9,7 +9,7 @@ import {
   pctChange,
   fmtInt,
   fmtSignedPct,
-} from "../data.js?v=20261119aa";
+} from "../data.js?v=20261119ab";
 import {
   initChart,
   disposeAll,
@@ -18,7 +18,7 @@ import {
   VALUE_LABEL,
   FONT,
   hatchFill,
-} from "../charts.js?v=20261119aa";
+} from "../charts.js?v=20261119ab";
 import {
   esc,
   pageHead,
@@ -29,7 +29,7 @@ import {
   dataTable,
   amberNote,
   deltaMark,
-} from "../ui.js?v=20261119aa";
+} from "../ui.js?v=20261119ab";
 
 function answerTitle(counts, delta) {
   const a = counts[2023];

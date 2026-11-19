@@ -15,7 +15,7 @@ import {
   uniqueKelurahanByYear,
   coverageByYear,
   fmtInt,
-} from "../data.js?v=20261119aa";
+} from "../data.js?v=20261119ab";
 import {
   initChart,
   disposeAll,
@@ -24,7 +24,7 @@ import {
   VALUE_LABEL,
   FONT,
   hatchFill,
-} from "../charts.js?v=20261119aa";
+} from "../charts.js?v=20261119ab";
 import {
   esc,
   pageHead,
@@ -34,12 +34,12 @@ import {
   dataTable,
   tableToggle,
   legend,
-} from "../ui.js?v=20261119aa";
+} from "../ui.js?v=20261119ab";
 import {
   createPsuChoropleth,
   disposeAllMaps,
   scopeLabel,
-} from "../choropleth.js?v=20261119aa";
+} from "../choropleth.js?v=20261119ab";
 
 const CBQ2_YEAR_COLORS = {
   2023: "#9DBAD5",
@@ -212,7 +212,7 @@ function groupedCbq2Option(matrix, regionOrder, selectedYear) {
     });
   }
   return {
-    grid: { left: 10, right: 16, top: 18, bottom: 58, containLabel: true },
+    grid: { left: 20, right: 16, top: 18, bottom: 58, containLabel: true },
     legend: { show: true, bottom: 0, left: 0, data: YEARS.map(String) },
     tooltip: {
       trigger: "axis",

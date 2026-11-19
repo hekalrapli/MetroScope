@@ -9,7 +9,7 @@ import {
   fmtInt,
   fmtPct,
   fmtSignedPct,
-} from "../data.js?v=20261119aa";
+} from "../data.js?v=20261119ab";
 import {
   initChart,
   disposeAll,
@@ -19,7 +19,7 @@ import {
   VALUE_LABEL,
   FONT,
   hatchFill,
-} from "../charts.js?v=20261119aa";
+} from "../charts.js?v=20261119ab";
 import {
   esc,
   pageHead,
@@ -30,7 +30,7 @@ import {
   dataTable,
   amberNote,
   deltaMark,
-} from "../ui.js?v=20261119aa";
+} from "../ui.js?v=20261119ab";
 
 const HASH_ALL = "semua";
 
@@ -156,7 +156,7 @@ function groupedOption(matrix, regionOrder, selectedYear, focus) {
     animationDurationUpdate: 120,
     animationEasing: "linear",
     animationEasingUpdate: "linear",
-    grid: { left: 10, right: 24, top: 32, bottom: 54, containLabel: true },
+    grid: { left: 20, right: 24, top: 32, bottom: 54, containLabel: true },
     legend: { show: true, bottom: 0, left: 0, data: YEARS.map(String) },
     tooltip: {
       trigger: "axis",

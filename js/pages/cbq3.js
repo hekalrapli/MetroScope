@@ -12,7 +12,7 @@ import {
   rwKey,
   fmtInt,
   fmtPct,
-} from "../data.js?v=20261119aa";
+} from "../data.js?v=20261119ab";
 import {
   initChart,
   disposeAll,
@@ -20,7 +20,7 @@ import {
   axisValue,
   VALUE_LABEL,
   FONT,
-} from "../charts.js?v=20261119aa";
+} from "../charts.js?v=20261119ab";
 import {
   esc,
   pageHead,
@@ -31,7 +31,7 @@ import {
   panel,
   dataTable,
   legend,
-} from "../ui.js?v=20261119aa";
+} from "../ui.js?v=20261119ab";
 
 function titleText(items, total) {
   if (total === 0 || items.length === 0) {
