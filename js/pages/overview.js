@@ -15,7 +15,7 @@ import {
   uniqueKelurahanByYear,
   coverageByYear,
   fmtInt,
-} from "../data.js?v=20261116ak";
+} from "../data.js?v=20261119aa";
 import {
   initChart,
   disposeAll,
@@ -24,7 +24,7 @@ import {
   VALUE_LABEL,
   FONT,
   hatchFill,
-} from "../charts.js?v=20261116ak";
+} from "../charts.js?v=20261119aa";
 import {
   esc,
   pageHead,
@@ -34,12 +34,12 @@ import {
   dataTable,
   tableToggle,
   legend,
-} from "../ui.js?v=20261116ak";
+} from "../ui.js?v=20261119aa";
 import {
   createPsuChoropleth,
   disposeAllMaps,
   scopeLabel,
-} from "../choropleth.js?v=20261116ak";
+} from "../choropleth.js?v=20261119aa";
 
 const CBQ2_YEAR_COLORS = {
   2023: "#9DBAD5",

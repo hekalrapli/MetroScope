@@ -9,16 +9,17 @@ import {
   fmtInt,
   fmtPct,
   fmtSignedPct,
-} from "../data.js?v=20261116ak";
+} from "../data.js?v=20261119aa";
 import {
   initChart,
   disposeAll,
   axisCategory,
   axisValue,
+  AXIS_LABEL,
   VALUE_LABEL,
   FONT,
   hatchFill,
-} from "../charts.js?v=20261116ak";
+} from "../charts.js?v=20261119aa";
 import {
   esc,
   pageHead,
@@ -29,7 +30,7 @@ import {
   dataTable,
   amberNote,
   deltaMark,
-} from "../ui.js?v=20261116ak";
+} from "../ui.js?v=20261119aa";
 
 const HASH_ALL = "semua";
 
@@ -197,6 +198,7 @@ function groupedOption(matrix, regionOrder, selectedYear, focus) {
           grid: { bottom: 96 },
           xAxis: {
             axisLabel: {
+              ...AXIS_LABEL,
               rotate: 45,
               align: "right",
               verticalAlign: "top",

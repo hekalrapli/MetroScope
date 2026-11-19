@@ -1,10 +1,11 @@
-import { COLORS } from "./data.js?v=20261116ak";
+import { COLORS } from "./data.js?v=20261119aa";
 
 export const FONT = "'Public Sans', system-ui, sans-serif";
 
 export const AXIS_LABEL = {
   fontFamily: FONT,
   fontSize: 14,
+  fontWeight: 700,
   color: COLORS.muted,
 };
 
@@ -109,25 +110,27 @@ export function disposeAll() {
 }
 
 export function axisCategory(data, extra = {}) {
+  const { axisLabel, ...rest } = extra;
   return {
     type: "category",
     data,
-    axisLabel: AXIS_LABEL,
+    axisLabel: { ...AXIS_LABEL, ...axisLabel },
     axisLine: AXIS_LINE,
     axisTick: { show: false },
     splitLine: { show: false },
-    ...extra,
+    ...rest,
   };
 }
 
 export function axisValue(extra = {}) {
+  const { axisLabel, ...rest } = extra;
   return {
     type: "value",
-    axisLabel: AXIS_LABEL,
+    axisLabel: { ...AXIS_LABEL, ...axisLabel },
     axisLine: { show: false },
     axisTick: { show: false },
     splitLine: SPLIT_LINE,
-    ...extra,
+    ...rest,
   };
 }
 

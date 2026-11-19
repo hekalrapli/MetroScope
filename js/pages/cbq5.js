@@ -11,7 +11,7 @@ import {
   fmtInt,
   fmtPct,
   fmtSignedPct,
-} from "../data.js?v=20261116ak";
+} from "../data.js?v=20261119aa";
 import {
   initChart,
   disposeAll,
@@ -21,7 +21,7 @@ import {
   FONT,
   hatchFill,
   scaleColor,
-} from "../charts.js?v=20261116ak";
+} from "../charts.js?v=20261119aa";
 import {
   esc,
   pageHead,
@@ -33,11 +33,11 @@ import {
   dataTable,
   tableToggle,
   deltaMark,
-} from "../ui.js?v=20261116ak";
+} from "../ui.js?v=20261119aa";
 import {
   createPsuChoropleth,
   disposeAllMaps,
-} from "../choropleth.js?v=20261116ak";
+} from "../choropleth.js?v=20261119aa";
 
 function horizontalBarOption({ values, order, color, unit, definition }) {
   const valid = order

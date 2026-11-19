@@ -4,9 +4,9 @@ import {
   kelurahanKey,
   fmtInt,
   COLORS,
-} from "./data.js?v=20261116ak";
-import { scaleColor } from "./charts.js?v=20261116ak";
-import { esc } from "./ui.js?v=20261116ak";
+} from "./data.js?v=20261119aa";
+import { scaleColor } from "./charts.js?v=20261119aa";
+import { esc } from "./ui.js?v=20261119aa";
 
 const GEOJSON_URL = "data/kelurahan.geojson";
 const KOTA_GEOJSON_URL = "data/kota.geojson";
