@@ -10,7 +10,7 @@ import {
   pctChange,
   fmtInt,
   fmtSignedPct,
-} from "../data.js?v=20261119ab";
+} from "../data.js?v=20261119ac";
 import {
   initChart,
   disposeAll,
@@ -18,7 +18,7 @@ import {
   axisValue,
   VALUE_LABEL,
   FONT,
-} from "../charts.js?v=20261119ab";
+} from "../charts.js?v=20261119ac";
 import {
   esc,
   pageHead,
@@ -30,7 +30,7 @@ import {
   dataTable,
   amberNote,
   deltaMark,
-} from "../ui.js?v=20261119ab";
+} from "../ui.js?v=20261119ac";
 
 const UNIQUE_KEL_COLOR = COLORS.text;
 
@@ -95,7 +95,7 @@ function lineOption(kelCounts, coverage) {
       name: "Jumlah",
       nameTextStyle: { fontFamily: FONT, fontSize: 14, color: COLORS.muted },
       max(value) {
-        return Math.max(10, Math.ceil((value.max * 1.2) / 10) * 10);
+        return Math.max(10, Math.ceil(value.max / 10) * 10);
       },
     }),
     series: [

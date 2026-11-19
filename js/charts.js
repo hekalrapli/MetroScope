@@ -1,4 +1,4 @@
-import { COLORS } from "./data.js?v=20261119ab";
+import { COLORS } from "./data.js?v=20261119ac";
 
 export const FONT = "'Public Sans', system-ui, sans-serif";
 
