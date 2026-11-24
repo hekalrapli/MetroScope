@@ -114,7 +114,7 @@ Filter **Semua tahun** menjumlahkan nilai MAX per kelurahan dari tahun 2023–20
 ## Reproduksi
 
 ```bash
-cd dashboard-vis5
+cd MetroScope
 python3 scripts/build_geojson.py
 ```
 

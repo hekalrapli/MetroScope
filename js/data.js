@@ -107,12 +107,12 @@ export async function loadData() {
     response = await fetch("data/peningkatan-kawasan-fasilitas-permukiman-dki-jakarta-2023-2025_v1.csv", { cache: "no-store" });
   } catch {
     throw new Error(
-      "CSV gagal dimuat. Pastikan server lokal berjalan dari folder dashboard-vis5 dan file data/peningkatan-kawasan-fasilitas-permukiman-dki-jakarta-2023-2025_v1.csv tersedia."
+      "CSV gagal dimuat. Pastikan server lokal berjalan dari folder MetroScope dan file data/peningkatan-kawasan-fasilitas-permukiman-dki-jakarta-2023-2025_v1.csv tersedia."
     );
   }
   if (!response.ok) {
     throw new Error(
-      `CSV gagal dimuat (HTTP ${response.status}). Pastikan server lokal berjalan dari folder dashboard-vis5.`
+      `CSV gagal dimuat (HTTP ${response.status}). Pastikan server lokal berjalan dari folder MetroScope.`
     );
   }
   const text = await response.text();

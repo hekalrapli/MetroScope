@@ -105,7 +105,7 @@ function showError(message) {
     <div class="error-panel" role="alert">
       <h2>Data tidak dapat dimuat</h2>
       <p>${esc(message)}</p>
-      <p class="note">Jalankan dashboard dari folder <code>dashboard-vis5</code> dengan
+      <p class="note">Jalankan dashboard dari folder <code>MetroScope</code> dengan
       <code>python -m http.server 8000</code>, lalu buka <code>http://localhost:8000</code>.</p>
       <p class="note"><a href="">Muat ulang halaman</a></p>
     </div>

@@ -7,7 +7,7 @@ Dashboard statis untuk tugas Visualisasi Data (Munzner Level 3: idiom visual dan
 Jalankan dari folder ini, bukan dengan membuka `index.html` langsung (`file://` akan memblokir `fetch` CSV dan ES module):
 
 ```bash
-cd dashboard-vis5
+cd MetroScope
 python3 -m http.server 8000
 ```
 
@@ -30,7 +30,7 @@ Butuh Node.js 18+ (untuk `node --check` dan import ES module). Hasil saat ini: *
 ## Struktur folder
 
 ```text
-dashboard-vis5/
+MetroScope/
 ├── index.html                 # shell: header, tab CBQ, footer, panel Tentang data
 ├── css/style.css              # tema, grid 12 kolom, komponen, responsif <900px
 ├── js/

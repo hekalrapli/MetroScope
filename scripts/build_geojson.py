@@ -64,7 +64,7 @@ def read_csv_rows():
 
 def main():
     DATA.mkdir(exist_ok=True)
-    headers = {"User-Agent": "dashboard-vis5-data-prep/1.0 (academic use)"}
+    headers = {"User-Agent": "MetroScope-data-prep/1.0 (academic use)"}
     with urllib.request.urlopen(
         urllib.request.Request(KELURAHAN_QUERY, headers=headers), timeout=120
     ) as response:
