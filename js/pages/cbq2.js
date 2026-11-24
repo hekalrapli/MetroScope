@@ -18,7 +18,6 @@ import {
   AXIS_LABEL,
   VALUE_LABEL,
   FONT,
-  hatchFill,
 } from "../charts.js?v=20261119ac";
 import {
   esc,
@@ -78,12 +77,6 @@ function changeCell(value, previous, missingPrevious = false) {
 
 function groupedOption(matrix, regionOrder, selectedYear, focus) {
   const isAll = selectedYear === "all";
-  const missing = [];
-  regionOrder.forEach((region, index) => {
-    if (matrix[region][2023] === null) {
-      missing.push({ value: [index, 4], region, year: 2023 });
-    }
-  });
 
   const series = YEARS.map((year) => ({
     name: String(year),
@@ -112,43 +105,6 @@ function groupedOption(matrix, regionOrder, selectedYear, focus) {
     },
     emphasis: { focus: "series" },
   }));
-
-  if (missing.length > 0) {
-    series.push({
-      name: "Data tidak tersedia",
-      type: "custom",
-      data: missing,
-      tooltip: {
-        formatter(params) {
-          return `${params.data.region} ${params.data.year}<br><span style="color:${COLORS.muted}">data tidak tersedia; bukan nol.</span>`;
-        },
-      },
-      renderItem(params, api) {
-        const point = api.coord([api.value(0), api.value(1)]);
-        const width = 20;
-        const height = 9;
-        return {
-          type: "group",
-          children: [
-            {
-              type: "rect",
-              shape: {
-                x: point[0] - width / 2,
-                y: point[1] - height,
-                width,
-                height,
-              },
-              style: {
-                fill: hatchFill(),
-                stroke: COLORS.amber,
-                lineWidth: 1,
-              },
-            },
-          ],
-        };
-      },
-    });
-  }
 
   return {
     animation: true,
@@ -459,6 +415,10 @@ export function render(root, rows) {
               isAll
                 ? amberNote(
                     "Total Jakarta Timur hanya mencakup 2024-2025 karena data 2023 kosong; jangan bandingkan langsung dengan wilayah lain."
+                  )
+                : missing.length
+                ? amberNote(
+                    `Data ${missing.join(", ")} untuk tahun ${selectedYear} tidak tersedia (bukan nol).`
                   )
                 : ""
             }

@@ -69,9 +69,9 @@ const BERANDA_PAGE = {
 
 const PAGES = {
   beranda: () => Promise.resolve(BERANDA_PAGE),
-  overview: () => import("./pages/overview.js?v=20261119ac"),
+  overview: () => import("./pages/overview.js?v=20261124a"),
   cbq1: () => import("./pages/cbq1.js?v=20261119ac"),
-  cbq2: () => import("./pages/cbq2.js?v=20261119ac"),
+  cbq2: () => import("./pages/cbq2.js?v=20261124a"),
   cbq3: () => import("./pages/cbq3.js?v=20261119ac"),
   cbq4: () => import("./pages/cbq4.js?v=20261119ac"),
   cbq5: () => import("./pages/cbq5.js?v=20261119ac"),

@@ -23,7 +23,6 @@ import {
   axisValue,
   VALUE_LABEL,
   FONT,
-  hatchFill,
 } from "../charts.js?v=20261119ac";
 import {
   esc,
@@ -161,12 +160,6 @@ function lineCbq1Option(counts, selectedYear) {
 function groupedCbq2Option(matrix, regionOrder, selectedYear) {
   const shortLabel = (region) =>
     region === "Kep. Seribu" ? "Kep.\nSeribu" : region.replace("Jakarta ", "");
-  const missing = [];
-  regionOrder.forEach((region, index) => {
-    if (matrix[region][2023] === null) {
-      missing.push({ value: [index, 4], region, year: 2023 });
-    }
-  });
   const series = YEARS.map((year) => ({
     name: String(year),
     type: "bar",
@@ -182,35 +175,6 @@ function groupedCbq2Option(matrix, regionOrder, selectedYear) {
     }),
     emphasis: { focus: "series" },
   }));
-  if (missing.length > 0) {
-    series.push({
-      name: "Data tidak tersedia",
-      type: "custom",
-      data: missing,
-      tooltip: {
-        formatter(params) {
-          return `${params.data.region} ${params.data.year}<br><span style="color:${COLORS.muted}">data tidak tersedia; bukan nol.</span>`;
-        },
-      },
-      renderItem(params, api) {
-        const point = api.coord([api.value(0), api.value(1)]);
-        return {
-          type: "rect",
-          shape: {
-            x: point[0] - 9,
-            y: point[1] - 8,
-            width: 18,
-            height: 8,
-          },
-          style: {
-            fill: hatchFill(),
-            stroke: COLORS.amber,
-            lineWidth: 1,
-          },
-        };
-      },
-    });
-  }
   return {
     grid: { left: 20, right: 16, top: 18, bottom: 58, containLabel: true },
     legend: { show: true, bottom: 0, left: 0, data: YEARS.map(String) },
