@@ -88,7 +88,7 @@ check("Task 4 filter all bukan error", isFilterError(TASKS[3], "all"), false);
 const sampleRecord = buildSessionRecord({
   timestamp: "2026-11-25T10:00:00.000Z",
   respondentId: "MHS-TEST-01",
-  respondent: { nama: "Budi, S.Kom", prodi: "Informatika", nim: "24060124130001" },
+  respondent: { nama: "Budi, S.Kom", nim: "24060124130001" },
   taskLogs: {
     t1: { answerText: "119 | Meningkat", correct: true, gaveUp: false, timeSec: 12.345, clicks: 2, errors: 0, filterOk: true, filterHistory: [], zoomUsed: [], tableUsed: 0 },
     t2: { answerText: "Jakarta Utara", correct: true, gaveUp: false, timeSec: 16.5, clicks: 3, errors: 0, filterOk: true, filterHistory: ["2024"], zoomUsed: ["cbq2"], tableUsed: 0 },

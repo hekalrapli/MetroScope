@@ -6,7 +6,7 @@ import {
   isFilterError,
   buildSessionRecord,
   recordsToCsv,
-} from "../uji-core.js?v=20261125a";
+} from "../uji-core.js?v=20261125b";
 
 // Tempel URL Web App Google Apps Script Anda di bawah ini setelah deploy
 // (panduan & skrip lengkap ada di scripts/google-apps-script.gs).
@@ -170,7 +170,7 @@ function isAnswerReady(task, draft) {
 
 export function render(root, rows) {
   let stage = "intro"; // intro | tasks | sus | done
-  let respondent = { nama: "", prodi: "", nim: "" };
+  let respondent = { nama: "", nim: "" };
   let respondentId = generateRespondentId();
 
   let taskIndex = 0;
@@ -216,7 +216,7 @@ export function render(root, rows) {
     removeDock();
     destroyDashboard();
     stage = "intro";
-    respondent = { nama: "", prodi: "", nim: "" };
+    respondent = { nama: "", nim: "" };
     respondentId = generateRespondentId();
     taskIndex = 0;
     taskPhase = "ready";
@@ -582,16 +582,12 @@ export function render(root, rows) {
           <form class="uji-form" id="uji-intro-form" novalidate>
             <div class="uji-form-grid">
               <label class="uji-field" for="uji-nama">
-                <span>Nama / Inisial <em>*</em></span>
-                <input id="uji-nama" name="nama" type="text" required placeholder="Contoh: Raka / R.P." value="${esc(respondent.nama)}" />
-              </label>
-              <label class="uji-field" for="uji-prodi">
-                <span>Program Studi / Jurusan <em>*</em></span>
-                <input id="uji-prodi" name="prodi" type="text" required placeholder="Contoh: Informatika" value="${esc(respondent.prodi)}" />
+                <span>Nama <em>*</em></span>
+                <input id="uji-nama" name="nama" type="text" required placeholder="Masukkan nama lengkap" value="${esc(respondent.nama)}" />
               </label>
               <label class="uji-field" for="uji-nim">
-                <span>NIM <span class="muted">(opsional)</span></span>
-                <input id="uji-nim" name="nim" type="text" placeholder="Opsional" value="${esc(respondent.nim)}" />
+                <span>NIM <em>*</em></span>
+                <input id="uji-nim" name="nim" type="text" required placeholder="Contoh: 24060124130079" value="${esc(respondent.nim)}" />
               </label>
             </div>
             <p class="uji-form-error" id="uji-intro-error" role="alert" hidden></p>
@@ -610,14 +606,13 @@ export function render(root, rows) {
     form.addEventListener("submit", (event) => {
       event.preventDefault();
       const nama = form.elements.nama.value.trim();
-      const prodi = form.elements.prodi.value.trim();
       const nim = form.elements.nim.value.trim();
-      if (!nama || !prodi) {
-        errEl.textContent = "Mohon isi Nama/Inisial dan Program Studi terlebih dahulu.";
+      if (!nama || !nim) {
+        errEl.textContent = "Mohon isi Nama dan NIM terlebih dahulu.";
         errEl.hidden = false;
         return;
       }
-      respondent = { nama, prodi, nim };
+      respondent = { nama, nim };
       stage = "tasks";
       taskIndex = 0;
       taskPhase = "ready";

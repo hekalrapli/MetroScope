@@ -20,7 +20,6 @@ var COLUMNS = [
   "respondent_id",
   "persona",
   "nama",
-  "prodi",
   "nim",
   "t1_answer",
   "t1_correct",

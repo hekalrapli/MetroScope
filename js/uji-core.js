@@ -131,7 +131,6 @@ export const CSV_COLUMNS = [
   "respondent_id",
   "persona",
   "nama",
-  "prodi",
   "nim",
   ...TASKS.flatMap((task) => [
     `${task.id}_answer`,
@@ -199,7 +198,6 @@ export function buildSessionRecord({
     respondent_id: respondentId,
     persona: "Mahasiswa",
     nama: String(respondent?.nama ?? "").trim(),
-    prodi: String(respondent?.prodi ?? "").trim(),
     nim: String(respondent?.nim ?? "").trim(),
   };
 
