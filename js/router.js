@@ -75,7 +75,7 @@ const PAGES = {
   cbq3: () => import("./pages/cbq3.js?v=20261125c"),
   cbq4: () => import("./pages/cbq4.js?v=20261125c"),
   cbq5: () => import("./pages/cbq5.js?v=20261125c"),
-  uji: () => import("./pages/uji.js?v=20261125h"),
+  uji: () => import("./pages/uji.js?v=20261125i"),
 };
 
 const app = document.querySelector("#app");

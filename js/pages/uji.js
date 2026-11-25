@@ -658,7 +658,7 @@ export function render(root, rows) {
             <div class="uji-form-grid">
               <label class="uji-field" for="uji-nama">
                 <span>Nama <em>*</em></span>
-                <input id="uji-nama" name="nama" type="text" required placeholder="Contoh: Kimi Raikkoen Suryaatmadja" value="${esc(respondent.nama)}" />
+                <input id="uji-nama" name="nama" type="text" required placeholder="Contoh: Kimi Raikkonen Suryaatmadja" value="${esc(respondent.nama)}" />
               </label>
               <label class="uji-field" for="uji-nim">
                 <span>NIM <em>*</em></span>
