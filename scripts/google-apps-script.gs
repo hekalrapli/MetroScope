@@ -1,19 +1,15 @@
 /**
- * MetroScope — Kolektor Hasil Usability Testing (ISO 9241-11 + SUS) ke Google Sheets
+ * MetroScope — Kolektor & Pembaca Hasil Usability Testing (ISO 9241-11 + SUS)
  *
- * Cara pasang (±1 menit):
- * 1. Buat Google Spreadsheet baru (mis. "MetroScope Usability Testing").
- * 2. Klik menu: Extensions -> Apps Script.
- * 3. Hapus kode default, lalu tempel seluruh isi file ini dan klik Simpan.
- * 4. Klik Deploy -> New deployment -> pilih jenis "Web app".
- *    - Execute as: Me
- *    - Who has access: Anyone
- * 5. Klik Deploy, izinkan akses, lalu salin URL Web App (berakhiran /exec).
- * 6. Tempel URL tersebut ke konstanta GOOGLE_SHEETS_WEBHOOK_URL di file js/pages/uji.js,
- *    lalu commit & push ke GitHub Pages.
+ * Cara update deployment (±30 detik):
+ * 1. Di Google Apps Script yang sudah ada, ganti seluruh isi file dengan kode ini lalu Ctrl + S.
+ * 2. Klik Deploy -> Manage deployments -> klik ikon pensil (Edit).
+ * 3. Pada kolom Version, pilih "New version" -> klik Deploy.
+ *    (URL Web App /exec tetap sama, tidak berubah!)
  */
 
 var SHEET_NAME = "Hasil_Uji_Kinerja";
+var ADMIN_PIN = "metroscope2026";
 
 var COLUMNS = [
   "timestamp",
@@ -82,6 +78,12 @@ var COLUMNS = [
   "viewport",
 ];
 
+function jsonOut_(obj) {
+  return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(
+    ContentService.MimeType.JSON
+  );
+}
+
 function getOrCreateSheet_() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var sheet = ss.getSheetByName(SHEET_NAME);
@@ -96,10 +98,79 @@ function getOrCreateSheet_() {
   return sheet;
 }
 
-function doGet() {
-  return ContentService.createTextOutput(
-    JSON.stringify({ ok: true, service: "MetroScope Usability Collector" })
-  ).setMimeType(ContentService.MimeType.JSON);
+function readAllRows_() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName(SHEET_NAME);
+  if (!sheet || sheet.getLastRow() < 2) {
+    return [];
+  }
+  var values = sheet.getDataRange().getValues();
+  var headers = values[0].map(function (h) {
+    return String(h).trim();
+  });
+  var rows = [];
+  for (var r = 1; r < values.length; r++) {
+    var raw = values[r];
+    var obj = {};
+    var hasAny = false;
+    for (var c = 0; c < headers.length; c++) {
+      var key = headers[c];
+      if (!key) continue;
+      var val = raw[c];
+      if (val instanceof Date) {
+        val = val.toISOString();
+      }
+      if (val !== "" && val !== null && val !== undefined) {
+        hasAny = true;
+      }
+      obj[key] = val;
+    }
+    if (hasAny) {
+      rows.push(obj);
+    }
+  }
+  return rows;
+}
+
+function hasRespondentId_(sheet, respondentId) {
+  if (!respondentId || sheet.getLastRow() < 2) return false;
+  var headers = sheet
+    .getRange(1, 1, 1, sheet.getLastColumn())
+    .getValues()[0]
+    .map(function (h) {
+      return String(h).trim();
+    });
+  var idCol = headers.indexOf("respondent_id") + 1;
+  if (idCol <= 0) return false;
+  var ids = sheet.getRange(2, idCol, sheet.getLastRow() - 1, 1).getValues();
+  for (var i = 0; i < ids.length; i++) {
+    if (String(ids[i][0]).trim() === String(respondentId).trim()) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function doGet(e) {
+  var params = (e && e.parameter) || {};
+  if (params.action === "list") {
+    if (String(params.pin || "") !== ADMIN_PIN) {
+      return jsonOut_({ ok: false, error: "PIN tidak sesuai." });
+    }
+    var rows = readAllRows_();
+    return jsonOut_({
+      ok: true,
+      service: "MetroScope Usability Collector",
+      version: 2,
+      count: rows.length,
+      rows: rows,
+    });
+  }
+  return jsonOut_({
+    ok: true,
+    service: "MetroScope Usability Collector",
+    version: 2,
+  });
 }
 
 function doPost(e) {
@@ -108,18 +179,24 @@ function doPost(e) {
   try {
     var payload = JSON.parse(e.postData.contents);
     var sheet = getOrCreateSheet_();
+    if (payload.respondent_id && hasRespondentId_(sheet, payload.respondent_id)) {
+      return jsonOut_({
+        ok: true,
+        duplicate: true,
+        respondent_id: payload.respondent_id,
+      });
+    }
     var row = COLUMNS.map(function (col) {
       var val = payload[col];
       return val === undefined || val === null ? "" : val;
     });
     sheet.appendRow(row);
-    return ContentService.createTextOutput(
-      JSON.stringify({ ok: true, respondent_id: payload.respondent_id || "" })
-    ).setMimeType(ContentService.MimeType.JSON);
+    return jsonOut_({
+      ok: true,
+      respondent_id: payload.respondent_id || "",
+    });
   } catch (err) {
-    return ContentService.createTextOutput(
-      JSON.stringify({ ok: false, error: String(err) })
-    ).setMimeType(ContentService.MimeType.JSON);
+    return jsonOut_({ ok: false, error: String(err) });
   } finally {
     lock.releaseLock();
   }

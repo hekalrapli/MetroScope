@@ -9,6 +9,8 @@ import {
   detectDeviceType,
   buildSessionRecord,
   recordsToCsv,
+  mergeSessions,
+  summarizeSessions,
 } from "../js/uji-core.js";
 
 let passed = 0;
@@ -120,6 +122,37 @@ const csvLines = csv.replace(/^\uFEFF/, "").trim().split("\r\n");
 check("CSV memiliki header + 1 baris data", csvLines.length, 2);
 check("CSV header cocok dengan CSV_COLUMNS", csvLines[0], CSV_COLUMNS.join(","));
 check("CSV escape koma & kutip ganda aman", csvLines[1].includes('"Budi, S.Kom"') && csvLines[1].includes('"Peta agak kecil, ""Perbesar"" sangat membantu"'), true);
+
+// Merge & summary checks
+const secondRecord = buildSessionRecord({
+  timestamp: "2026-11-25T11:00:00.000Z",
+  respondentId: "MHS-TEST-02",
+  respondent: { nama: "Siti", nim: "24060124130002" },
+  taskLogs: {
+    t1: { answerText: "119 | Meningkat", correct: true, gaveUp: false, timeSec: 10, clicks: 1, errors: 0, filterOk: true, filterHistory: [], zoomUsed: [], tableUsed: 0 },
+    t2: { answerText: "Jakarta Utara", correct: true, gaveUp: false, timeSec: 12, clicks: 2, errors: 0, filterOk: true, filterHistory: ["2024"], zoomUsed: [], tableUsed: 0 },
+    t3: { answerText: "Kalibaru", correct: false, gaveUp: false, timeSec: 28, clicks: 4, errors: 2, filterOk: false, filterHistory: [], zoomUsed: ["cbq3"], tableUsed: 0 },
+    t4: { answerText: "Menteng", correct: true, gaveUp: false, timeSec: 18, clicks: 3, errors: 0, filterOk: true, filterHistory: ["all"], zoomUsed: [], tableUsed: 0 },
+  },
+  susAnswers: [4, 2, 4, 2, 4, 2, 4, 2, 4, 2],
+  feedback: "",
+  deviceType: "desktop",
+  viewport: "1440x900",
+});
+
+const { merged, unsyncedLocal } = mergeSessions([sampleRecord], [sampleRecord, secondRecord]);
+check("mergeSessions dedup respondent_id", merged.length, 2);
+check("mergeSessions urut terbaru dulu", merged[0].respondent_id, "MHS-TEST-02");
+check("mergeSessions mendeteksi 1 data lokal belum sinkron", unsyncedLocal.length, 1);
+
+const summary = summarizeSessions(merged);
+check("summary count = 2", summary.count, 2);
+check("summary avgCompletionPct = 87.5", summary.avgCompletionPct, 87.5);
+check("summary passCompletion = false (<90%)", summary.passCompletion, false);
+check("summary avgSusScore = 80", summary.avgSusScore, 80);
+check("summary passSus = true (>=75)", summary.passSus, true);
+check("summary deviceCounts", summary.deviceCounts, { desktop: 1, mobile: 1, tablet: 0 });
+check("summary perTask[2] (Task 3) completion = 50%", summary.perTask[2].completionPct, 50);
 
 console.log(`\n${passed}/${passed + failures.length} checks passed`);
 if (failures.length > 0) process.exit(1);

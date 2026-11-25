@@ -277,3 +277,134 @@ export function recordsToCsv(records) {
   );
   return `\uFEFF${[header, ...lines].join("\r\n")}\r\n`;
 }
+
+export function mergeSessions(cloudRows = [], localRows = []) {
+  const byId = new Map();
+  const cloudIds = new Set();
+
+  for (const row of cloudRows) {
+    if (!row || typeof row !== "object") continue;
+    const id = String(row.respondent_id ?? "").trim();
+    const key = id || `cloud-${byId.size}`;
+    if (id) cloudIds.add(id);
+    byId.set(key, { ...row, _source: "sheets" });
+  }
+
+  const unsyncedLocal = [];
+  for (const row of localRows) {
+    if (!row || typeof row !== "object") continue;
+    const id = String(row.respondent_id ?? "").trim();
+    if (id && cloudIds.has(id)) continue;
+    const key = id || `local-${byId.size}`;
+    if (!byId.has(key)) {
+      byId.set(key, { ...row, _source: "lokal" });
+      unsyncedLocal.push(row);
+    }
+  }
+
+  const merged = [...byId.values()].sort((a, b) =>
+    String(b.timestamp ?? "").localeCompare(String(a.timestamp ?? ""))
+  );
+
+  return { merged, unsyncedLocal };
+}
+
+export function summarizeSessions(records = []) {
+  const count = records.length;
+  const deviceCounts = { desktop: 0, mobile: 0, tablet: 0 };
+
+  if (count === 0) {
+    return {
+      count: 0,
+      deviceCounts,
+      avgCompletionPct: 0,
+      passCompletion: false,
+      avgTimeSec: 0,
+      passTime: false,
+      avgErrorsPerUser: 0,
+      totalErrors: 0,
+      avgSusScore: 0,
+      avgSusGrade: "-",
+      passSus: false,
+      perTask: TASKS.map((task) => ({
+        id: task.id,
+        number: task.number,
+        shortTitle: task.shortTitle,
+        component: task.component,
+        completionPct: 0,
+        avgTimeSec: 0,
+        totalErrors: 0,
+        gaveUpCount: 0,
+        zoomCount: 0,
+        tableCount: 0,
+      })),
+    };
+  }
+
+  let sumCompletion = 0;
+  let sumAvgTime = 0;
+  let sumErrors = 0;
+  let sumSus = 0;
+
+  for (const row of records) {
+    const dev = String(row.device_type || "desktop").toLowerCase();
+    if (dev === "mobile") deviceCounts.mobile += 1;
+    else if (dev === "tablet") deviceCounts.tablet += 1;
+    else deviceCounts.desktop += 1;
+
+    sumCompletion += Number(row.completion_rate_pct) || 0;
+    sumAvgTime += Number(row.avg_time_sec) || 0;
+    sumErrors += Number(row.total_errors) || 0;
+    sumSus += Number(row.sus_score) || 0;
+  }
+
+  const avgCompletionPct = Number((sumCompletion / count).toFixed(1));
+  const avgTimeSec = Number((sumAvgTime / count).toFixed(2));
+  const avgErrorsPerUser = Number((sumErrors / count).toFixed(2));
+  const avgSusScore = Number((sumSus / count).toFixed(1));
+
+  const perTask = TASKS.map((task) => {
+    let correct = 0;
+    let timeSum = 0;
+    let errors = 0;
+    let gaveUp = 0;
+    let zooms = 0;
+    let tables = 0;
+    for (const row of records) {
+      correct += Number(row[`${task.id}_correct`]) ? 1 : 0;
+      timeSum += Number(row[`${task.id}_time_sec`]) || 0;
+      errors += Number(row[`${task.id}_errors`]) || 0;
+      gaveUp += Number(row[`${task.id}_gave_up`]) ? 1 : 0;
+      const z = String(row[`${task.id}_zoom_used`] ?? "").trim();
+      if (z) zooms += z.split(";").filter(Boolean).length;
+      tables += Number(row[`${task.id}_table_used`]) || 0;
+    }
+    return {
+      id: task.id,
+      number: task.number,
+      shortTitle: task.shortTitle,
+      component: task.component,
+      completionPct: Number(((correct / count) * 100).toFixed(1)),
+      avgTimeSec: Number((timeSum / count).toFixed(2)),
+      totalErrors: errors,
+      gaveUpCount: gaveUp,
+      zoomCount: zooms,
+      tableCount: tables,
+    };
+  });
+
+  return {
+    count,
+    deviceCounts,
+    avgCompletionPct,
+    passCompletion: avgCompletionPct >= 90,
+    avgTimeSec,
+    passTime: avgTimeSec <= 30,
+    avgErrorsPerUser,
+    totalErrors: sumErrors,
+    avgSusScore,
+    avgSusGrade: susGrade(avgSusScore),
+    passSus: avgSusScore >= 75,
+    perTask,
+  };
+}

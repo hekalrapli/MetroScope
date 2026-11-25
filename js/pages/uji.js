@@ -7,7 +7,9 @@ import {
   detectDeviceType,
   buildSessionRecord,
   recordsToCsv,
-} from "../uji-core.js?v=20261125c";
+  mergeSessions,
+  summarizeSessions,
+} from "../uji-core.js?v=20261125g";
 
 // Tempel URL Web App Google Apps Script Anda di bawah ini setelah deploy
 // (panduan & skrip lengkap ada di scripts/google-apps-script.gs).
@@ -85,8 +87,20 @@ async function submitToGoogleSheets(record) {
       headers: { "Content-Type": "text/plain;charset=utf-8" },
       body,
     });
-    if (response.ok) return { status: "sent" };
-    throw new Error(`HTTP ${response.status}`);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const text = await response.text();
+    if (text) {
+      let json = null;
+      try {
+        json = JSON.parse(text);
+      } catch {
+        json = null;
+      }
+      if (json && json.ok === false) {
+        return { status: "failed", message: json.error || "Apps Script error" };
+      }
+    }
+    return { status: "sent" };
   } catch {
     try {
       await fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
@@ -99,6 +113,48 @@ async function submitToGoogleSheets(record) {
     } catch (error) {
       return { status: "failed", message: error.message };
     }
+  }
+}
+
+async function fetchCloudSessions(pin) {
+  if (!GOOGLE_SHEETS_WEBHOOK_URL) {
+    return { status: "unconfigured", rows: [] };
+  }
+  const url = `${GOOGLE_SHEETS_WEBHOOK_URL}?action=list&pin=${encodeURIComponent(
+    pin
+  )}&_t=${Date.now()}`;
+  try {
+    const response = await fetch(url, { method: "GET", cache: "no-store" });
+    if (!response.ok) {
+      return {
+        status: "error",
+        message: `HTTP ${response.status}`,
+        rows: [],
+      };
+    }
+    const json = await response.json();
+    if (json && json.ok === false) {
+      return {
+        status: "invalid_pin",
+        message: json.error || "PIN tidak sesuai.",
+        rows: [],
+      };
+    }
+    if (json && Array.isArray(json.rows)) {
+      return { status: "ok", rows: json.rows };
+    }
+    return {
+      status: "needs_upgrade",
+      message:
+        "Apps Script masih versi lama (belum mendukung pembacaan data). Perbarui kode di Apps Script lalu Deploy -> Manage deployments -> Edit -> New version.",
+      rows: [],
+    };
+  } catch (error) {
+    return {
+      status: "error",
+      message: error.message || "Gagal menghubungi Google Sheets.",
+      rows: [],
+    };
   }
 }
 
@@ -182,6 +238,11 @@ function isAnswerReady(task, draft) {
 export function render(root, rows) {
   let stage = isAdminRoute() ? "admin" : "intro"; // intro | tasks | sus | done | admin
   let adminUnlocked = false;
+  let adminPinInput = "";
+  let adminLoading = false;
+  let adminSyncing = false;
+  let cloudRows = [];
+  let cloudState = { status: "idle", message: "" };
   let confirmClearLocal = false;
   let respondent = { nama: "", nim: "" };
   let respondentId = generateRespondentId();
@@ -874,6 +935,23 @@ export function render(root, rows) {
     });
   }
 
+  async function refreshAdminCloud(pinToUse) {
+    adminLoading = true;
+    renderAdminStage();
+    const result = await fetchCloudSessions(pinToUse);
+    adminLoading = false;
+    if (result.status === "ok") {
+      cloudRows = result.rows;
+      cloudState = { status: "ok", message: "" };
+    } else if (result.status === "invalid_pin") {
+      adminUnlocked = false;
+      cloudState = { status: "invalid_pin", message: result.message };
+    } else {
+      cloudState = { status: result.status, message: result.message || "" };
+    }
+    renderAdminStage();
+  }
+
   function renderAdminStage() {
     removeDock();
     destroyDashboard();
@@ -883,20 +961,22 @@ export function render(root, rows) {
       root.innerHTML = `
         <section class="uji-shell">
           <div class="panel uji-card">
-            <span class="uji-kicker">Khusus Peneliti · Rekap Lokal</span>
+            <span class="uji-kicker">Khusus Peneliti · Rekap Hasil</span>
             <h1 class="uji-title">Masuk Panel Hasil Pengujian</h1>
             <p class="uji-lead">
-              Halaman ini khusus peneliti untuk melihat ID responden, skor metrik ISO 9241-11, skor SUS,
-              dan mengunduh rekap CSV yang tersimpan di perangkat ini.
+              Halaman ini khusus peneliti untuk melihat ringkasan metrik ISO 9241-11, skor SUS,
+              rincian tiap task, serta mengunduh seluruh hasil responden dari Google Sheets dan browser ini.
             </p>
             <form class="uji-form" id="uji-admin-form" novalidate>
               <label class="uji-field" for="uji-admin-pin">
                 <span>PIN Peneliti</span>
                 <input id="uji-admin-pin" name="pin" type="password" required placeholder="Masukkan PIN peneliti" />
               </label>
-              <p class="uji-form-error" id="uji-admin-error" role="alert" hidden></p>
+              <p class="uji-form-error" id="uji-admin-error" role="alert" ${
+                cloudState.status === "invalid_pin" ? "" : "hidden"
+              }>${esc(cloudState.message || "")}</p>
               <div class="uji-form-actions">
-                <button type="submit" class="uji-btn uji-btn-primary">Buka Rekap →</button>
+                <button type="submit" class="uji-btn uji-btn-primary" id="uji-admin-login-btn">Buka Rekap →</button>
               </div>
             </form>
           </div>
@@ -905,79 +985,198 @@ export function render(root, rows) {
 
       const form = root.querySelector("#uji-admin-form");
       const errEl = root.querySelector("#uji-admin-error");
-      form.addEventListener("submit", (event) => {
+      const loginBtn = root.querySelector("#uji-admin-login-btn");
+      form.addEventListener("submit", async (event) => {
         event.preventDefault();
-        if (form.elements.pin.value === ADMIN_PIN) {
-          adminUnlocked = true;
-          renderAdminStage();
-        } else {
+        const entered = form.elements.pin.value.trim();
+        if (!entered) {
+          errEl.textContent = "Masukkan PIN terlebih dahulu.";
+          errEl.hidden = false;
+          return;
+        }
+        if (entered !== ADMIN_PIN) {
           errEl.textContent = "PIN tidak sesuai.";
           errEl.hidden = false;
+          return;
         }
+        loginBtn.disabled = true;
+        loginBtn.textContent = "Memuat data dari Google Sheets…";
+        adminPinInput = entered;
+        adminUnlocked = true;
+        await refreshAdminCloud(adminPinInput);
       });
       return;
     }
 
-    const n = savedSessions.length;
-    const avgCompletion = n
-      ? (
-          savedSessions.reduce((sum, s) => sum + Number(s.completion_rate_pct || 0), 0) / n
-        ).toFixed(1)
-      : "0.0";
-    const avgTime = n
-      ? (
-          savedSessions.reduce((sum, s) => sum + Number(s.avg_time_sec || 0), 0) / n
-        ).toFixed(2)
-      : "0.00";
-    const avgSus = n
-      ? (
-          savedSessions.reduce((sum, s) => sum + Number(s.sus_score || 0), 0) / n
-        ).toFixed(1)
-      : "0.0";
+    const { merged, unsyncedLocal } = mergeSessions(cloudRows, savedSessions);
+    const summary = summarizeSessions(merged);
+    const n = summary.count;
 
-    const webhookNote = GOOGLE_SHEETS_WEBHOOK_URL
-      ? "Integrasi Google Sheets <strong>aktif</strong> — hasil responden dari perangkat lain otomatis masuk ke Google Sheet pribadi Anda."
-      : "Integrasi Google Sheets <strong>belum dipasang</strong> — saat ini hanya menampilkan sesi yang dikerjakan di perangkat/browser ini. Pasang URL Apps Script di <code>js/pages/uji.js</code> untuk mengumpulkan data dari HP/laptop responden lain.";
+    let cloudBanner = "";
+    if (adminLoading) {
+      cloudBanner = `<div class="uji-status-box" role="status">Memuat data terbaru dari Google Sheets…</div>`;
+    } else if (cloudState.status === "ok") {
+      cloudBanner = `<div class="uji-status-box is-success" role="status"><strong>Tersinkron dengan Google Sheets</strong> (${cloudRows.length} data dari Google Sheets${
+        unsyncedLocal.length
+          ? `, +${unsyncedLocal.length} data lokal belum terkirim`
+          : ""
+      }).</div>`;
+    } else if (cloudState.status === "needs_upgrade") {
+      cloudBanner = `<div class="uji-status-box is-warn" role="alert"><strong>Apps Script perlu diperbarui untuk baca data otomatis.</strong> ${esc(
+        cloudState.message
+      )}</div>`;
+    } else if (cloudState.status === "error") {
+      cloudBanner = `<div class="uji-status-box is-warn" role="alert"><strong>Gagal memuat dari Google Sheets (${esc(
+        cloudState.message
+      )}).</strong> Menampilkan data lokal perangkat ini terlebih dahulu.</div>`;
+    } else if (!GOOGLE_SHEETS_WEBHOOK_URL) {
+      cloudBanner = `<div class="uji-status-box is-warn">Webhook Google Sheets belum dipasang. Menampilkan data lokal browser ini saja.</div>`;
+    }
+
+    const targetPill = (pass, label) =>
+      `<span class="uji-target-pill ${pass ? "is-pass" : "is-fail"}">${esc(
+        label
+      )}</span>`;
+
+    const deviceText = `${summary.deviceCounts.desktop} laptop · ${summary.deviceCounts.mobile} HP${
+      summary.deviceCounts.tablet ? ` · ${summary.deviceCounts.tablet} tablet` : ""
+    }`;
 
     root.innerHTML = `
       <section class="uji-shell uji-admin-shell">
         <div class="panel uji-card">
           <span class="uji-kicker">Panel Peneliti · MetroScope</span>
-          <h1 class="uji-title">Rekap Hasil Pengujian Kinerja</h1>
-          <p class="uji-lead">${webhookNote}</p>
+          <h1 class="uji-title">Rekap Hasil Pengujian Kinerja (ISO 9241-11)</h1>
+          ${cloudBanner}
 
-          <div class="uji-done-meta">
-            <div><span class="muted">Responden Lokal</span><strong>${n} orang</strong></div>
-            <div><span class="muted">Rata-rata Completion</span><strong>${avgCompletion}%</strong></div>
-            <div><span class="muted">Rata-rata Time/Task</span><strong>${avgTime} dtk</strong></div>
-            <div><span class="muted">Rata-rata Skor SUS</span><strong>${avgSus}</strong></div>
+          <div class="uji-done-meta uji-admin-kpis">
+            <div>
+              <span class="muted">Total Responden</span>
+              <strong>${n} / 20</strong>
+              <span class="uji-kpi-sub">${esc(deviceText)}</span>
+            </div>
+            <div>
+              <span class="muted">Effectiveness (Completion)</span>
+              <strong>${summary.avgCompletionPct}%</strong>
+              <span class="uji-kpi-sub">${
+                n > 0
+                  ? targetPill(
+                      summary.passCompletion,
+                      summary.passCompletion ? "Lulus (≥ 90%)" : "Di bawah 90%"
+                    )
+                  : "Target ≥ 90%"
+              }</span>
+            </div>
+            <div>
+              <span class="muted">Efficiency (Time &amp; Error)</span>
+              <strong>${summary.avgTimeSec} dtk</strong>
+              <span class="uji-kpi-sub">${
+                n > 0
+                  ? `${targetPill(
+                      summary.passTime,
+                      summary.passTime ? "Lulus (≤ 30 dtk)" : "Di atas 30 dtk"
+                    )} · ${summary.avgErrorsPerUser} err/org`
+                  : "Target ≤ 30 dtk/task"
+              }</span>
+            </div>
+            <div>
+              <span class="muted">Satisfaction (SUS)</span>
+              <strong>${summary.avgSusScore} ${
+                n > 0 ? `(Grade ${esc(summary.avgSusGrade)})` : ""
+              }</strong>
+              <span class="uji-kpi-sub">${
+                n > 0
+                  ? targetPill(
+                      summary.passSus,
+                      summary.passSus ? "Lulus (≥ 75)" : "Di bawah 75"
+                    )
+                  : "Target ≥ 75 (Grade B)"
+              }</span>
+            </div>
           </div>
 
           <div class="uji-form-actions">
-            <button type="button" class="uji-btn uji-btn-primary" data-admin-download ${n === 0 ? "disabled" : ""}>
+            <button type="button" class="uji-btn uji-btn-primary" data-admin-refresh ${
+              adminLoading ? "disabled" : ""
+            }>
+              ${adminLoading ? "Memuat…" : "Muat Ulang dari Google Sheets"}
+            </button>
+            <button type="button" class="uji-btn uji-btn-secondary" data-admin-download ${
+              n === 0 ? "disabled" : ""
+            }>
               Unduh Rekap CSV (${n} responden)
             </button>
-            <a class="uji-btn uji-btn-secondary" href="#uji">Buka Form Pengujian</a>
             ${
-              n > 0
+              unsyncedLocal.length > 0 && GOOGLE_SHEETS_WEBHOOK_URL
+                ? `<button type="button" class="uji-btn uji-btn-secondary" data-admin-sync-local ${
+                    adminSyncing ? "disabled" : ""
+                  }>
+                    ${
+                      adminSyncing
+                        ? "Mengirim ke Google Sheets…"
+                        : `Kirim ${unsyncedLocal.length} Data Lokal ke Google Sheets`
+                    }
+                  </button>`
+                : ""
+            }
+            <a class="uji-btn uji-btn-ghost" href="#uji">Buka Form Pengujian</a>
+            ${
+              savedSessions.length > 0
                 ? confirmClearLocal
                   ? `
                     <div class="uji-giveup-confirm" role="alert">
-                      <span>Hapus semua ${n} data lokal di browser ini?</span>
-                      <button type="button" class="uji-btn uji-btn-danger" data-admin-clear-yes>Ya, hapus</button>
+                      <span>Hapus cache lokal (${savedSessions.length}) di browser ini? (Data di Google Sheets tetap aman)</span>
+                      <button type="button" class="uji-btn uji-btn-danger" data-admin-clear-yes>Ya, hapus lokal</button>
                       <button type="button" class="uji-btn uji-btn-ghost" data-admin-clear-no>Batal</button>
                     </div>
                   `
-                  : `<button type="button" class="uji-btn uji-btn-danger" data-admin-clear>Hapus Data Lokal</button>`
+                  : `<button type="button" class="uji-btn uji-btn-muted" data-admin-clear>Hapus Cache Lokal</button>`
                 : ""
             }
           </div>
 
           ${
             n === 0
-              ? `<p class="empty-state" style="margin-top:16px">Belum ada data pengujian tersimpan di browser ini.</p>`
+              ? `<p class="empty-state" style="margin-top:18px">Belum ada data pengujian yang tercatat.</p>`
               : `
-                <div class="table-wrap" style="margin-top:18px">
+                <h2 class="uji-admin-section-title">Ringkasan Per Task (Diagnosis Komponen)</h2>
+                <div class="table-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th scope="col">Task</th>
+                        <th scope="col">Komponen</th>
+                        <th scope="col" class="num">Completion</th>
+                        <th scope="col" class="num">Rata-rata Waktu</th>
+                        <th scope="col" class="num">Total Error</th>
+                        <th scope="col" class="num">Menyerah</th>
+                        <th scope="col" class="num">Pakai Perbesar</th>
+                        <th scope="col" class="num">Pakai Tabel</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      ${summary.perTask
+                        .map(
+                          (item) => `
+                            <tr>
+                              <td><strong>Task ${item.number}</strong> · ${esc(item.shortTitle)}</td>
+                              <td>${esc(item.component)}</td>
+                              <td class="num">${item.completionPct}%</td>
+                              <td class="num">${item.avgTimeSec} dtk</td>
+                              <td class="num">${item.totalErrors}</td>
+                              <td class="num">${item.gaveUpCount}</td>
+                              <td class="num">${item.zoomCount}×</td>
+                              <td class="num">${item.tableCount}×</td>
+                            </tr>
+                          `
+                        )
+                        .join("")}
+                    </tbody>
+                  </table>
+                </div>
+
+                <h2 class="uji-admin-section-title">Daftar Responden (${n})</h2>
+                <div class="table-wrap">
                   <table>
                     <thead>
                       <tr>
@@ -985,30 +1184,49 @@ export function render(root, rows) {
                         <th scope="col">Nama</th>
                         <th scope="col">NIM</th>
                         <th scope="col">Perangkat</th>
+                        <th scope="col" class="num">T1</th>
+                        <th scope="col" class="num">T2</th>
+                        <th scope="col" class="num">T3</th>
+                        <th scope="col" class="num">T4</th>
                         <th scope="col" class="num">Completion</th>
                         <th scope="col" class="num">Avg Time</th>
                         <th scope="col" class="num">Errors</th>
                         <th scope="col" class="num">SUS</th>
                         <th scope="col">Masukan</th>
+                        <th scope="col">Sumber</th>
                       </tr>
                     </thead>
                     <tbody>
-                      ${savedSessions
-                        .map(
-                          (item) => `
+                      ${merged
+                        .map((item) => {
+                          const taskCell = (tid) => {
+                            const ok = Number(item[`${tid}_correct`]) === 1;
+                            const gaveUp = Number(item[`${tid}_gave_up`]) === 1;
+                            const sec = item[`${tid}_time_sec`] ?? "-";
+                            const mark = ok ? "✓" : gaveUp ? "✕ (menyerah)" : "✕";
+                            return `<td class="num nowrap">${mark} ${esc(sec)}s</td>`;
+                          };
+                          return `
                             <tr>
-                              <td class="nowrap"><code>${esc(item.respondent_id)}</code></td>
-                              <td>${esc(item.nama)}</td>
-                              <td class="nowrap">${esc(item.nim)}</td>
+                              <td class="nowrap"><code>${esc(item.respondent_id || "-")}</code></td>
+                              <td>${esc(item.nama || "-")}</td>
+                              <td class="nowrap">${esc(item.nim || "-")}</td>
                               <td>${esc(item.device_type || "-")}</td>
-                              <td class="num">${esc(item.completion_rate_pct)}%</td>
-                              <td class="num">${esc(item.avg_time_sec)} dtk</td>
-                              <td class="num">${esc(item.total_errors)}</td>
-                              <td class="num"><strong>${esc(item.sus_score)}</strong> (${esc(item.sus_grade)})</td>
+                              ${taskCell("t1")}
+                              ${taskCell("t2")}
+                              ${taskCell("t3")}
+                              ${taskCell("t4")}
+                              <td class="num">${esc(item.completion_rate_pct ?? 0)}%</td>
+                              <td class="num">${esc(item.avg_time_sec ?? 0)} dtk</td>
+                              <td class="num">${esc(item.total_errors ?? 0)}</td>
+                              <td class="num"><strong>${esc(item.sus_score ?? "-")}</strong> (${esc(item.sus_grade || "-")})</td>
                               <td>${esc(item.feedback || "-")}</td>
+                              <td><span class="uji-source-tag ${
+                                item._source === "sheets" ? "is-cloud" : "is-local"
+                              }">${item._source === "sheets" ? "Sheets" : "Lokal"}</span></td>
                             </tr>
-                          `
-                        )
+                          `;
+                        })
                         .join("")}
                     </tbody>
                   </table>
@@ -1019,13 +1237,30 @@ export function render(root, rows) {
       </section>
     `;
 
+    root.querySelector("[data-admin-refresh]")?.addEventListener("click", () => {
+      refreshAdminCloud(adminPinInput);
+    });
+
     root.querySelector("[data-admin-download]")?.addEventListener("click", () => {
-      if (savedSessions.length === 0) return;
+      if (merged.length === 0) return;
       triggerCsvDownload(
-        savedSessions,
-        `metroscope-uji-rekap-${savedSessions.length}-responden.csv`
+        merged,
+        `metroscope-uji-rekap-${merged.length}-responden.csv`
       );
     });
+
+    root
+      .querySelector("[data-admin-sync-local]")
+      ?.addEventListener("click", async () => {
+        if (unsyncedLocal.length === 0) return;
+        adminSyncing = true;
+        renderAdminStage();
+        for (const rec of unsyncedLocal) {
+          await submitToGoogleSheets(rec);
+        }
+        adminSyncing = false;
+        await refreshAdminCloud(adminPinInput);
+      });
 
     root.querySelector("[data-admin-clear]")?.addEventListener("click", () => {
       confirmClearLocal = true;
