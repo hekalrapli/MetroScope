@@ -658,11 +658,11 @@ export function render(root, rows) {
             <div class="uji-form-grid">
               <label class="uji-field" for="uji-nama">
                 <span>Nama <em>*</em></span>
-                <input id="uji-nama" name="nama" type="text" required placeholder="Masukkan nama lengkap" value="${esc(respondent.nama)}" />
+                <input id="uji-nama" name="nama" type="text" required placeholder="Contoh: Kimi Raikkoen Suryaatmadja" value="${esc(respondent.nama)}" />
               </label>
               <label class="uji-field" for="uji-nim">
                 <span>NIM <em>*</em></span>
-                <input id="uji-nim" name="nim" type="text" required placeholder="Contoh: 24060124130079" value="${esc(respondent.nim)}" />
+                <input id="uji-nim" name="nim" type="text" required placeholder="Contoh: 24060124130099" value="${esc(respondent.nim)}" />
               </label>
             </div>
             <p class="uji-form-error" id="uji-intro-error" role="alert" hidden></p>
