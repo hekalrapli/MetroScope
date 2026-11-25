@@ -3,6 +3,6 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node tests/kpi.test.js"
+    "test": "node tests/kpi.test.js && node tests/uji.test.js"
   }
 }

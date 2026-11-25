@@ -1,6 +1,6 @@
 import { loadData } from "./data.js?v=20261119ac";
-import { disposeAll } from "./charts.js?v=20261119ac";
-import { disposeAllMaps } from "./choropleth.js?v=20261119ac";
+import { disposeAll } from "./charts.js?v=20261125a";
+import { disposeAllMaps } from "./choropleth.js?v=20261125a";
 import { esc } from "./ui.js?v=20261119ac";
 
 const BERANDA_MEMBERS = [
@@ -69,12 +69,13 @@ const BERANDA_PAGE = {
 
 const PAGES = {
   beranda: () => Promise.resolve(BERANDA_PAGE),
-  overview: () => import("./pages/overview.js?v=20261124a"),
-  cbq1: () => import("./pages/cbq1.js?v=20261119ac"),
-  cbq2: () => import("./pages/cbq2.js?v=20261124a"),
-  cbq3: () => import("./pages/cbq3.js?v=20261119ac"),
-  cbq4: () => import("./pages/cbq4.js?v=20261119ac"),
-  cbq5: () => import("./pages/cbq5.js?v=20261119ac"),
+  overview: () => import("./pages/overview.js?v=20261125a"),
+  cbq1: () => import("./pages/cbq1.js?v=20261125a"),
+  cbq2: () => import("./pages/cbq2.js?v=20261125a"),
+  cbq3: () => import("./pages/cbq3.js?v=20261125a"),
+  cbq4: () => import("./pages/cbq4.js?v=20261125a"),
+  cbq5: () => import("./pages/cbq5.js?v=20261125a"),
+  uji: () => import("./pages/uji.js?v=20261125a"),
 };
 
 const app = document.querySelector("#app");
@@ -84,6 +85,7 @@ let rows = null;
 let loadError = null;
 let loading = null;
 let renderToken = 0;
+let activeCleanup = null;
 
 function currentRoute() {
   const raw = window.location.hash.replace("#", "");
@@ -138,7 +140,12 @@ async function route() {
   }
   setActiveNav(routeId);
   document.body.classList.toggle("is-landing", routeId === "beranda");
+  document.body.classList.toggle("is-testing", routeId === "uji");
   const token = ++renderToken;
+  if (typeof activeCleanup === "function") {
+    activeCleanup();
+    activeCleanup = null;
+  }
   disposeAllMaps();
   disposeAll();
   app.innerHTML = '<p class="loading">Memuat data…</p>';
@@ -148,7 +155,10 @@ async function route() {
     const module = await PAGES[routeId]();
     if (token !== renderToken) return;
     app.innerHTML = "";
-    module.render(app, data);
+    const maybeCleanup = module.render(app, data);
+    if (typeof maybeCleanup === "function") {
+      activeCleanup = maybeCleanup;
+    }
   } catch (error) {
     if (token !== renderToken) return;
     showError(error.message);

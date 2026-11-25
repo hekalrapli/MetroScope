@@ -101,6 +101,13 @@ export function initChart(element, option) {
   return chart;
 }
 
+export function disposeChart(chart) {
+  if (!chart) return;
+  if (chart.__resizeObserver) chart.__resizeObserver.disconnect();
+  chart.dispose();
+  charts.delete(chart);
+}
+
 export function disposeAll() {
   for (const chart of charts) {
     if (chart.__resizeObserver) chart.__resizeObserver.disconnect();

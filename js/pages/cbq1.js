@@ -18,7 +18,7 @@ import {
   VALUE_LABEL,
   FONT,
   hatchFill,
-} from "../charts.js?v=20261119ac";
+} from "../charts.js?v=20261125a";
 import {
   esc,
   pageHead,

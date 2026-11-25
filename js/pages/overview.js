@@ -18,12 +18,13 @@ import {
 } from "../data.js?v=20261119ac";
 import {
   initChart,
+  disposeChart,
   disposeAll,
   axisCategory,
   axisValue,
   VALUE_LABEL,
   FONT,
-} from "../charts.js?v=20261119ac";
+} from "../charts.js?v=20261125a";
 import {
   esc,
   pageHead,
@@ -38,7 +39,7 @@ import {
   createPsuChoropleth,
   disposeAllMaps,
   scopeLabel,
-} from "../choropleth.js?v=20261119ac";
+} from "../choropleth.js?v=20261125a";
 
 const CBQ2_YEAR_COLORS = {
   2023: "#9DBAD5",
@@ -48,7 +49,10 @@ const CBQ2_YEAR_COLORS = {
 
 const UNIQUE_KEL_COLOR = COLORS.text;
 
-function detailLink(href) {
+function detailLink(href, testMode, panelKey, label) {
+  if (testMode) {
+    return `<button type="button" class="zoom-panel-btn" data-zoom-panel="${esc(panelKey)}" aria-label="Perbesar ${esc(label)}">Perbesar</button>`;
+  }
   return `<a class="detail-link" href="${href}">Lihat Detail</a>`;
 }
 
@@ -388,10 +392,25 @@ function lineCbq4Option(kelCounts, coverage, selectedYear) {
   };
 }
 
-export function render(root, rows) {
-  let selectedYear = "all";
+export function render(root, rows, options = {}) {
+  const {
+    testMode = false,
+    initialYear = "all",
+    onYearChange = null,
+    onZoomOpen = null,
+  } = options;
+  let selectedYear = initialYear;
+  let activeModal = null;
+
+  function closeModal() {
+    if (!activeModal) return;
+    const closing = activeModal;
+    activeModal = null;
+    closing.cleanup();
+  }
 
   function view() {
+    closeModal();
     disposeAll();
     disposeAllMaps();
     const counts = countByYear(rows);
@@ -548,12 +567,12 @@ export function render(root, rows) {
             "Line chart jumlah catatan RW per tahun 2023, 2024, dan 2025.",
           tableHtml: lineTable,
           className: "col-6",
-          tools: detailLink("#cbq1"),
+          tools: detailLink("#cbq1", testMode, "cbq1", "CBQ 1 — Tren tahunan catatan RW"),
         })}
         ${panel({
           title: "CBQ 5 — Persebaran PSU per kelurahan",
           className: "col-6",
-          tools: detailLink("#cbq5"),
+          tools: detailLink("#cbq5", testMode, "cbq5", "CBQ 5 — Persebaran PSU per kelurahan"),
           body: `
             <div id="ov-map" class="choropleth choropleth--overview" role="img" aria-label="Choropleth jumlah PSU per kelurahan DKI Jakarta, ${scope}."></div>
             <div class="map-actions">
@@ -577,7 +596,7 @@ export function render(root, rows) {
             "Grouped bar catatan RW per wilayah untuk tahun 2023, 2024, dan 2025.",
           tableHtml: barsTable,
           className: "col-4",
-          tools: detailLink("#cbq2"),
+          tools: detailLink("#cbq2", testMode, "cbq2", "CBQ 2 — Perbandingan antarwilayah"),
         })}
         ${chartPanel({
           title: "CBQ 3 — Konsentrasi lokasi",
@@ -586,7 +605,7 @@ export function render(root, rows) {
           ariaLabel: `Horizontal bar top 10 kelurahan berdasarkan catatan RW, ${scope}, dengan warna wilayah induk.`,
           tableHtml: topTable,
           className: "col-4",
-          tools: detailLink("#cbq3"),
+          tools: detailLink("#cbq3", testMode, "cbq3", "CBQ 3 — Konsentrasi lokasi"),
           extraHtml: legend(
             usedRegions.map((region) => ({
               color: REGION_COLORS[region],
@@ -602,18 +621,222 @@ export function render(root, rows) {
             "Line chart dua seri: kelurahan unik dan RW baru per tahun 2023, 2024, 2025.",
           tableHtml: coverageTable,
           className: "col-4",
-          tools: detailLink("#cbq4"),
+          tools: detailLink("#cbq4", testMode, "cbq4", "CBQ 4 — Perubahan cakupan"),
         })}
       </div>
     `;
+
+    function openZoomModal(panelKey) {
+      closeModal();
+      if (typeof onZoomOpen === "function") onZoomOpen(panelKey);
+
+      const modalSpecs = {
+        cbq1: {
+          title: `CBQ 1 — Tren tahunan catatan RW (${scope})`,
+          type: "chart",
+          option: () => lineCbq1Option(counts, selectedYear),
+          tableHtml: lineTable,
+          ariaLabel: "Line chart jumlah catatan RW per tahun 2023, 2024, dan 2025.",
+        },
+        cbq2: {
+          title: `CBQ 2 — Perbandingan antarwilayah (${scope})`,
+          type: "chart",
+          option: () => groupedCbq2Option(matrix, regionOrder, selectedYear),
+          tableHtml: barsTable,
+          ariaLabel: "Grouped bar catatan RW per wilayah untuk tahun 2023, 2024, dan 2025.",
+        },
+        cbq3: {
+          title: `CBQ 3 — Konsentrasi lokasi (${scope})`,
+          type: "chart",
+          option: () => top10Option(topItems),
+          tableHtml: topTable,
+          extraHtml: legend(
+            usedRegions.map((region) => ({
+              color: REGION_COLORS[region],
+              label: region,
+            }))
+          ),
+          ariaLabel: `Horizontal bar top 10 kelurahan berdasarkan catatan RW, ${scope}.`,
+        },
+        cbq4: {
+          title: `CBQ 4 — Perubahan cakupan (${scope})`,
+          type: "chart",
+          option: () => lineCbq4Option(kelCounts, coverage, selectedYear),
+          tableHtml: coverageTable,
+          ariaLabel: "Line chart dua seri: kelurahan unik dan RW baru per tahun 2023, 2024, 2025.",
+        },
+        cbq5: {
+          title: `CBQ 5 — Persebaran PSU per kelurahan (${scope})`,
+          type: "map",
+        },
+      };
+
+      const spec = modalSpecs[panelKey];
+      if (!spec) return;
+
+      const backdrop = document.createElement("div");
+      backdrop.className = "zoom-modal-backdrop";
+      backdrop.setAttribute("role", "dialog");
+      backdrop.setAttribute("aria-modal", "true");
+      backdrop.setAttribute("aria-labelledby", "zoom-modal-title");
+
+      const zoomMapTable = `
+        <table>
+          <caption id="zoom-map-caption">Data alternatif peta: PSU per kelurahan, ${scope}</caption>
+          <thead>
+            <tr>
+              <th scope="col">Wilayah</th>
+              <th scope="col">Kecamatan</th>
+              <th scope="col">Kelurahan</th>
+              <th scope="col" class="num">PSU</th>
+              <th scope="col">Keterangan</th>
+            </tr>
+          </thead>
+          <tbody id="zoom-map-body"></tbody>
+        </table>
+      `;
+
+      const bodyHtml =
+        spec.type === "map"
+          ? `
+            <div id="zoom-ov-map" class="choropleth zoom-modal-map" role="img" aria-label="Choropleth jumlah PSU per kelurahan DKI Jakarta, ${scope}."></div>
+            <div class="map-actions">
+              <button type="button" class="link-btn" data-zoom-map-fit="mainland">Jakarta</button>
+              <button type="button" class="link-btn" data-zoom-map-fit="all">Semua DKI</button>
+              <button type="button" class="link-btn" data-zoom-map-labels aria-pressed="true">Sembunyikan label wilayah</button>
+            </div>
+            <div class="map-legend" id="zoom-map-legend"></div>
+            <p class="note" id="zoom-map-status">Memuat batas kelurahan…</p>
+            ${tableToggle(zoomMapTable, "zoom-map-table")}
+          `
+          : `
+            ${spec.extraHtml || ""}
+            <div class="chart zoom-modal-chart" id="zoom-ov-chart" role="img" aria-label="${esc(spec.ariaLabel)}"></div>
+            ${spec.tableHtml ? tableToggle(spec.tableHtml, "zoom-chart-table") : ""}
+          `;
+
+      backdrop.innerHTML = `
+        <div class="zoom-modal-card panel">
+          <div class="zoom-modal-head">
+            <h2 id="zoom-modal-title" class="panel-title">${esc(spec.title)}</h2>
+            <button type="button" class="zoom-modal-close" data-zoom-close aria-label="Tutup tampilan perbesar">Tutup ×</button>
+          </div>
+          <div class="zoom-modal-body">${bodyHtml}</div>
+        </div>
+      `;
+
+      document.body.appendChild(backdrop);
+      document.body.classList.add("has-zoom-modal");
+
+      let modalChart = null;
+      let modalMapHandle = null;
+      let disposed = false;
+
+      const onKeyDown = (event) => {
+        if (event.key === "Escape") closeModal();
+      };
+      document.addEventListener("keydown", onKeyDown);
+
+      backdrop.addEventListener("click", (event) => {
+        if (event.target === backdrop || event.target.closest("[data-zoom-close]")) {
+          closeModal();
+        }
+      });
+
+      activeModal = {
+        cleanup() {
+          disposed = true;
+          document.removeEventListener("keydown", onKeyDown);
+          if (modalChart) disposeChart(modalChart);
+          if (modalMapHandle) modalMapHandle.destroy();
+          backdrop.remove();
+          document.body.classList.remove("has-zoom-modal");
+        },
+      };
+
+      if (spec.type === "chart") {
+        modalChart = initChart(
+          backdrop.querySelector("#zoom-ov-chart"),
+          spec.option()
+        );
+      } else {
+        createPsuChoropleth({
+          container: backdrop.querySelector("#zoom-ov-map"),
+          legendEl: backdrop.querySelector("#zoom-map-legend"),
+          statusEl: backdrop.querySelector("#zoom-map-status"),
+          tableBodyEl: backdrop.querySelector("#zoom-map-body"),
+          tableCaptionEl: backdrop.querySelector("#zoom-map-caption"),
+          rows,
+          tahun: selectedYear,
+          fit: "mainland",
+          labelStyle: "short",
+        })
+          .then((handle) => {
+            if (!handle) return;
+            if (disposed) {
+              handle.destroy();
+              return;
+            }
+            modalMapHandle = handle;
+            const mainland = backdrop.querySelector('[data-zoom-map-fit="mainland"]');
+            const all = backdrop.querySelector('[data-zoom-map-fit="all"]');
+            const labels = backdrop.querySelector("[data-zoom-map-labels]");
+            function updateZoomLabels(visible) {
+              if (!labels) return;
+              labels.textContent = visible
+                ? "Sembunyikan label wilayah"
+                : "Tampilkan label wilayah";
+              labels.setAttribute("aria-pressed", String(visible));
+            }
+            if (labels && !handle.hasLabels) {
+              labels.disabled = true;
+              labels.textContent = "Label tidak tersedia";
+            }
+            if (mainland) {
+              mainland.addEventListener("click", () => {
+                handle.fitMainland();
+                updateZoomLabels(handle.setLabelsVisible(true));
+              });
+            }
+            if (all) {
+              all.addEventListener("click", () => {
+                handle.fitAll();
+                updateZoomLabels(handle.setLabelsVisible(false));
+              });
+            }
+            if (labels && handle.hasLabels) {
+              updateZoomLabels(handle.labelsVisible);
+              labels.addEventListener("click", () => {
+                updateZoomLabels(handle.toggleLabels());
+              });
+            }
+          })
+          .catch((error) => {
+            const status = backdrop.querySelector("#zoom-map-status");
+            if (status) {
+              status.textContent = `Peta tidak dapat dimuat: ${error.message}`;
+              status.classList.add("error-text");
+            }
+          });
+      }
+    }
 
     root.querySelectorAll("[data-year]").forEach((button) => {
       button.addEventListener("click", () => {
         selectedYear =
           button.dataset.year === "all" ? "all" : Number(button.dataset.year);
+        if (typeof onYearChange === "function") onYearChange(selectedYear);
         view();
       });
     });
+
+    if (testMode) {
+      root.querySelectorAll("[data-zoom-panel]").forEach((button) => {
+        button.addEventListener("click", () => {
+          openZoomModal(button.dataset.zoomPanel);
+        });
+      });
+    }
 
     initChart(root.querySelector("#ov-cbq1"), lineCbq1Option(counts, selectedYear));
     initChart(
@@ -682,4 +905,18 @@ export function render(root, rows) {
   }
 
   view();
+
+  return {
+    getSelectedYear: () => selectedYear,
+    setYear(year) {
+      selectedYear = year;
+      view();
+    },
+    closeModal,
+    destroy() {
+      closeModal();
+      disposeAll();
+      disposeAllMaps();
+    },
+  };
 }

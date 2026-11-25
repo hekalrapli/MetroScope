@@ -1307,3 +1307,696 @@ body.is-landing .site-footer {
     gap: 6px;
   }
 }
+
+/* Mode Pengujian Usability (#uji) */
+body.is-testing .tabs {
+  display: none;
+}
+
+body.is-testing .site-footer {
+  display: none;
+}
+
+body.has-uji-dock main {
+  padding-bottom: 320px;
+}
+
+body.has-zoom-modal {
+  overflow: hidden;
+}
+
+.uji-shell {
+  width: 100%;
+  max-width: 820px;
+  margin: 8px auto 32px;
+}
+
+.uji-card {
+  padding: 28px;
+}
+
+.uji-card:hover {
+  transform: none;
+  box-shadow: var(--card-shadow);
+}
+
+.uji-kicker {
+  display: inline-block;
+  margin-bottom: 10px;
+  padding: 3px 10px;
+  border: 1.5px solid #111111;
+  border-radius: 999px;
+  background: #eef3f7;
+  color: var(--primary);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.uji-title {
+  font-family: var(--font-display);
+  font-size: clamp(24px, 2.5vw, 32px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.uji-lead {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.uji-callout {
+  margin-top: 16px;
+  padding: 12px 14px;
+  border-left: 3px solid var(--primary);
+  border-radius: var(--radius);
+  background: #eef3f7;
+  color: var(--text);
+}
+
+.uji-guide {
+  margin-top: 20px;
+  padding: 16px 18px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg);
+}
+
+.uji-guide h2 {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.uji-guide ul {
+  margin: 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: var(--text);
+}
+
+.uji-form {
+  margin-top: 22px;
+}
+
+.uji-form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.uji-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-weight: 500;
+}
+
+.uji-field em {
+  color: #b42318;
+  font-style: normal;
+}
+
+.uji-field input,
+.uji-field textarea,
+.uji-inline-field input {
+  width: 100%;
+  min-height: 40px;
+  padding: 8px 12px;
+  border: 2px solid #111111;
+  border-radius: 10px;
+  background: var(--panel);
+  color: var(--text);
+  font: inherit;
+}
+
+.uji-field textarea {
+  min-height: 84px;
+  resize: vertical;
+}
+
+.uji-field input:focus,
+.uji-field textarea:focus,
+.uji-inline-field input:focus {
+  border-color: var(--primary);
+}
+
+.uji-form-error {
+  margin-top: 12px;
+  padding: 8px 12px;
+  border-left: 3px solid #b42318;
+  background: #fef3f2;
+  color: #7a271a;
+  font-weight: 500;
+}
+
+.uji-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.uji-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 8px 16px;
+  border: 2px solid #111111;
+  border-radius: 10px;
+  background: var(--panel);
+  color: var(--text);
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 120ms ease, box-shadow 120ms ease, background-color 120ms ease;
+}
+
+.uji-btn:hover:not(:disabled) {
+  transform: translate(-1px, -1px);
+  box-shadow: 2px 2px 0 #111111;
+}
+
+.uji-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.uji-btn-primary {
+  background: var(--primary);
+  color: #ffffff;
+}
+
+.uji-btn-secondary {
+  background: #eef3f7;
+  color: var(--primary);
+}
+
+.uji-btn-ghost {
+  border-color: var(--border);
+  background: var(--panel);
+  color: var(--text);
+  font-weight: 500;
+}
+
+.uji-btn-muted {
+  border-color: var(--border);
+  background: transparent;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.uji-btn-danger {
+  border-color: #b42318;
+  background: #b42318;
+  color: #ffffff;
+}
+
+.uji-lock-banner {
+  margin-bottom: 14px;
+  padding: 12px 16px;
+  border: 2px solid #111111;
+  border-radius: 12px;
+  background: var(--amber-tint);
+  color: var(--text);
+}
+
+.uji-dashboard-wrap {
+  transition: opacity 160ms ease, filter 160ms ease;
+}
+
+.uji-dashboard-wrap.is-locked {
+  opacity: 0.35;
+  filter: grayscale(0.35);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Sticky Testing Dock */
+.uji-dock {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1050;
+  border-top: 2.5px solid #111111;
+  background: var(--panel);
+  box-shadow: 0 -6px 24px rgba(17, 17, 17, 0.14);
+}
+
+.uji-dock-inner {
+  padding: 14px 0 16px;
+}
+
+.uji-dock-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 16px;
+}
+
+.uji-dock-meta,
+.uji-dock-top-right {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.uji-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border: 2px solid #111111;
+  border-radius: 999px;
+  background: #111111;
+  color: #ffffff;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.uji-task-name {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.uji-step-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.uji-step-dot {
+  width: 18px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--border);
+}
+
+.uji-step-dot.is-done {
+  background: var(--primary);
+}
+
+.uji-step-dot.is-current {
+  background: #111111;
+}
+
+.uji-status-chip {
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.uji-status-chip.is-live {
+  background: #e8f5e9;
+  border-color: #2e7d32;
+  color: #1b5e20;
+}
+
+.uji-instruction {
+  margin-top: 10px;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+.uji-collapsed-hint {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.uji-answer-area {
+  margin-top: 12px;
+}
+
+.uji-answer-compound {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 14px 24px;
+}
+
+.uji-inline-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 190px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.uji-choice-group {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.uji-choice-group legend {
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.uji-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.uji-pill {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 14px;
+  border: 2px solid #111111;
+  border-radius: 10px;
+  background: var(--panel);
+  color: var(--text);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 120ms ease, color 120ms ease;
+}
+
+.uji-pill input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.uji-pill:hover {
+  background: #eef3f7;
+}
+
+.uji-pill.is-selected {
+  background: #111111;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.uji-pill:has(input:focus-visible) {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.uji-dock-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 14px;
+  margin-top: 12px;
+}
+
+.uji-giveup-confirm {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #7a271a;
+}
+
+/* Tombol Perbesar & Modal Zoom Panel */
+.zoom-panel-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border: 2px solid #111111;
+  border-radius: 8px;
+  background: #eef3f7;
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 120ms ease, color 120ms ease;
+}
+
+.zoom-panel-btn:hover {
+  background: var(--primary);
+  color: #ffffff;
+}
+
+.zoom-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(17, 17, 17, 0.58);
+}
+
+.zoom-modal-card {
+  width: min(1120px, 100%);
+  max-height: calc(100vh - 40px);
+  overflow: auto;
+  padding: 20px;
+}
+
+.zoom-modal-card:hover {
+  transform: none;
+  box-shadow: var(--card-shadow);
+}
+
+.zoom-modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.zoom-modal-close {
+  padding: 6px 14px;
+  border: 2px solid #111111;
+  border-radius: 8px;
+  background: var(--panel);
+  color: var(--text);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.zoom-modal-close:hover {
+  background: #111111;
+  color: #ffffff;
+}
+
+.zoom-modal-body {
+  margin-top: 14px;
+}
+
+.zoom-modal-chart {
+  height: min(58vh, 500px);
+  min-height: 320px;
+}
+
+.zoom-modal-map {
+  height: min(60vh, 540px);
+  min-height: 360px;
+}
+
+/* Kuesioner SUS */
+.uji-sus-form {
+  margin-top: 20px;
+}
+
+.uji-sus-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.uji-sus-item {
+  margin: 0;
+  padding: 14px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg);
+}
+
+.uji-sus-item.is-missing {
+  border-color: #b42318;
+  background: #fef3f2;
+}
+
+.uji-sus-question {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  margin-bottom: 10px;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.uji-sus-num {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.uji-likert {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.uji-likert-option {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 8px 6px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  background: var(--panel);
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 120ms ease, background-color 120ms ease, color 120ms ease;
+}
+
+.uji-likert-option input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.uji-likert-option:hover {
+  border-color: #111111;
+}
+
+.uji-likert-option.is-selected {
+  border-color: #111111;
+  background: #111111;
+  color: #ffffff;
+}
+
+.uji-likert-option:has(input:focus-visible) {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.uji-likert-num {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.uji-likert-cap {
+  font-size: 11px;
+  line-height: 1.25;
+  color: var(--muted);
+}
+
+.uji-likert-option.is-selected .uji-likert-cap {
+  color: #e5e7eb;
+}
+
+.uji-feedback-field {
+  margin-top: 18px;
+}
+
+/* Halaman Selesai */
+.uji-status-box {
+  margin-top: 16px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border-left: 3px solid var(--primary);
+  background: #eef3f7;
+}
+
+.uji-status-box.is-success {
+  border-left-color: #2e7d32;
+  background: #e8f5e9;
+  color: #1b5e20;
+}
+
+.uji-status-box.is-warn {
+  border-left-color: var(--amber);
+  background: var(--amber-tint);
+}
+
+.uji-done-meta {
+  display: grid;
+  grid-template-columns: minmax(220px, 1.45fr) repeat(3, minmax(0, 1fr));
+  gap: 12px 16px;
+  margin-top: 18px;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg);
+}
+
+.uji-done-meta > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.uji-done-meta > div:first-child strong {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.uji-done-actions {
+  margin-top: 22px;
+}
+
+@media (max-width: 900px) {
+  body.has-uji-dock main {
+    padding-bottom: 390px;
+  }
+
+  .uji-card {
+    padding: 18px;
+  }
+
+  .uji-form-grid,
+  .uji-done-meta {
+    grid-template-columns: 1fr;
+  }
+
+  .uji-dock-inner {
+    padding: 12px 0 14px;
+  }
+
+  .uji-dock-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .uji-likert-cap {
+    font-size: 10px;
+  }
+}
