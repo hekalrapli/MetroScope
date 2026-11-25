@@ -12,7 +12,8 @@ import {
 // Tempel URL Web App Google Apps Script Anda di bawah ini setelah deploy
 // (panduan & skrip lengkap ada di scripts/google-apps-script.gs).
 // Data responden jarak jauh otomatis masuk ke Google Sheets pribadi Anda.
-const GOOGLE_SHEETS_WEBHOOK_URL = "";
+const GOOGLE_SHEETS_WEBHOOK_URL =
+  "https://script.google.com/macros/s/AKfycbykWYPV0OqwrLfgfOZL9zGxEzlNWSxaCPyUoeQ75IIfn1-sIDP1CKVOzJlSewe14UH_/exec";
 
 // PIN untuk melihat rekap data lokal melalui link khusus peneliti: #uji?admin=1
 const ADMIN_PIN = "metroscope2026";
