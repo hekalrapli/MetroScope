@@ -1710,6 +1710,8 @@ body.has-zoom-modal {
   margin: 0;
   padding: 0;
   border: 0;
+  min-inline-size: 0;
+  max-width: 100%;
 }
 
 .uji-choice-group legend {
@@ -1901,6 +1903,8 @@ body.has-zoom-modal {
   border: 1.5px solid var(--border);
   border-radius: 12px;
   background: var(--bg);
+  min-width: 0;
+  max-width: 100%;
 }
 
 .uji-sus-item.is-missing {
@@ -1910,17 +1914,28 @@ body.has-zoom-modal {
 
 .uji-sus-question {
   display: flex;
+  align-items: flex-start;
   gap: 8px;
   width: 100%;
-  margin-bottom: 10px;
+  margin: 0 0 10px;
   font-weight: 500;
   line-height: 1.45;
+  white-space: normal;
+  overflow-wrap: break-word;
 }
 
 .uji-sus-num {
+  flex: 0 0 auto;
   font-family: var(--font-mono);
   font-weight: 600;
   color: var(--primary);
+}
+
+.uji-sus-text {
+  flex: 1 1 0;
+  min-width: 0;
+  white-space: normal;
+  overflow-wrap: break-word;
 }
 
 .uji-likert {

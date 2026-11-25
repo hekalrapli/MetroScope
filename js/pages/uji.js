@@ -584,7 +584,7 @@ export function render(root, rows) {
           <div class="uji-guide">
             <h2>Petunjuk singkat penggunaan dashboard</h2>
             <ul>
-              <li>Pengujian ini dapat dikerjakan melalui <strong>komputer/laptop maupun HP</strong>.</li>
+              <li>Pengujian ini dapat dikerjakan melalui <strong>HP maupun laptop/komputer</strong>, namun <strong>sangat disarankan menggunakan laptop/komputer</strong> agar grafik dan peta terlihat lebih luas serta nyaman dibaca.</li>
               <li>Gunakan filter <strong>Tahun analisis</strong> di bagian atas dashboard untuk menyaring seluruh grafik sekaligus.</li>
               <li>Arahkan kursor (di komputer) atau <strong>ketuk/tekan</strong> (di HP) pada grafik dan peta untuk melihat nilai eksak serta keterangan wilayah.</li>
               <li>Jika grafik atau peta terasa terlalu kecil, tekan tombol <strong>Perbesar</strong> di pojok kanan atas panel untuk melihatnya lebih jelas, atau buka <strong>Lihat sebagai tabel</strong> di bawah panel.</li>
@@ -701,12 +701,12 @@ export function render(root, rows) {
             <div class="uji-sus-list">
               ${SUS_ITEMS.map(
                 (statement, idx) => `
-                  <fieldset class="uji-sus-item" data-sus-row="${idx}">
-                    <legend class="uji-sus-question">
+                  <div class="uji-sus-item" data-sus-row="${idx}" role="group" aria-labelledby="sus-q-${idx + 1}">
+                    <p class="uji-sus-question" id="sus-q-${idx + 1}">
                       <span class="uji-sus-num">${idx + 1}.</span>
-                      <span>${esc(statement)}</span>
-                    </legend>
-                    <div class="uji-likert" role="radiogroup" aria-label="Pernyataan ${idx + 1}">
+                      <span class="uji-sus-text">${esc(statement)}</span>
+                    </p>
+                    <div class="uji-likert" role="radiogroup" aria-labelledby="sus-q-${idx + 1}">
                       ${[1, 2, 3, 4, 5]
                         .map(
                           (score) => `
@@ -732,7 +732,7 @@ export function render(root, rows) {
                         )
                         .join("")}
                     </div>
-                  </fieldset>
+                  </div>
                 `
               ).join("")}
             </div>
