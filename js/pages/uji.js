@@ -11,10 +11,19 @@ import {
 
 // Tempel URL Web App Google Apps Script Anda di bawah ini setelah deploy
 // (panduan & skrip lengkap ada di scripts/google-apps-script.gs).
-// Biarkan kosong jika hanya memakai penyimpanan lokal & unduh CSV.
+// Data responden jarak jauh otomatis masuk ke Google Sheets pribadi Anda.
 const GOOGLE_SHEETS_WEBHOOK_URL = "";
 
+// PIN untuk melihat rekap data lokal melalui link khusus peneliti: #uji?admin=1
+const ADMIN_PIN = "metroscope2026";
+
 const STORAGE_KEY = "metroscope_uji_sessions_v1";
+
+function isAdminRoute() {
+  const raw = window.location.hash.replace(/^#/, "");
+  const query = raw.includes("?") ? raw.slice(raw.indexOf("?") + 1) : "";
+  return new URLSearchParams(query).get("admin") === "1";
+}
 
 function generateRespondentId() {
   const now = new Date();
@@ -170,7 +179,9 @@ function isAnswerReady(task, draft) {
 }
 
 export function render(root, rows) {
-  let stage = "intro"; // intro | tasks | sus | done
+  let stage = isAdminRoute() ? "admin" : "intro"; // intro | tasks | sus | done | admin
+  let adminUnlocked = false;
+  let confirmClearLocal = false;
   let respondent = { nama: "", nim: "" };
   let respondentId = generateRespondentId();
 
@@ -467,7 +478,7 @@ export function render(root, rows) {
                         <button type="button" class="uji-btn uji-btn-ghost" data-uji-giveup-no>Batal</button>
                       </div>
                     `
-                    : `<button type="button" class="uji-btn uji-btn-muted" data-uji-giveup>Menyerah / Tidak ketemu</button>`
+                    : `<button type="button" class="uji-btn uji-btn-danger" data-uji-giveup>Menyerah / Tidak ketemu</button>`
                 }
               </div>
             `
@@ -827,92 +838,31 @@ export function render(root, rows) {
     removeDock();
     destroyDashboard();
 
-    let statusHtml = "";
-    if (uploadResult?.status === "sent" || uploadResult?.status === "sent_opaque") {
-      statusHtml = `
-        <div class="uji-status-box is-success" role="status">
-          <strong>Data berhasil dikirim ke Google Sheets.</strong>
-          Anda dapat menutup halaman ini atau mengunduh salinan CSV sebagai cadangan.
-        </div>
-      `;
-    } else if (uploadResult?.status === "failed") {
-      statusHtml = `
-        <div class="uji-status-box is-warn" role="alert">
-          <strong>Pengiriman otomatis ke Google Sheets gagal (${esc(uploadResult.message || "masalah koneksi")}).</strong>
-          Hasil Anda tetap tersimpan aman di perangkat ini—silakan klik <strong>Coba Kirim Ulang</strong> atau <strong>Unduh Hasil (CSV)</strong> lalu kirim ke peneliti.
-        </div>
-      `;
-    } else {
-      statusHtml = `
-        <div class="uji-status-box is-info" role="status">
-          <strong>Hasil pengujian tersimpan di perangkat ini (ID: <code>${esc(finalRecord.respondent_id)}</code>).</strong>
-          Klik <strong>Unduh Hasil (CSV)</strong> di bawah untuk menyerahkan log pengujian ke peneliti.
-        </div>
-      `;
-    }
+    const retryHtml =
+      uploadResult?.status === "failed"
+        ? `
+          <div class="uji-status-box is-warn" role="alert">
+            Koneksi sempat terganggu saat mengirim jawaban. Tekan tombol di bawah untuk mencoba mengirim ulang.
+          </div>
+          <div class="uji-form-actions">
+            <button type="button" class="uji-btn uji-btn-primary" data-uji-retry>Kirim Ulang</button>
+          </div>
+        `
+        : "";
 
     root.innerHTML = `
       <section class="uji-shell">
-        <div class="panel uji-card">
+        <div class="panel uji-card uji-done-card">
           <span class="uji-kicker">Pengujian Selesai</span>
           <h1 class="uji-title">Terima Kasih, ${esc(finalRecord.nama)}!</h1>
           <p class="uji-lead">
-            Seluruh 4 tugas interaksi dan 10 pernyataan kuesioner SUS telah tercatat.
-            Masukan Anda sangat membantu evaluasi dan peningkatan desain dashboard <strong>MetroScope</strong>.
+            Seluruh jawaban dan masukan Anda telah berhasil dicatat. Terima kasih telah berpartisipasi
+            dalam pengujian dashboard <strong>MetroScope</strong>. Anda sudah dapat menutup halaman ini.
           </p>
-
-          ${statusHtml}
-
-          <div class="uji-done-meta">
-            <div><span class="muted">ID Responden</span><strong>${esc(finalRecord.respondent_id)}</strong></div>
-            <div><span class="muted">Persona</span><strong>${esc(finalRecord.persona)}</strong></div>
-            <div><span class="muted">Tugas Selesai</span><strong>${TASKS.length} / ${TASKS.length}</strong></div>
-            <div><span class="muted">Kuesioner SUS</span><strong>Tercatat (10/10)</strong></div>
-          </div>
-
-          <div class="uji-form-actions uji-done-actions">
-            ${
-              uploadResult?.status === "failed"
-                ? `<button type="button" class="uji-btn uji-btn-primary" data-uji-retry>Coba Kirim Ulang</button>`
-                : ""
-            }
-            <button type="button" class="uji-btn ${
-              uploadResult?.status === "unconfigured" ? "uji-btn-primary" : "uji-btn-secondary"
-            }" data-uji-download-one>
-              Unduh Hasil Sesi Ini (CSV)
-            </button>
-            ${
-              savedSessions.length > 1
-                ? `<button type="button" class="uji-btn uji-btn-secondary" data-uji-download-all>
-                    Unduh Semua Sesi di Perangkat Ini (${savedSessions.length} responden, CSV)
-                  </button>`
-                : ""
-            }
-            <button type="button" class="uji-btn uji-btn-ghost" data-uji-restart>
-              Mulai Sesi Responden Baru
-            </button>
-          </div>
+          ${retryHtml}
         </div>
       </section>
     `;
-
-    root
-      .querySelector("[data-uji-download-one]")
-      ?.addEventListener("click", () => {
-        triggerCsvDownload(
-          [finalRecord],
-          `metroscope-uji-${finalRecord.respondent_id}.csv`
-        );
-      });
-
-    root
-      .querySelector("[data-uji-download-all]")
-      ?.addEventListener("click", () => {
-        triggerCsvDownload(
-          savedSessions,
-          `metroscope-uji-rekap-${savedSessions.length}-responden.csv`
-        );
-      });
 
     root.querySelector("[data-uji-retry]")?.addEventListener("click", async (event) => {
       const btn = event.currentTarget;
@@ -921,14 +871,185 @@ export function render(root, rows) {
       uploadResult = await submitToGoogleSheets(finalRecord);
       renderDoneStage();
     });
+  }
 
-    root
-      .querySelector("[data-uji-restart]")
-      ?.addEventListener("click", () => resetAll());
+  function renderAdminStage() {
+    removeDock();
+    destroyDashboard();
+    savedSessions = loadSavedSessions();
+
+    if (!adminUnlocked) {
+      root.innerHTML = `
+        <section class="uji-shell">
+          <div class="panel uji-card">
+            <span class="uji-kicker">Khusus Peneliti · Rekap Lokal</span>
+            <h1 class="uji-title">Masuk Panel Hasil Pengujian</h1>
+            <p class="uji-lead">
+              Halaman ini khusus peneliti untuk melihat ID responden, skor metrik ISO 9241-11, skor SUS,
+              dan mengunduh rekap CSV yang tersimpan di perangkat ini.
+            </p>
+            <form class="uji-form" id="uji-admin-form" novalidate>
+              <label class="uji-field" for="uji-admin-pin">
+                <span>PIN Peneliti</span>
+                <input id="uji-admin-pin" name="pin" type="password" required placeholder="Masukkan PIN peneliti" />
+              </label>
+              <p class="uji-form-error" id="uji-admin-error" role="alert" hidden></p>
+              <div class="uji-form-actions">
+                <button type="submit" class="uji-btn uji-btn-primary">Buka Rekap →</button>
+              </div>
+            </form>
+          </div>
+        </section>
+      `;
+
+      const form = root.querySelector("#uji-admin-form");
+      const errEl = root.querySelector("#uji-admin-error");
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        if (form.elements.pin.value === ADMIN_PIN) {
+          adminUnlocked = true;
+          renderAdminStage();
+        } else {
+          errEl.textContent = "PIN tidak sesuai.";
+          errEl.hidden = false;
+        }
+      });
+      return;
+    }
+
+    const n = savedSessions.length;
+    const avgCompletion = n
+      ? (
+          savedSessions.reduce((sum, s) => sum + Number(s.completion_rate_pct || 0), 0) / n
+        ).toFixed(1)
+      : "0.0";
+    const avgTime = n
+      ? (
+          savedSessions.reduce((sum, s) => sum + Number(s.avg_time_sec || 0), 0) / n
+        ).toFixed(2)
+      : "0.00";
+    const avgSus = n
+      ? (
+          savedSessions.reduce((sum, s) => sum + Number(s.sus_score || 0), 0) / n
+        ).toFixed(1)
+      : "0.0";
+
+    const webhookNote = GOOGLE_SHEETS_WEBHOOK_URL
+      ? "Integrasi Google Sheets <strong>aktif</strong> — hasil responden dari perangkat lain otomatis masuk ke Google Sheet pribadi Anda."
+      : "Integrasi Google Sheets <strong>belum dipasang</strong> — saat ini hanya menampilkan sesi yang dikerjakan di perangkat/browser ini. Pasang URL Apps Script di <code>js/pages/uji.js</code> untuk mengumpulkan data dari HP/laptop responden lain.";
+
+    root.innerHTML = `
+      <section class="uji-shell uji-admin-shell">
+        <div class="panel uji-card">
+          <span class="uji-kicker">Panel Peneliti · MetroScope</span>
+          <h1 class="uji-title">Rekap Hasil Pengujian Kinerja</h1>
+          <p class="uji-lead">${webhookNote}</p>
+
+          <div class="uji-done-meta">
+            <div><span class="muted">Responden Lokal</span><strong>${n} orang</strong></div>
+            <div><span class="muted">Rata-rata Completion</span><strong>${avgCompletion}%</strong></div>
+            <div><span class="muted">Rata-rata Time/Task</span><strong>${avgTime} dtk</strong></div>
+            <div><span class="muted">Rata-rata Skor SUS</span><strong>${avgSus}</strong></div>
+          </div>
+
+          <div class="uji-form-actions">
+            <button type="button" class="uji-btn uji-btn-primary" data-admin-download ${n === 0 ? "disabled" : ""}>
+              Unduh Rekap CSV (${n} responden)
+            </button>
+            <a class="uji-btn uji-btn-secondary" href="#uji">Buka Form Pengujian</a>
+            ${
+              n > 0
+                ? confirmClearLocal
+                  ? `
+                    <div class="uji-giveup-confirm" role="alert">
+                      <span>Hapus semua ${n} data lokal di browser ini?</span>
+                      <button type="button" class="uji-btn uji-btn-danger" data-admin-clear-yes>Ya, hapus</button>
+                      <button type="button" class="uji-btn uji-btn-ghost" data-admin-clear-no>Batal</button>
+                    </div>
+                  `
+                  : `<button type="button" class="uji-btn uji-btn-danger" data-admin-clear>Hapus Data Lokal</button>`
+                : ""
+            }
+          </div>
+
+          ${
+            n === 0
+              ? `<p class="empty-state" style="margin-top:16px">Belum ada data pengujian tersimpan di browser ini.</p>`
+              : `
+                <div class="table-wrap" style="margin-top:18px">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th scope="col">ID Responden</th>
+                        <th scope="col">Nama</th>
+                        <th scope="col">NIM</th>
+                        <th scope="col">Perangkat</th>
+                        <th scope="col" class="num">Completion</th>
+                        <th scope="col" class="num">Avg Time</th>
+                        <th scope="col" class="num">Errors</th>
+                        <th scope="col" class="num">SUS</th>
+                        <th scope="col">Masukan</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      ${savedSessions
+                        .map(
+                          (item) => `
+                            <tr>
+                              <td class="nowrap"><code>${esc(item.respondent_id)}</code></td>
+                              <td>${esc(item.nama)}</td>
+                              <td class="nowrap">${esc(item.nim)}</td>
+                              <td>${esc(item.device_type || "-")}</td>
+                              <td class="num">${esc(item.completion_rate_pct)}%</td>
+                              <td class="num">${esc(item.avg_time_sec)} dtk</td>
+                              <td class="num">${esc(item.total_errors)}</td>
+                              <td class="num"><strong>${esc(item.sus_score)}</strong> (${esc(item.sus_grade)})</td>
+                              <td>${esc(item.feedback || "-")}</td>
+                            </tr>
+                          `
+                        )
+                        .join("")}
+                    </tbody>
+                  </table>
+                </div>
+              `
+          }
+        </div>
+      </section>
+    `;
+
+    root.querySelector("[data-admin-download]")?.addEventListener("click", () => {
+      if (savedSessions.length === 0) return;
+      triggerCsvDownload(
+        savedSessions,
+        `metroscope-uji-rekap-${savedSessions.length}-responden.csv`
+      );
+    });
+
+    root.querySelector("[data-admin-clear]")?.addEventListener("click", () => {
+      confirmClearLocal = true;
+      renderAdminStage();
+    });
+
+    root.querySelector("[data-admin-clear-no]")?.addEventListener("click", () => {
+      confirmClearLocal = false;
+      renderAdminStage();
+    });
+
+    root.querySelector("[data-admin-clear-yes]")?.addEventListener("click", () => {
+      try {
+        localStorage.removeItem(STORAGE_KEY);
+      } catch {
+        // ignore storage errors
+      }
+      confirmClearLocal = false;
+      renderAdminStage();
+    });
   }
 
   function renderCurrentStage() {
-    if (stage === "intro") renderIntroStage();
+    if (stage === "admin") renderAdminStage();
+    else if (stage === "intro") renderIntroStage();
     else if (stage === "tasks") renderTasksStage();
     else if (stage === "sus") renderSusStage();
     else renderDoneStage();
