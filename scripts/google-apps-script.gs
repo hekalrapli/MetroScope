@@ -78,6 +78,7 @@ var COLUMNS = [
   "sus_score",
   "sus_grade",
   "feedback",
+  "device_type",
   "viewport",
 ];
 

@@ -21,7 +21,7 @@ import {
   FONT,
   hatchFill,
   scaleColor,
-} from "../charts.js?v=20261125a";
+} from "../charts.js?v=20261125c";
 import {
   esc,
   pageHead,
@@ -37,7 +37,7 @@ import {
 import {
   createPsuChoropleth,
   disposeAllMaps,
-} from "../choropleth.js?v=20261125a";
+} from "../choropleth.js?v=20261125c";
 
 function horizontalBarOption({ values, order, color, unit, definition }) {
   const valid = order

@@ -1,12 +1,13 @@
-import { render as renderOverview } from "./overview.js?v=20261125a";
+import { render as renderOverview } from "./overview.js?v=20261125c";
 import { esc } from "../ui.js?v=20261119ac";
 import {
   TASKS,
   SUS_ITEMS,
   isFilterError,
+  detectDeviceType,
   buildSessionRecord,
   recordsToCsv,
-} from "../uji-core.js?v=20261125b";
+} from "../uji-core.js?v=20261125c";
 
 // Tempel URL Web App Google Apps Script Anda di bawah ini setelah deploy
 // (panduan & skrip lengkap ada di scripts/google-apps-script.gs).
@@ -244,7 +245,7 @@ export function render(root, rows) {
     }
 
     taskPhase = "active";
-    dockCollapsed = false;
+    dockCollapsed = window.innerWidth <= 760;
     confirmGiveUp = false;
     draftAnswer =
       task.inputType === "number_and_trend" ? { count: "", trend: "" } : "";
@@ -346,7 +347,7 @@ export function render(root, rows) {
       }
       const lockNote = root.querySelector("#uji-lock-banner");
       if (lockNote) {
-        lockNote.innerHTML = `<strong>Panel dashboard siap di bawah.</strong> Baca instruksi <em>Task ${nextTask.number}</em> pada panel bawah, lalu klik <strong>Mulai Task ${nextTask.number}</strong> untuk mulai berinteraksi.`;
+        lockNote.innerHTML = `<strong>Panel dashboard siap di bawah.</strong> Baca instruksi <em>Task ${nextTask.number}</em> pada panel bawah, lalu tekan <strong>Mulai Task ${nextTask.number}</strong> untuk mulai berinteraksi.`;
         lockNote.hidden = false;
       }
 
@@ -430,8 +431,8 @@ export function render(root, rows) {
           </div>
           <div class="uji-dock-top-right">
             <span class="uji-status-chip is-live">Sedang mengerjakan</span>
-            <button type="button" class="uji-btn uji-btn-ghost" data-uji-toggle-dock aria-expanded="${String(!dockCollapsed)}">
-              ${dockCollapsed ? "Tampilkan soal & jawaban" : "Lipat panel"}
+            <button type="button" class="uji-btn ${dockCollapsed ? "uji-btn-primary" : "uji-btn-ghost"}" data-uji-toggle-dock aria-expanded="${String(!dockCollapsed)}">
+              ${dockCollapsed ? "Isi Jawaban ▲" : "Lipat panel ▼"}
             </button>
           </div>
         </div>
@@ -572,10 +573,11 @@ export function render(root, rows) {
           <div class="uji-guide">
             <h2>Petunjuk singkat penggunaan dashboard</h2>
             <ul>
+              <li>Pengujian ini dapat dikerjakan melalui <strong>komputer/laptop maupun HP</strong>.</li>
               <li>Gunakan filter <strong>Tahun analisis</strong> di bagian atas dashboard untuk menyaring seluruh grafik sekaligus.</li>
-              <li>Arahkan kursor (<em>hover</em>) pada grafik atau peta untuk membaca nilai eksak dan keterangan wilayah.</li>
-              <li>Jika grafik atau peta terasa terlalu kecil, klik tombol <strong>Perbesar</strong> di pojok kanan atas panel untuk melihatnya lebih jelas, atau klik <strong>Lihat sebagai tabel</strong> di bawah panel.</li>
-              <li>Seluruh tugas dikerjakan di <strong>satu halaman ini</strong> tanpa perlu berpindah tab.</li>
+              <li>Arahkan kursor (di komputer) atau <strong>ketuk/tekan</strong> (di HP) pada grafik dan peta untuk melihat nilai eksak serta keterangan wilayah.</li>
+              <li>Jika grafik atau peta terasa terlalu kecil, tekan tombol <strong>Perbesar</strong> di pojok kanan atas panel untuk melihatnya lebih jelas, atau buka <strong>Lihat sebagai tabel</strong> di bawah panel.</li>
+              <li>Seluruh tugas dikerjakan di <strong>satu halaman ini</strong> tanpa perlu berpindah tab. Anda dapat menekan <strong>Lipat panel</strong> / <strong>Isi Jawaban</strong> pada panel bawah kapan saja agar tampilan grafik lebih lega.</li>
             </ul>
           </div>
 
@@ -624,7 +626,7 @@ export function render(root, rows) {
     destroyDashboard();
     root.innerHTML = `
       <div class="uji-lock-banner" id="uji-lock-banner">
-        <strong>Panel dashboard siap di bawah.</strong> Baca instruksi <em>Task ${TASKS[taskIndex].number}</em> pada panel bawah, lalu klik <strong>Mulai Task</strong> untuk mulai berinteraksi.
+        <strong>Panel dashboard siap di bawah.</strong> Baca instruksi <em>Task ${TASKS[taskIndex].number}</em> pada panel bawah, lalu tekan <strong>Mulai Task ${TASKS[taskIndex].number}</strong> untuk mulai berinteraksi.
       </div>
       <div id="uji-dashboard-wrap" class="uji-dashboard-wrap is-locked" aria-hidden="true"></div>
     `;
@@ -677,6 +679,12 @@ export function render(root, rows) {
             Seluruh 4 tugas telah selesai. Mohon berikan penilaian singkat Anda terhadap dashboard MetroScope
             dari skala <strong>1 (Sangat Tidak Setuju)</strong> hingga <strong>5 (Sangat Setuju)</strong>.
           </p>
+
+          <div class="uji-sus-scale-note" aria-hidden="true">
+            <span><strong>1</strong> = Sangat Tidak Setuju</span>
+            <span><strong>3</strong> = Netral</span>
+            <span><strong>5</strong> = Sangat Setuju</span>
+          </div>
 
           <form class="uji-sus-form" id="uji-sus-form" novalidate>
             <div class="uji-sus-list">
@@ -789,6 +797,9 @@ export function render(root, rows) {
       submitBtn.disabled = true;
       submitBtn.textContent = "Menyimpan hasil…";
 
+      const coarsePointer =
+        typeof window.matchMedia === "function" &&
+        window.matchMedia("(pointer: coarse)").matches;
       finalRecord = buildSessionRecord({
         timestamp: new Date().toISOString(),
         respondentId,
@@ -796,6 +807,10 @@ export function render(root, rows) {
         taskLogs,
         susAnswers,
         feedback: feedbackText,
+        deviceType: detectDeviceType({
+          width: window.innerWidth,
+          coarsePointer,
+        }),
         viewport: `${window.innerWidth}x${window.innerHeight}`,
       });
 

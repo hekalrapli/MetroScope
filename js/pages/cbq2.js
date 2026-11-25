@@ -18,7 +18,7 @@ import {
   AXIS_LABEL,
   VALUE_LABEL,
   FONT,
-} from "../charts.js?v=20261125a";
+} from "../charts.js?v=20261125c";
 import {
   esc,
   pageHead,

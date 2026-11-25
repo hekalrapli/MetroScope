@@ -979,6 +979,26 @@ code {
   border-top-color: var(--panel);
 }
 
+.psu-popup .leaflet-popup-content-wrapper {
+  border: 1.5px solid #111111;
+  border-radius: 8px;
+  background: var(--panel);
+  box-shadow: 2px 2px 0 #111111;
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.psu-popup .leaflet-popup-content {
+  margin: 10px 12px;
+}
+
+.psu-popup .leaflet-popup-tip {
+  background: var(--panel);
+  border: 1px solid #111111;
+}
+
 .error-text {
   padding-left: 8px;
   border-left: 2px solid var(--amber);
@@ -1548,6 +1568,10 @@ body.has-zoom-modal {
   bottom: 0;
   left: 0;
   z-index: 1050;
+  max-height: 78dvh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
   border-top: 2.5px solid #111111;
   background: var(--panel);
   box-shadow: 0 -6px 24px rgba(17, 17, 17, 0.14);
@@ -1822,7 +1846,29 @@ body.has-zoom-modal {
   min-height: 360px;
 }
 
+.uji-btn,
+.uji-pill,
+.uji-likert-option,
+.zoom-panel-btn,
+.segmented button {
+  touch-action: manipulation;
+}
+
 /* Kuesioner SUS */
+.uji-sus-scale-note {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 6px 14px;
+  margin-top: 14px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg);
+  color: var(--muted);
+  font-size: 13px;
+}
+
 .uji-sus-form {
   margin-top: 20px;
 }
@@ -1975,7 +2021,7 @@ body.has-zoom-modal {
 
 @media (max-width: 900px) {
   body.has-uji-dock main {
-    padding-bottom: 390px;
+    padding-bottom: 180px;
   }
 
   .uji-card {
@@ -1985,6 +2031,11 @@ body.has-zoom-modal {
   .uji-form-grid,
   .uji-done-meta {
     grid-template-columns: 1fr;
+  }
+
+  .uji-done-meta > div:first-child strong {
+    white-space: normal;
+    word-break: break-word;
   }
 
   .uji-dock-inner {
@@ -1998,5 +2049,101 @@ body.has-zoom-modal {
 
   .uji-likert-cap {
     font-size: 10px;
+  }
+}
+
+@media (max-width: 760px) {
+  .segmented {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .segmented button {
+    flex: 1 1 auto;
+    min-height: 40px;
+    text-align: center;
+  }
+
+  .uji-dock-top {
+    align-items: center;
+  }
+
+  .uji-task-name {
+    font-size: 14px;
+  }
+
+  .uji-status-chip {
+    display: none;
+  }
+
+  .uji-collapsed-hint {
+    white-space: normal;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+
+  .uji-instruction {
+    font-size: 14px;
+  }
+
+  .uji-pills {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .uji-pill {
+    justify-content: center;
+    min-height: 42px;
+    padding: 8px 10px;
+    text-align: center;
+  }
+
+  .uji-inline-field {
+    width: 100%;
+  }
+
+  .uji-btn {
+    min-height: 44px;
+  }
+
+  .zoom-panel-btn {
+    min-height: 36px;
+    padding: 6px 12px;
+  }
+
+  .zoom-modal-backdrop {
+    padding: 10px;
+  }
+
+  .zoom-modal-card {
+    max-height: calc(100dvh - 20px);
+    padding: 14px;
+  }
+
+  .zoom-modal-chart {
+    height: min(52dvh, 400px);
+    min-height: 260px;
+  }
+
+  .zoom-modal-map {
+    height: min(56dvh, 440px);
+    min-height: 300px;
+  }
+}
+
+@media (max-width: 560px) {
+  .uji-likert {
+    gap: 6px;
+  }
+
+  .uji-likert-option {
+    min-height: 44px;
+    padding: 8px 2px;
+  }
+
+  .uji-likert-cap {
+    display: none;
   }
 }

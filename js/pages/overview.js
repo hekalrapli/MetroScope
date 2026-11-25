@@ -24,7 +24,7 @@ import {
   axisValue,
   VALUE_LABEL,
   FONT,
-} from "../charts.js?v=20261125a";
+} from "../charts.js?v=20261125c";
 import {
   esc,
   pageHead,
@@ -39,7 +39,7 @@ import {
   createPsuChoropleth,
   disposeAllMaps,
   scopeLabel,
-} from "../choropleth.js?v=20261125a";
+} from "../choropleth.js?v=20261125c";
 
 const CBQ2_YEAR_COLORS = {
   2023: "#9DBAD5",

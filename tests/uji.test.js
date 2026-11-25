@@ -6,6 +6,7 @@ import {
   computeSusScore,
   susGrade,
   isFilterError,
+  detectDeviceType,
   buildSessionRecord,
   recordsToCsv,
 } from "../js/uji-core.js";
@@ -84,6 +85,11 @@ check("Task 2 filter 2023 dihitung error", isFilterError(TASKS[1], 2023), true);
 check("Task 2 filter 2024 bukan error", isFilterError(TASKS[1], 2024), false);
 check("Task 4 filter all bukan error", isFilterError(TASKS[3], "all"), false);
 
+// Device detection helper
+check("detectDeviceType 390px = mobile", detectDeviceType({ width: 390, coarsePointer: true }), "mobile");
+check("detectDeviceType 820px touch = tablet", detectDeviceType({ width: 820, coarsePointer: true }), "tablet");
+check("detectDeviceType 1440px desktop = desktop", detectDeviceType({ width: 1440, coarsePointer: false }), "desktop");
+
 // Session record + CSV output
 const sampleRecord = buildSessionRecord({
   timestamp: "2026-11-25T10:00:00.000Z",
@@ -97,8 +103,11 @@ const sampleRecord = buildSessionRecord({
   },
   susAnswers: [4, 2, 5, 1, 4, 2, 5, 1, 4, 2],
   feedback: 'Peta agak kecil, "Perbesar" sangat membantu',
-  viewport: "1440x900",
+  deviceType: "mobile",
+  viewport: "390x844",
 });
+
+check("device_type tersimpan = mobile", sampleRecord.device_type, "mobile");
 
 check("completion_rate_pct = 100", sampleRecord.completion_rate_pct, 100);
 check("total_errors = 1", sampleRecord.total_errors, 1);

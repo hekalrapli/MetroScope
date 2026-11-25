@@ -5,7 +5,7 @@ import {
   fmtInt,
   COLORS,
 } from "./data.js?v=20261119ac";
-import { scaleColor } from "./charts.js?v=20261125a";
+import { scaleColor } from "./charts.js?v=20261125c";
 import { esc } from "./ui.js?v=20261119ac";
 
 const GEOJSON_URL = "data/kelurahan.geojson";
@@ -319,15 +319,25 @@ export async function createPsuChoropleth({
     map.getPane(name).style.zIndex = String(zIndex);
   }
 
+  let selectedLayer = null;
+  let selectedFeature = null;
+
   const layer = globalThis.L.geoJSON(geojson, {
     pane: "kelurahanPane",
     style: (feature) => baseStyle(feature, data.values, data.maxValue),
     onEachFeature(feature, featureLayer) {
-      featureLayer.bindTooltip(tooltipHtml(feature, data.values, tahun), {
+      const infoHtml = tooltipHtml(feature, data.values, tahun);
+      featureLayer.bindTooltip(infoHtml, {
         sticky: true,
         direction: "top",
         className: "psu-tooltip",
         opacity: 1,
+      });
+      featureLayer.bindPopup(infoHtml, {
+        className: "psu-popup",
+        maxWidth: 220,
+        autoPanPadding: [36, 20],
+        closeButton: true,
       });
       featureLayer.on({
         mouseover(event) {
@@ -339,6 +349,32 @@ export async function createPsuChoropleth({
           event.target.bringToFront();
         },
         mouseout(event) {
+          if (event.target === selectedLayer) return;
+          event.target.setStyle(
+            baseStyle(feature, data.values, data.maxValue)
+          );
+        },
+        click(event) {
+          if (selectedLayer && selectedLayer !== event.target && selectedFeature) {
+            selectedLayer.setStyle(
+              baseStyle(selectedFeature, data.values, data.maxValue)
+            );
+          }
+          selectedLayer = event.target;
+          selectedFeature = feature;
+          event.target.setStyle({
+            weight: 2.2,
+            color: COLORS.text,
+            fillOpacity: 1,
+          });
+          event.target.bringToFront();
+          event.target.closeTooltip();
+        },
+        popupclose(event) {
+          if (event.target === selectedLayer) {
+            selectedLayer = null;
+            selectedFeature = null;
+          }
           event.target.setStyle(
             baseStyle(feature, data.values, data.maxValue)
           );

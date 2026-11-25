@@ -99,7 +99,7 @@ export const TASKS = [
     shortTitle: "Reset Filter & Peta PSU (CBQ 5)",
     component: "CBQ 5 — Choropleth Map",
     instruction:
-      "Kembalikan filter Tahun analisis ke kondisi awal (Semua tahun), lalu periksa pada Peta Sebaran PSU (CBQ 5): kelurahan mana yang memiliki peningkatan PSU tertinggi (warna biru paling gelap)? (Anda dapat zoom atau klik Perbesar pada peta jika diperlukan.)",
+      "Kembalikan filter Tahun analisis ke kondisi awal (Semua tahun), lalu periksa pada Peta Sebaran PSU (CBQ 5): kelurahan mana yang memiliki peningkatan PSU tertinggi (warna biru paling gelap)? (Anda dapat memperbesar/zoom peta atau menekan tombol Perbesar, lalu arahkan kursor atau ketuk wilayah pada peta.)",
     requiredFilter: "all",
     requiresFilterAction: true,
     mustEndOnRequiredFilter: true,
@@ -152,8 +152,15 @@ export const CSV_COLUMNS = [
   "sus_score",
   "sus_grade",
   "feedback",
+  "device_type",
   "viewport",
 ];
+
+export function detectDeviceType({ width, coarsePointer = false }) {
+  if (width <= 768) return "mobile";
+  if (width <= 1024 && coarsePointer) return "tablet";
+  return "desktop";
+}
 
 export function computeSusScore(answers) {
   if (!Array.isArray(answers) || answers.length !== 10) {
@@ -190,6 +197,7 @@ export function buildSessionRecord({
   taskLogs,
   susAnswers,
   feedback,
+  deviceType,
   viewport,
 }) {
   const susScore = computeSusScore(susAnswers);
@@ -248,6 +256,7 @@ export function buildSessionRecord({
   record.sus_score = susScore;
   record.sus_grade = susGrade(susScore);
   record.feedback = String(feedback ?? "").trim();
+  record.device_type = String(deviceType ?? "desktop");
   record.viewport = String(viewport ?? "");
 
   return record;

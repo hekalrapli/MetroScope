@@ -26,6 +26,7 @@ export const VALUE_LABEL = {
 
 const BASE_TOOLTIP = {
   trigger: "item",
+  confine: true,
   backgroundColor: COLORS.panel,
   borderColor: COLORS.border,
   borderWidth: 1,

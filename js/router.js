@@ -1,6 +1,6 @@
 import { loadData } from "./data.js?v=20261119ac";
-import { disposeAll } from "./charts.js?v=20261125a";
-import { disposeAllMaps } from "./choropleth.js?v=20261125a";
+import { disposeAll } from "./charts.js?v=20261125c";
+import { disposeAllMaps } from "./choropleth.js?v=20261125c";
 import { esc } from "./ui.js?v=20261119ac";
 
 const BERANDA_MEMBERS = [
@@ -69,13 +69,13 @@ const BERANDA_PAGE = {
 
 const PAGES = {
   beranda: () => Promise.resolve(BERANDA_PAGE),
-  overview: () => import("./pages/overview.js?v=20261125a"),
-  cbq1: () => import("./pages/cbq1.js?v=20261125a"),
-  cbq2: () => import("./pages/cbq2.js?v=20261125a"),
-  cbq3: () => import("./pages/cbq3.js?v=20261125a"),
-  cbq4: () => import("./pages/cbq4.js?v=20261125a"),
-  cbq5: () => import("./pages/cbq5.js?v=20261125a"),
-  uji: () => import("./pages/uji.js?v=20261125b"),
+  overview: () => import("./pages/overview.js?v=20261125c"),
+  cbq1: () => import("./pages/cbq1.js?v=20261125c"),
+  cbq2: () => import("./pages/cbq2.js?v=20261125c"),
+  cbq3: () => import("./pages/cbq3.js?v=20261125c"),
+  cbq4: () => import("./pages/cbq4.js?v=20261125c"),
+  cbq5: () => import("./pages/cbq5.js?v=20261125c"),
+  uji: () => import("./pages/uji.js?v=20261125c"),
 };
 
 const app = document.querySelector("#app");
