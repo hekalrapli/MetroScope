@@ -39,7 +39,7 @@ import {
   createPsuChoropleth,
   disposeAllMaps,
   scopeLabel,
-} from "../choropleth.js?v=20261125c";
+} from "../choropleth.js?v=20261126a";
 
 const CBQ2_YEAR_COLORS = {
   2023: "#9DBAD5",
@@ -770,6 +770,7 @@ export function render(root, rows, options = {}) {
           tahun: selectedYear,
           fit: "mainland",
           labelStyle: "short",
+          panZoom: true,
         })
           .then((handle) => {
             if (!handle) return;
@@ -859,6 +860,7 @@ export function render(root, rows, options = {}) {
       tahun: selectedYear,
       fit: "mainland",
       labelStyle: "short",
+      panZoom: false,
     })
       .then((handle) => {
         if (!handle) return;

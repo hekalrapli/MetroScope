@@ -946,6 +946,16 @@ code {
   font-size: 14px;
 }
 
+.choropleth.is-static-map.leaflet-container {
+  touch-action: pan-y;
+  cursor: default;
+}
+
+.choropleth.is-static-map .leaflet-pane,
+.choropleth.is-static-map .leaflet-interactive {
+  touch-action: pan-y;
+}
+
 .leaflet-control-zoom a {
   color: var(--text);
   background: var(--panel);

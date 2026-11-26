@@ -286,6 +286,7 @@ export async function createPsuChoropleth({
   tahun,
   fit = "mainland",
   labelStyle = "full",
+  panZoom = true,
 }) {
   if (!container) return null;
   if (typeof globalThis.L === "undefined") {
@@ -303,9 +304,16 @@ export async function createPsuChoropleth({
   }
   if (!container.isConnected) return null;
 
+  container.classList.toggle("is-static-map", !panZoom);
   const data = computeMapData(geojson, rows, tahun);
   const map = globalThis.L.map(container, {
-    zoomControl: true,
+    zoomControl: panZoom,
+    scrollWheelZoom: panZoom,
+    dragging: panZoom,
+    touchZoom: panZoom,
+    doubleClickZoom: panZoom,
+    boxZoom: panZoom,
+    keyboard: panZoom,
     attributionControl: false,
     minZoom: 8,
     maxZoom: 16,
