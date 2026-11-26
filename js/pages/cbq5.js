@@ -37,7 +37,7 @@ import {
 import {
   createPsuChoropleth,
   disposeAllMaps,
-} from "../choropleth.js?v=20261125c";
+} from "../choropleth.js?v=20261126a";
 
 function horizontalBarOption({ values, order, color, unit, definition }) {
   const valid = order
