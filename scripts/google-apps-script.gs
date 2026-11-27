@@ -1,15 +1,23 @@
 /**
  * MetroScope — Kolektor & Pembaca Hasil Usability Testing (ISO 9241-11 + SUS)
  *
- * Cara update deployment (±30 detik):
- * 1. Di Google Apps Script yang sudah ada, ganti seluruh isi file dengan kode ini lalu Ctrl + S.
- * 2. Klik Deploy -> Manage deployments -> klik ikon pensil (Edit).
- * 3. Pada kolom Version, pilih "New version" -> klik Deploy.
- *    (URL Web App /exec tetap sama, tidak berubah!)
+ * Cara update deployment + pasang PIN rahasia (±1 menit):
+ * 1. Di editor Google Apps Script Anda, ganti seluruh kode dengan file ini lalu Ctrl + S.
+ * 2. Klik ikon roda gigi (Project Settings) di sidebar kiri -> gulir ke "Script Properties".
+ * 3. Klik "Add script property":
+ *    - Property: ADMIN_PIN
+ *    - Value   : <isi PIN rahasia pilihan Anda sendiri, JANGAN pernah commit ke GitHub>
+ *    Lalu klik "Save script properties".
+ * 4. Klik Deploy -> Manage deployments -> ikon pensil (Edit) -> Version: "New version" -> Deploy.
+ *    (URL Web App /exec tetap sama!)
  */
 
 var SHEET_NAME = "Hasil_Uji_Kinerja";
-var ADMIN_PIN = "metroscope2026";
+
+function getAdminPin_() {
+  var pin = PropertiesService.getScriptProperties().getProperty("ADMIN_PIN");
+  return pin ? String(pin).trim() : "";
+}
 
 var COLUMNS = [
   "timestamp",
@@ -154,14 +162,22 @@ function hasRespondentId_(sheet, respondentId) {
 function doGet(e) {
   var params = (e && e.parameter) || {};
   if (params.action === "list") {
-    if (String(params.pin || "") !== ADMIN_PIN) {
+    var expectedPin = getAdminPin_();
+    if (!expectedPin) {
+      return jsonOut_({
+        ok: false,
+        error:
+          "ADMIN_PIN belum diatur di Project Settings -> Script Properties pada Google Apps Script.",
+      });
+    }
+    if (String(params.pin || "").trim() !== expectedPin) {
       return jsonOut_({ ok: false, error: "PIN tidak sesuai." });
     }
     var rows = readAllRows_();
     return jsonOut_({
       ok: true,
       service: "MetroScope Usability Collector",
-      version: 2,
+      version: 3,
       count: rows.length,
       rows: rows,
     });
@@ -169,7 +185,7 @@ function doGet(e) {
   return jsonOut_({
     ok: true,
     service: "MetroScope Usability Collector",
-    version: 2,
+    version: 3,
   });
 }
 

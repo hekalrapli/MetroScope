@@ -14,11 +14,10 @@ import {
 // Tempel URL Web App Google Apps Script Anda di bawah ini setelah deploy
 // (panduan & skrip lengkap ada di scripts/google-apps-script.gs).
 // Data responden jarak jauh otomatis masuk ke Google Sheets pribadi Anda.
+// Verifikasi PIN peneliti dilakukan sepenuhnya di sisi server Apps Script (Script Properties),
+// tidak disimpan di kode frontend.
 const GOOGLE_SHEETS_WEBHOOK_URL =
   "https://script.google.com/macros/s/AKfycbykWYPV0OqwrLfgfOZL9zGxEzlNWSxaCPyUoeQ75IIfn1-sIDP1CKVOzJlSewe14UH_/exec";
-
-// PIN untuk melihat rekap data lokal melalui link khusus peneliti: #uji?admin=1
-const ADMIN_PIN = "metroscope2026";
 
 const STORAGE_KEY = "metroscope_uji_sessions_v1";
 
@@ -945,6 +944,7 @@ export function render(root, rows) {
       cloudState = { status: "ok", message: "" };
     } else if (result.status === "invalid_pin") {
       adminUnlocked = false;
+      adminPinInput = "";
       cloudState = { status: "invalid_pin", message: result.message };
     } else {
       cloudState = { status: result.status, message: result.message || "" };
@@ -958,6 +958,12 @@ export function render(root, rows) {
     savedSessions = loadSavedSessions();
 
     if (!adminUnlocked) {
+      const showCloudErr =
+        cloudState.status === "invalid_pin" ||
+        cloudState.status === "needs_upgrade" ||
+        cloudState.status === "error" ||
+        cloudState.status === "unconfigured";
+
       root.innerHTML = `
         <section class="uji-shell">
           <div class="panel uji-card">
@@ -965,15 +971,16 @@ export function render(root, rows) {
             <h1 class="uji-title">Masuk Panel Hasil Pengujian</h1>
             <p class="uji-lead">
               Halaman ini khusus peneliti untuk melihat ringkasan metrik ISO 9241-11, skor SUS,
-              rincian tiap task, serta mengunduh seluruh hasil responden dari Google Sheets dan browser ini.
+              rincian tiap task, serta mengunduh seluruh hasil responden. Verifikasi PIN dilakukan
+              langsung oleh server Google Apps Script.
             </p>
             <form class="uji-form" id="uji-admin-form" novalidate>
               <label class="uji-field" for="uji-admin-pin">
                 <span>PIN Peneliti</span>
-                <input id="uji-admin-pin" name="pin" type="password" required placeholder="Masukkan PIN peneliti" />
+                <input id="uji-admin-pin" name="pin" type="password" required placeholder="Masukkan PIN peneliti" autocomplete="current-password" />
               </label>
               <p class="uji-form-error" id="uji-admin-error" role="alert" ${
-                cloudState.status === "invalid_pin" ? "" : "hidden"
+                showCloudErr ? "" : "hidden"
               }>${esc(cloudState.message || "")}</p>
               <div class="uji-form-actions">
                 <button type="submit" class="uji-btn uji-btn-primary" id="uji-admin-login-btn">Buka Rekap →</button>
@@ -994,16 +1001,35 @@ export function render(root, rows) {
           errEl.hidden = false;
           return;
         }
-        if (entered !== ADMIN_PIN) {
-          errEl.textContent = "PIN tidak sesuai.";
-          errEl.hidden = false;
+        errEl.hidden = true;
+        loginBtn.disabled = true;
+        loginBtn.textContent = "Memverifikasi PIN ke server…";
+
+        const result = await fetchCloudSessions(entered);
+        if (result.status === "ok") {
+          adminPinInput = entered;
+          adminUnlocked = true;
+          cloudRows = result.rows;
+          cloudState = { status: "ok", message: "" };
+          renderAdminStage();
           return;
         }
-        loginBtn.disabled = true;
-        loginBtn.textContent = "Memuat data dari Google Sheets…";
-        adminPinInput = entered;
-        adminUnlocked = true;
-        await refreshAdminCloud(adminPinInput);
+
+        loginBtn.disabled = false;
+        loginBtn.textContent = "Buka Rekap →";
+        if (result.status === "invalid_pin") {
+          errEl.textContent = result.message || "PIN tidak sesuai.";
+        } else if (result.status === "needs_upgrade") {
+          errEl.textContent =
+            "Apps Script belum diperbarui atau ADMIN_PIN belum diatur di Script Properties Apps Script.";
+        } else if (result.status === "unconfigured") {
+          errEl.textContent = "URL Google Apps Script belum terpasang.";
+        } else {
+          errEl.textContent = `Gagal memverifikasi PIN ke server (${
+            result.message || "masalah koneksi"
+          }). Coba lagi.`;
+        }
+        errEl.hidden = false;
       });
       return;
     }
