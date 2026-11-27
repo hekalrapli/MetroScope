@@ -1,6 +1,7 @@
 import { render as renderOverview } from "./overview.js?v=20261126a";
 import { esc } from "../ui.js?v=20261119ac";
 import {
+  CONSENT_TEXT,
   TASKS,
   SUS_ITEMS,
   isFilterError,
@@ -9,7 +10,7 @@ import {
   recordsToCsv,
   mergeSessions,
   summarizeSessions,
-} from "../uji-core.js?v=20261125g";
+} from "../uji-core.js?v=20261127b";
 
 // Tempel URL Web App Google Apps Script Anda di bawah ini setelah deploy
 // (panduan & skrip lengkap ada di scripts/google-apps-script.gs).
@@ -243,7 +244,7 @@ export function render(root, rows) {
   let cloudRows = [];
   let cloudState = { status: "idle", message: "" };
   let confirmClearLocal = false;
-  let respondent = { nama: "", nim: "" };
+  let respondent = { nama: "", nim: "", consent: false };
   let respondentId = generateRespondentId();
 
   let taskIndex = 0;
@@ -289,7 +290,7 @@ export function render(root, rows) {
     removeDock();
     destroyDashboard();
     stage = "intro";
-    respondent = { nama: "", nim: "" };
+    respondent = { nama: "", nim: "", consent: false };
     respondentId = generateRespondentId();
     taskIndex = 0;
     taskPhase = "ready";
@@ -664,6 +665,21 @@ export function render(root, rows) {
                 <input id="uji-nim" name="nim" type="text" required placeholder="Contoh: 24060124130099" value="${esc(respondent.nim)}" />
               </label>
             </div>
+
+            <div class="uji-consent-block">
+              <span class="uji-consent-title">Pernyataan Sukarela <em>*</em></span>
+              <label class="uji-consent-box" id="uji-consent-box" for="uji-consent">
+                <input
+                  id="uji-consent"
+                  name="consent"
+                  type="checkbox"
+                  required
+                  ${respondent.consent ? "checked" : ""}
+                />
+                <span>${esc(CONSENT_TEXT)}</span>
+              </label>
+            </div>
+
             <p class="uji-form-error" id="uji-intro-error" role="alert" hidden></p>
             <div class="uji-form-actions">
               <button type="submit" class="uji-btn uji-btn-primary">
@@ -677,16 +693,35 @@ export function render(root, rows) {
 
     const form = root.querySelector("#uji-intro-form");
     const errEl = root.querySelector("#uji-intro-error");
+    const consentInput = form.elements.consent;
+    const consentBox = root.querySelector("#uji-consent-box");
+
+    consentInput.addEventListener("change", () => {
+      if (consentInput.checked) {
+        consentBox?.classList.remove("is-missing");
+      }
+    });
+
     form.addEventListener("submit", (event) => {
       event.preventDefault();
       const nama = form.elements.nama.value.trim();
       const nim = form.elements.nim.value.trim();
+      const consent = Boolean(consentInput.checked);
       if (!nama || !nim) {
         errEl.textContent = "Mohon isi Nama dan NIM terlebih dahulu.";
         errEl.hidden = false;
         return;
       }
-      respondent = { nama, nim };
+      if (!consent) {
+        consentBox?.classList.add("is-missing");
+        errEl.textContent =
+          "Mohon centang Pernyataan Sukarela terlebih dahulu untuk melanjutkan pengujian.";
+        errEl.hidden = false;
+        consentInput.focus();
+        return;
+      }
+      consentBox?.classList.remove("is-missing");
+      respondent = { nama, nim, consent: true };
       stage = "tasks";
       taskIndex = 0;
       taskPhase = "ready";

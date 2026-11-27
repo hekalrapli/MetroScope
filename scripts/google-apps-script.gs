@@ -84,6 +84,7 @@ var COLUMNS = [
   "feedback",
   "device_type",
   "viewport",
+  "pernyataan_sukarela",
 ];
 
 function jsonOut_(obj) {
@@ -102,6 +103,12 @@ function getOrCreateSheet_() {
     sheet.appendRow(COLUMNS);
     sheet.setFrozenRows(1);
     sheet.getRange(1, 1, 1, COLUMNS.length).setFontWeight("bold");
+  } else if (sheet.getLastColumn() < COLUMNS.length) {
+    var existing = sheet.getLastColumn();
+    var extra = COLUMNS.slice(existing);
+    var headerRange = sheet.getRange(1, existing + 1, 1, extra.length);
+    headerRange.setValues([extra]);
+    headerRange.setFontWeight("bold");
   }
   return sheet;
 }

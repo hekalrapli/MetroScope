@@ -1478,6 +1478,61 @@ body.has-zoom-modal {
   border-color: var(--primary);
 }
 
+.uji-consent-block {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.uji-consent-title {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.uji-consent-title em {
+  color: #b42318;
+  font-style: normal;
+}
+
+.uji-consent-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 2px solid #111111;
+  border-radius: 10px;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: border-color 120ms ease, background-color 120ms ease;
+}
+
+.uji-consent-box:hover {
+  border-color: var(--primary);
+}
+
+.uji-consent-box:has(input:checked) {
+  border-color: var(--primary);
+  background: #eef3f7;
+}
+
+.uji-consent-box.is-missing {
+  border-color: #b42318;
+  background: #fef3f2;
+}
+
+.uji-consent-box input[type="checkbox"] {
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  margin: 2px 0 0;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+
 .uji-form-error {
   margin-top: 12px;
   padding: 8px 12px;

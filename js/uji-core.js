@@ -1,3 +1,6 @@
+export const CONSENT_TEXT =
+  "Saya menyatakan bahwa saya telah memahami tujuan pengujian ini dan bersedia berpartisipasi secara sukarela tanpa adanya paksaan dari pihak mana pun. Saya juga bersedia menyelesaikan tugas serta memberikan jawaban sesuai dengan pemahaman dan pendapat pribadi selama proses pengujian berlangsung.";
+
 export const SUS_ITEMS = [
   "Saya merasa akan sering menggunakan dashboard ini.",
   "Saya merasa dashboard ini terlalu rumit padahal seharusnya bisa lebih sederhana.",
@@ -154,6 +157,7 @@ export const CSV_COLUMNS = [
   "feedback",
   "device_type",
   "viewport",
+  "pernyataan_sukarela",
 ];
 
 export function detectDeviceType({ width, coarsePointer = false }) {
@@ -258,6 +262,7 @@ export function buildSessionRecord({
   record.feedback = String(feedback ?? "").trim();
   record.device_type = String(deviceType ?? "desktop");
   record.viewport = String(viewport ?? "");
+  record.pernyataan_sukarela = respondent?.consent ? "Setuju" : "Tidak";
 
   return record;
 }
